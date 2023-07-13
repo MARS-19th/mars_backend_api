@@ -1,6 +1,6 @@
 {
     "domain": "dmumars.kro.kr",
-    "port": 3000,
+    "port": 80,
     "dbhost": "",
     "dbuser": "",
     "dbpassword": "",
