@@ -1,12 +1,12 @@
 import express = require("express");
 import mysql = require("mysql");
-import { TypedRequestBody, conn } from "../server";
+import { TypedRequestBody, serverset } from "../server";
 const router = express.Router();
 
 router.get("/getuser/:id", (req, res) => {
     const query = `select *from User where id = "${req.params.id}";`;
 
-    const dbconect = mysql.createConnection(conn);
+    const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
@@ -30,7 +30,7 @@ type sername = {
 router.post("/setname", (req: TypedRequestBody<sername>, res) => {
     const query = `insert into User values('${req.body.id}', '${req.body.passwd}');`;
 
-    const dbconect = mysql.createConnection(conn);
+    const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {

@@ -1,8 +1,11 @@
 {
     "domain": "dmumars.kro.kr",
     "port": 80,
-    "dbhost": "",
-    "dbuser": "",
-    "dbpassword": "",
-    "dbport": 3306
+    "setdb": {
+        "host": "",
+        "port": 3306,
+        "user": "",
+        "password": "",
+        "database": "mars"
+    }
 }
