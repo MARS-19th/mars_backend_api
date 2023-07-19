@@ -17,7 +17,7 @@
       "type": "node",
       "request": "launch",
       "name": "Node.js 로 실행",
-      "program": "${workspaceFolder}\\build\\${fileBasenameNoExtension}.js",
+      "program": "${workspaceFolder}\\build\\test\\${fileBasenameNoExtension}.js",
       "outFiles": ["${workspaceFolder}/**/*.js"]
     }
   ]

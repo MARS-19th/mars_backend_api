@@ -3,8 +3,11 @@ import mysql = require("mysql");
 import { TypedRequestBody, serverset } from "../server";
 const router = express.Router();
 
-router.get("/getuser/:id", (req, res) => {
-    const query = `select *from User where id = "${req.params.id}";`;
+router.get("/getlogin/:id", (req, res) => {
+    console.log("야");
+    
+    //회원 이름 => 아이디, 패스워드
+    const query = `SELECT id, passwd from User JOIN User_data on User.id = User_data.user_id WHERE User_data.user_name = "${req.params.id}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -27,8 +30,29 @@ type sername = {
     id: string;
     passwd: string;
 };
-router.post("/setname", (req: TypedRequestBody<sername>, res) => {
+router.post("/setuser", (req: TypedRequestBody<sername>, res) => {
     const query = `insert into User values('${req.body.id}', '${req.body.passwd}');`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.log(err);
+            res.status(403).send();
+        } else {
+            res.send();
+        }
+    });
+
+    dbconect.end();
+});
+
+type delname = {
+    id: string;
+};
+router.post("/deluser", (req: TypedRequestBody<delname>, res) => {
+    const query = `DELETE from User WHERE id = "${req.body.id}"`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
