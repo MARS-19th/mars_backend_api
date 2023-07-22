@@ -4,8 +4,6 @@ import { TypedRequestBody, serverset } from "../server";
 const router = express.Router();
 
 router.get("/getlogin/:id", (req, res) => {
-    console.log("야");
-    
     //회원 이름 => 아이디, 패스워드
     const query = `SELECT id, passwd from User JOIN User_data on User.id = User_data.user_id WHERE User_data.user_name = "${req.params.id}";`;
 

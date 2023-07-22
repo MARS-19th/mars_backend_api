@@ -12,6 +12,7 @@ server.use("/api", apirouter); //api 라우팅
 const serverset = JSON.parse(fs.readFileSync("server.json", "utf-8"));
 
 server.listen(serverset.port, () => {
+    console.log("테스트");
     console.log(`서버가 ${serverset.port}포트로 열림`);
 });
 
