@@ -2,10 +2,10 @@
     "domain": "dmumars.kro.kr",
     "port": 80,
     "setdb": {
-        "host": "awsdb.cgulzz8btuoe.ap-northeast-2.rds.amazonaws.com",
+        "host": "",
         "port": 3306,
-        "user": "admin",
-        "password": "dmumars19",
+        "user": "",
+        "password": "",
         "database": "mars"
     }
 }
