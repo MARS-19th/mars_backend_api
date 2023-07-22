@@ -8,7 +8,6 @@
             "name": "npm 으로 실행",
             "request": "launch",
             "runtimeArgs": ["start"],
-            "console": "externalTerminal",
             "runtimeExecutable": "npm",
             "type": "node"
         },
