@@ -37,15 +37,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var mysql = require("mysql");
-var server_1 = require("../src/server");
+var fs = require("fs");
+var serverset = JSON.parse(fs.readFileSync("server.json", "utf-8"));
 function gettest() {
     var query = "SELECT id, passwd from User;";
-    var dbconect = mysql.createConnection(server_1.serverset.setdb);
+    var dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
     dbconect.query(query, function (err, results) {
         results === null || results === void 0 ? void 0 : results.forEach(function (line) {
             console.log(line);
         });
+        if (err) {
+            console.log(err);
+        }
     });
     dbconect.end();
 }

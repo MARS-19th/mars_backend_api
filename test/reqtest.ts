@@ -1,5 +1,7 @@
 import * as mysql from "mysql";
-import { serverset } from "../src/server";
+import * as fs from "fs";
+const serverset = JSON.parse(fs.readFileSync("server.json", "utf-8"));
+
 function gettest() {
     const query = `SELECT id, passwd from User;`;
 
@@ -7,10 +9,12 @@ function gettest() {
     dbconect.connect();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
-        results?.forEach(line => {
+        results?.forEach((line) => {
             console.log(line);
-            
         });
+        if (err) {
+            console.log(err);
+        }
     });
 
     dbconect.end();

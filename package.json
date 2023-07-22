@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "npx tsc && xcopy src build\\ /k /e /y /exclude:.nocopy",
-    "start": "xcopy src build\\ /k /e /y /exclude:.nocopy && node build/server.js",
-    "test": "npx tsc --project test"
+    "start": "xcopy src build\\ /k /e /y /exclude:.nocopy && node build/server.js"
   },
   "author": "",
   "license": "ISC",
