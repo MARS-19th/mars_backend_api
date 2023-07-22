@@ -1,5 +1,5 @@
-import mysql = require("mysql");
-import { serverset } from "../server";
+import * as mysql from "mysql";
+import { serverset } from "../src/server";
 function gettest() {
     const query = `SELECT id, passwd from User;`;
 
