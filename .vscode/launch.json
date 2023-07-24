@@ -15,13 +15,7 @@
             "name": "Node.js 로 실행",
             "request": "launch",
             "runtimeExecutable": "npx",
-            "args": [
-                "tsc",
-                "${relativeFile}",
-                "&&",
-                "node",
-                "${relativeFileDirname}/${fileBasenameNoExtension}.js"
-            ],
+            "args": ["ts-node", "${file}"],
             "type": "node"
         }
     ]
