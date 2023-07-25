@@ -3,6 +3,7 @@ import fs = require("fs");
 import adminrouter from "./admin/adminrouter";
 import person from "./api/person";
 import user from "./api/user";
+import mark from "./api/mark";
 const server = express();
 
 server.use(express.json());
@@ -10,6 +11,7 @@ server.use(express.urlencoded({ extended: false }));
 server.use("/admin", adminrouter); //관리자 페이지 라우팅
 server.use("/api", person); // 가입부분
 server.use("/api", user); // 유저 부분
+server.use("/api", mark); // 목표&스킬트리 부분
 
 const serverset = JSON.parse(fs.readFileSync("server.json", "utf-8"));
 

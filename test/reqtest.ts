@@ -21,8 +21,8 @@ function gettest() {
 }
 
 async function settest(url: string) {
-    const user_name = "관리자2";
-    const bt_mac = "test1";
+    const user_name = "관리자1";
+    const friend = "관리자2";
 
     const response = await fetch(`http://korseok.kro.kr/api/${url}`, {
         method: "post",
@@ -31,7 +31,7 @@ async function settest(url: string) {
         },
         body: JSON.stringify({
             user_name: user_name,
-            bt_mac: bt_mac,
+            friend: friend,
         }),
     });
 
@@ -39,4 +39,4 @@ async function settest(url: string) {
     console.log(res);
 }
 
-settest("setbtmac");
+settest("setfriend");

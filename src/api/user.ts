@@ -1,3 +1,4 @@
+/* 회원 가입/탈퇴/로그인 */
 import express = require("express");
 import mysql = require("mysql");
 import { TypedRequestBody, serverset } from "../server";
@@ -51,6 +52,33 @@ user.get("/getbtmac/:name", (req, res) => {
     dbconect.end();
 });
 
+// 친구 목록 (닉네임): err or results: [...친구들]
+user.get("/getfriend/:name", (req, res) => {
+    const query = `select friend from User_friend where user_name = "${req.params.name}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                results = results.map((line) => {
+                    return line.friend;
+                });
+                res.json(results);
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
 // 모든 회원 정보 추가 (닉네임, 아이디, 목표, 프사경로): ok or err
 type setuser = {
     user_name: string;
@@ -84,45 +112,7 @@ user.post("/setuser", (req: TypedRequestBody<setuser>, res) => {
             console.error(err);
             res.status(500).json({ err: err.code }); // ER_DUP_ENTRY = 중복 발생함
         } else {
-            res.send();
-        }
-    });
-
-    dbconect.end();
-});
-
-//닉네임 중복 체크 (닉네임): err or ok
-type chname = {
-    user_name: string; // 닉네임
-};
-const chname = {
-    user_name: "string",
-};
-user.post("/login", (req: TypedRequestBody<chname>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(chname).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: chname });
-            return;
-        }
-    }
-
-    const query = `select user_name from User_data where user_name = "${req.body.user_name}";`;
-
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
-
-    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
-        if (err) {
-            console.error(err);
-            res.status(500).json({ err: err.code });
-        } else {
-            if (results?.length) {
-                console.error("중복발견");
-                res.status(500).json({ ok: false });
-            } else {
-                res.json({ ok: true });
-            }
+            res.json({ results: true });
         }
     });
 
@@ -147,8 +137,7 @@ user.post("/setbtmac", (req: TypedRequestBody<setbt>, res) => {
         }
     }
 
-    const query = 
-    `delete from User_data where user_id = "${req.body.user_name}";
+    const query = `delete from User_data where user_id = "${req.body.user_name}";
     insert into User_bluetooth values("${req.body.user_name}", "${req.body.bt_mac}");`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
@@ -159,7 +148,259 @@ user.post("/setbtmac", (req: TypedRequestBody<setbt>, res) => {
             console.error(err);
             res.status(500).json({ err: err.code });
         } else {
-            res.send();
+            res.json({ results: true });
+        }
+    });
+
+    dbconect.end();
+});
+
+// 유저 재화 조정 (닉네임, 값): err or 조정한 값
+type setmoney = {
+    user_name: string;
+    value: number;
+};
+const setmoney = {
+    user_name: "string",
+    value: "int",
+};
+user.post("/setmoney", (req: TypedRequestBody<setmoney>, res) => {
+    for (const key in req.body) {
+        if (!Object.keys(setmoney).includes(key)) {
+            console.error("값이 잘못넘어옴");
+            res.status(500).json({ err: "type_err", type: setmoney });
+            return;
+        }
+    }
+
+    const query = `update User_data SET money = ${req.body.value} where
+    user_name = "${req.body.user_name}"; `;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            res.json({ results: req.body.value });
+        }
+    });
+
+    dbconect.end();
+});
+
+// 유저 목숨 조정 (닉네임, 값): err or 조정한 값
+type setlife = {
+    user_name: string;
+    value: number;
+};
+const setlife = {
+    user_name: "string",
+    value: "int",
+};
+user.post("/setlife", (req: TypedRequestBody<setlife>, res) => {
+    for (const key in req.body) {
+        if (!Object.keys(setlife).includes(key)) {
+            console.error("값이 잘못넘어옴");
+            res.status(500).json({ err: "type_err", type: setlife });
+            return;
+        }
+    }
+
+    const query = `update User_data SET life = ${req.body.value} where
+    user_name = "${req.body.user_name}"; `;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            res.json({ results: req.body.value });
+        }
+    });
+    dbconect.end();
+});
+
+// 유저 목숨 조정 (닉네임, 값): err or 조정한 값
+type setlevel = {
+    user_name: string;
+    value: number;
+};
+const setlevel = {
+    user_name: "string",
+    value: "int",
+};
+user.post("/setlevel", (req: TypedRequestBody<setlevel>, res) => {
+    for (const key in req.body) {
+        if (!Object.keys(setlevel).includes(key)) {
+            console.error("값이 잘못넘어옴");
+            res.status(500).json({ err: "type_err", type: setlevel });
+            return;
+        }
+    }
+
+    const query = `update User_data SET level = ${req.body.value} where
+    user_name = "${req.body.user_name}"; `;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            res.json({ results: req.body.value });
+        }
+    });
+    dbconect.end();
+});
+
+type setusertitle = {
+    user_name: string;
+    value: number;
+};
+const setusertitle = {
+    user_name: "string",
+    value: "int",
+};
+user.post("/setusertitle", (req: TypedRequestBody<setusertitle>, res) => {
+    for (const key in req.body) {
+        if (!Object.keys(setusertitle).includes(key)) {
+            console.error("값이 잘못넘어옴");
+            res.status(500).json({ err: "type_err", type: setusertitle });
+            return;
+        }
+    }
+
+    const query = `update User_data SET user_title = "${req.body.value}" where
+    user_name = "${req.body.user_name}"; `;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code }); //ER_NO_REFERENCED_ROW_2 (외래키 조건으로 인한 예외)
+        } else {
+            res.json({ results: req.body.value });
+        }
+    });
+    dbconect.end();
+});
+
+// 친구 추가(닉네임, 친구닉네임): err: ER_DUP_ENTRY(pk 중복체크) or ok
+type setfriend = {
+    user_name: string; // 닉네임
+    friend: string; // 친구 이름
+};
+const setfriend = {
+    user_name: "string",
+    friend: "string",
+};
+user.post("/setfriend", (req: TypedRequestBody<setfriend>, res) => {
+    for (const key in req.body) {
+        if (!Object.keys(setfriend).includes(key)) {
+            console.error("값이 잘못넘어옴");
+            res.status(500).json({ err: "type_err", type: setfriend });
+            return;
+        }
+    }
+
+    const query = `insert into User_friend values 
+    ("${req.body.user_name}", "${req.body.friend}"), 
+    ("${req.body.friend}", "${req.body.user_name}");`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            res.json({ results: true });
+        }
+    });
+
+    dbconect.end();
+});
+
+// 친구 삭제(닉네임, 친구닉네임): err or ok
+type delfriend = {
+    user_name: string; // 닉네임
+    friend: string; // 친구 이름
+};
+const delfriend = {
+    user_name: "string",
+    friend: "string",
+};
+user.post("/delfriend", (req: TypedRequestBody<delfriend>, res) => {
+    for (const key in req.body) {
+        if (!Object.keys(delfriend).includes(key)) {
+            console.error("값이 잘못넘어옴");
+            res.status(500).json({ err: "type_err", type: delfriend });
+            return;
+        }
+    }
+
+    const query = `delete from User_friend where 
+    user_name = "${req.body.user_name}" && friend = "${req.body.friend}" || 
+    user_name = "${req.body.friend}" && friend = "${req.body.user_name}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            res.json({ results: true });
+        }
+    });
+
+    dbconect.end();
+});
+
+//닉네임 중복 체크 (닉네임): err or ok
+type chname = {
+    user_name: string; // 닉네임
+};
+const chname = {
+    user_name: "string",
+};
+user.post("/checkname", (req: TypedRequestBody<chname>, res) => {
+    for (const key in req.body) {
+        if (!Object.keys(chname).includes(key)) {
+            console.error("값이 잘못넘어옴");
+            res.status(500).json({ err: "type_err", type: chname });
+            return;
+        }
+    }
+
+    const query = `select user_name from User_data where user_name = "${req.body.user_name}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (results?.length) {
+                console.error("중복발견");
+                res.status(500).json({ err: "exist" });
+            } else {
+                res.json({ results: true });
+            }
         }
     });
 

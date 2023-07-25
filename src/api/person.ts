@@ -1,3 +1,4 @@
+/* 회원 정보 구성요소 */
 import express = require("express");
 import mysql = require("mysql");
 import { TypedRequestBody, serverset } from "../server";
@@ -31,7 +32,7 @@ person.post("/setperson", (req: TypedRequestBody<sername>, res) => {
             console.error(err);
             res.status(500).json({ err: err.code }); // ER_DUP_ENTRY = 중복 발생함
         } else {
-            res.send();
+            res.json({ results: true });
         }
     });
 
@@ -65,7 +66,7 @@ person.post("/deluser", (req: TypedRequestBody<delname>, res) => {
             console.error(err);
             res.status(500).json({ err: err.code });
         } else {
-            res.send();
+            res.json({ results: true });
         }
     });
 
@@ -107,7 +108,7 @@ person.post("/login", (req: TypedRequestBody<login>, res) => {
                 res.status(500).json({ err: "empty" });
             } else if (!results[0].user_name) {
                 console.log("신규유저");
-                res.json({err: "is_new"});
+                res.json({ err: "is_new" });
             } else {
                 res.json(results[0]);
             }
