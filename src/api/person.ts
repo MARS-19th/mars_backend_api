@@ -104,7 +104,7 @@ person.post("/login", (req: TypedRequestBody<login>, res) => {
         } else {
             if (!results?.length) {
                 console.error("항목없음");
-                res.status(500).json({ err: "not_person" });
+                res.status(500).json({ err: "empty" });
             } else if (!results[0].user_name) {
                 console.log("신규유저");
                 res.json({err: "is_new"});
