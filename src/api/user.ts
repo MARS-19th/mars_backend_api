@@ -1,7 +1,7 @@
 /* 회원 가입/탈퇴/로그인 */
 import express = require("express");
 import mysql = require("mysql");
-import { TypedRequestBody, serverset } from "../server";
+import { TypedRequestBody, sameobj, serverset } from "../server";
 const user = express.Router();
 
 //회원 모든 정보 조회 (유저이름): err or 모든 유저 정보
@@ -93,12 +93,10 @@ const setuser = {
     profile_local: "string",
 };
 user.post("/setuser", (req: TypedRequestBody<setuser>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(setuser).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: setuser });
-            return;
-        }
+    if (!sameobj(setuser, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setuser });
+        return;
     }
 
     const query = `insert into User_data(user_name, user_id, choice_mark, profile_local) values 
@@ -129,12 +127,10 @@ const setbt = {
     bt_mac: "string",
 };
 user.post("/setbtmac", (req: TypedRequestBody<setbt>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(setbt).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: setbt });
-            return;
-        }
+    if (!sameobj(setbt, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setbt });
+        return;
     }
 
     const query = `delete from User_data where user_id = "${req.body.user_name}";
@@ -165,12 +161,10 @@ const setmoney = {
     value: "int",
 };
 user.post("/setmoney", (req: TypedRequestBody<setmoney>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(setmoney).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: setmoney });
-            return;
-        }
+    if (!sameobj(setmoney, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setmoney });
+        return;
     }
 
     const query = `update User_data SET money = ${req.body.value} where
@@ -201,12 +195,10 @@ const setlife = {
     value: "int",
 };
 user.post("/setlife", (req: TypedRequestBody<setlife>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(setlife).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: setlife });
-            return;
-        }
+    if (!sameobj(setlife, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setlife });
+        return;
     }
 
     const query = `update User_data SET life = ${req.body.value} where
@@ -236,12 +228,10 @@ const setlevel = {
     value: "int",
 };
 user.post("/setlevel", (req: TypedRequestBody<setlevel>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(setlevel).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: setlevel });
-            return;
-        }
+    if (!sameobj(setlevel, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setlevel });
+        return;
     }
 
     const query = `update User_data SET level = ${req.body.value} where
@@ -270,12 +260,10 @@ const setusertitle = {
     value: "int",
 };
 user.post("/setusertitle", (req: TypedRequestBody<setusertitle>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(setusertitle).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: setusertitle });
-            return;
-        }
+    if (!sameobj(setusertitle, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setusertitle });
+        return;
     }
 
     const query = `update User_data SET user_title = "${req.body.value}" where
@@ -305,12 +293,10 @@ const setfriend = {
     friend: "string",
 };
 user.post("/setfriend", (req: TypedRequestBody<setfriend>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(setfriend).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: setfriend });
-            return;
-        }
+    if (!sameobj(setfriend, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setfriend });
+        return;
     }
 
     const query = `insert into User_friend values 
@@ -342,12 +328,10 @@ const delfriend = {
     friend: "string",
 };
 user.post("/delfriend", (req: TypedRequestBody<delfriend>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(delfriend).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: delfriend });
-            return;
-        }
+    if (!sameobj(delfriend, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: delfriend });
+        return;
     }
 
     const query = `delete from User_friend where 
@@ -377,12 +361,10 @@ const chname = {
     user_name: "string",
 };
 user.post("/checkname", (req: TypedRequestBody<chname>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(chname).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: chname });
-            return;
-        }
+    if (!sameobj(chname, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: chname });
+        return;
     }
 
     const query = `select user_name from User_data where user_name = "${req.body.user_name}";`;

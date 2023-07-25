@@ -19,8 +19,15 @@ server.listen(serverset.port, () => {
     console.log(`서버가 ${serverset.port}포트로 열림`);
 });
 
+// 같은 객체 타입확인
+function sameobj(obj1: {}, obj2: {}): boolean {
+    return (
+        JSON.stringify(Object.keys(obj1)) === JSON.stringify(Object.keys(obj2))
+    );
+}
+
 interface TypedRequestBody<T> extends Express.Request {
     body: T /* body 타입 제공 */;
 }
 
-export { serverset, TypedRequestBody };
+export { serverset, TypedRequestBody, sameobj };

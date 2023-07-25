@@ -1,7 +1,7 @@
 /* 회원 정보 구성요소 */
 import express = require("express");
 import mysql = require("mysql");
-import { TypedRequestBody, serverset } from "../server";
+import { TypedRequestBody, sameobj, serverset } from "../server";
 const person = express.Router();
 
 //처음 회원 가입 (아이디, 비번): err or ok
@@ -14,12 +14,10 @@ const sername = {
     passwd: "string",
 };
 person.post("/setperson", (req: TypedRequestBody<sername>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(delname).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: delname });
-            return;
-        }
+    if (!sameobj(sername, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: sername });
+        return;
     }
 
     const query = `insert into User values('${req.body.id}', '${req.body.passwd}');`;
@@ -47,12 +45,10 @@ const delname = {
     user_name: "string",
 };
 person.post("/deluser", (req: TypedRequestBody<delname>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(delname).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: delname });
-            return;
-        }
+    if (!sameobj(delname, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: delname });
+        return;
     }
 
     const query = `delete from User where id = 
@@ -83,12 +79,10 @@ const login = {
     passwd: "string",
 };
 person.post("/login", (req: TypedRequestBody<login>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(login).includes(key)) {
-            console.error("값이 잘못넘어옴");
-            res.status(500).json({ err: "type_err", type: login });
-            return;
-        }
+    if (!sameobj(login, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: login });
+        return;
     }
 
     const query = `select User_data.* from User 

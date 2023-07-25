@@ -1,7 +1,7 @@
 /* 목표/스킬트리 */
 import express = require("express");
 import mysql = require("mysql");
-import { TypedRequestBody, serverset } from "../server";
+import { TypedRequestBody, sameobj, serverset } from "../server";
 const mark = express.Router();
 
 // 모든 목표 리턴 (): [mark, type]
@@ -74,7 +74,7 @@ mark.get("/userskill/:name", (req, res) => {
                     return line.skill_field;
                 });
 
-                res.json({results});
+                res.json({ results });
             }
         }
     });
@@ -124,12 +124,10 @@ const setuserskill = {
     progress: "int",
 };
 mark.post("/setuserskill", (req: TypedRequestBody<setuserskill>, res) => {
-    for (const key in req.body) {
-        if (!Object.keys(setuserskill).includes(key)) {
-            console.error("값이 잘못넘어옴");            
-            res.status(500).json({ err: "type_err", type: setuserskill });
-            return;
-        }
+    if (!sameobj(setuserskill, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setuserskill });
+        return;
     }
 
     const query = `delete from User_mark where 
