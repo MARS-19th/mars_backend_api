@@ -21,8 +21,10 @@ function gettest() {
 }
 
 async function settest(url: string) {
-    const id = "dada0713";
-    const passwd = "hyhy1503";
+    const user_name = "테스트";
+    const user_id = "dada0713";
+    const choice_mark = "프로그래밍";
+    const profile_local = "c:/";
 
     const response = await fetch(`http://korseok.kro.kr/api/${url}`, {
         method: "post",
@@ -30,15 +32,15 @@ async function settest(url: string) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            id: id,
+            user_name: user_name,
+            user_id: user_id,
+            choice_mark: choice_mark,
+            profile_local: profile_local
         }),
     });
 
-    if (response.ok) {
-        console.log("성공!");
-    } else {
-        console.log("오류남");
-    }
+    const res = await response.json();
+    console.log(res);    
 }
 
-gettest();
+settest("setuser");
