@@ -1,3 +1,4 @@
+/* 아바타 커스텀/상점 */
 import express = require("express");
 import mysql = require("mysql");
 import { TypedRequestBody, sameobj, serverset } from "../server";
@@ -48,7 +49,7 @@ avatar.get("/avatar/getid/:type", (req, res) => {
                 results = results?.map((line) => {
                     return line.object_id;
                 });
-                res.json({results});
+                res.json({ results });
             }
         }
     });
@@ -56,7 +57,7 @@ avatar.get("/avatar/getid/:type", (req, res) => {
     dbconect.end();
 });
 
-// 유저의 아바타 객체들 불러오기 (이름): err or element1, element12 ... 
+// 유저의 아바타 객체들 불러오기 (이름): err or element1, element12 ...
 avatar.get("/avatar/getuseravatar/:name", (req, res) => {
     const query = `select element1, element2, element3, element4, shop_element1 from User_avatar where user_name = "${req.params.name}";`;
 

@@ -17,6 +17,12 @@
             "runtimeExecutable": "npx",
             "args": ["ts-node", "${file}"],
             "type": "node"
+        },
+        {
+            "type": "java",
+            "name": "java 실행",
+            "request": "launch",
+            "mainClass": "${file}"
         }
     ]
 }

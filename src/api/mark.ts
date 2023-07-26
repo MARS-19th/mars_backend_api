@@ -20,7 +20,7 @@ mark.get("/getmark", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.json(results);
+                res.json({ results });
             }
         }
     });
@@ -46,7 +46,7 @@ mark.get("/getdetailmark/:skill", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.json(results);
+                res.json({ results });
             }
         }
     });
@@ -101,7 +101,7 @@ mark.get("/userskill/:date/:name/:skill", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.json(results);
+                res.json({ results });
             }
         }
     });

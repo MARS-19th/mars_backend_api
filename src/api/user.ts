@@ -71,7 +71,7 @@ user.get("/getfriend/:name", (req, res) => {
                 results = results.map((line) => {
                     return line.friend;
                 });
-                res.json(results);
+                res.json({results});
             }
         }
     });

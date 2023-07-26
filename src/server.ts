@@ -16,16 +16,17 @@ server.use("/api", mark); // 목표&스킬트리 부분
 server.use("/api", avatar); // 아바타/상점 부분
 
 //실행시 프로젝트 파일에서 실행함으로 상대경로 적용
-const serverset = JSON.parse(fs.readFileSync("bin/server.json", "utf-8"));  
+const serverset = JSON.parse(fs.readFileSync("bin/server.json", "utf-8"));
 
 server.listen(serverset.port, () => {
     console.log(`서버가 ${serverset.port}포트로 열림`);
 });
 
 // 같은 객체 타입확인
-function sameobj(obj1: {}, obj2: {}): boolean {
+function sameobj(obj1: {}, obj2: {}): boolean {    
     return (
-        JSON.stringify(Object.keys(obj1)) === JSON.stringify(Object.keys(obj2))
+        JSON.stringify(Object.keys(obj1).sort()) ===
+        JSON.stringify(Object.keys(obj2).sort())
     );
 }
 
