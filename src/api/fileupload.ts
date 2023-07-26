@@ -24,21 +24,14 @@ const uploadMiddleware = multter({
 
 // 프로필 사진 업로드 (닉네임): err or results
 type uploadprofile = {
-    data: string;
-};
-const uploadprofile = {
-    user_name: "string",
+    user_name: string;
 };
 fileupload.post("/uploadprofile", uploadMiddleware, (req: TypedRequestBody<uploadprofile>, res) => {
         console.log(req.file);
         const filename = req.file?.filename;
-        const user_name = JSON.parse(req.body.data).user_name;
-
-        if (!user_name) {
-            fs.unlink(`${savepath}/${filename}`, err => console.log(err));
-            res.status(500).json({ err: "type_err", type: uploadprofile });
-            return;
-        } else if (!filename) {
+        const user_name = req.body.user_name;
+        
+        if (!filename) {
             res.status(500).json({ err: "file_upload_err" });
             return;
         }
@@ -79,7 +72,12 @@ fileupload.get("/getprofile/:name", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.sendFile(path.join(__dirname, "../res", results[0].profile_local));
+                const local = path.join(savepath, results[0].profile_local);
+                if (fs.existsSync(local)) {
+                    res.sendFile(local);
+                } else {
+                    res.sendFile(path.join(savepath, "default_profile.png"));
+                }
             }
         }
     });

@@ -1,9 +1,11 @@
 /* 아바타 커스텀/상점 */
 import express = require("express");
 import mysql = require("mysql");
+import fs = require("fs");
 import path = require("path");
 import { TypedRequestBody, sameobj, serverset } from "../server";
 const avatar = express.Router();
+const savepath = path.join(__dirname, "../res");
 
 // 아바타 아이템 파일 리턴 (아이템 아이디): file
 // 안드로이드에서 네트워크로 리소스 불러올수 있게
@@ -22,7 +24,12 @@ avatar.get("/avatar/getitem/:id", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.sendFile(path.join(__dirname, "../res", results[0].local));
+                const local = path.join(savepath, results[0].local);
+                if (fs.existsSync(local)) {
+                    res.sendFile(local);
+                } else {
+                    res.sendFile(path.join(savepath, "default_profile.png"));
+                }
             }
         }
     });

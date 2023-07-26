@@ -39,8 +39,7 @@ public class Request {
 
             if (err.equals("type_err")) {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
-                System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고
-                                                                                 // 있을때
+                System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
                 throw new Exception(err);
             } else {
                 throw new Exception(err);
@@ -68,7 +67,15 @@ public class Request {
         }
     }
 
-    public JSONObject fileupload(String url, String file, JSONObject outputjson) throws Exception {
+    public JSONObject fileupload(String url, JSONObject outputjson) throws Exception {
+        if (outputjson.isNull("user_name") || outputjson.isNull("file")) {
+            //값이 빠지지는 않았는지 유효성 검사
+            throw new Exception("less_data");
+        }
+
+        String file = outputjson.getString("file");
+        String user_name = outputjson.getString("user_name");
+
         URL link = new URL(url);
         HttpURLConnection huc = (HttpURLConnection) link.openConnection();
         // http 연결 부분
@@ -76,14 +83,14 @@ public class Request {
         String boundary = UUID.randomUUID().toString(); // 요청을 구분하기 위한 코드
         huc.setRequestMethod("POST");
         huc.setRequestProperty("Connection", "Keep-Alive");
-        huc.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+        huc.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
         huc.setDoOutput(true);
         // 파일 전송을 위한 해더 설정
 
         DataOutputStream dos = new DataOutputStream(huc.getOutputStream()); // 해더작성을 하기위한 객체
 
         dos.writeBytes("--" + boundary + "\r\n");
-        dos.writeBytes("Content-Disposition: form-data; name=\"file\";filename=\"" + file + "\"" + "\r\n");
+        dos.writeBytes("Content-Disposition: form-data; name=\"file\"; filename=\"" + file + "\"" + "\r\n");
         dos.writeBytes("\r\n");
         // 파일이 전송되는 부분
 
@@ -98,10 +105,10 @@ public class Request {
 
         dos.writeBytes("\r\n");
         dos.writeBytes("--" + boundary + "\r\n");
-        dos.writeBytes("Content-Disposition: form-data; name=\"data\"" + "\r\n");
-        dos.writeBytes("Content-Type: application/json;charset=UTF-8" + "\r\n");
+        dos.writeBytes("Content-Disposition: form-data; name=\"user_name\"" + "\r\n");
+        dos.writeBytes("Content-Type: Application/json; charset=UTF-8" + "\r\n");
         dos.writeBytes("\r\n");
-        dos.write(outputjson.toString().getBytes("utf-8"));
+        dos.write(user_name.getBytes("utf-8"));
 
         dos.writeBytes("\r\n");
         dos.writeBytes("--" + boundary + "--" + "\r\n");
@@ -111,7 +118,7 @@ public class Request {
 
         if (huc.getResponseCode() == HttpURLConnection.HTTP_OK) { // 맞는 응답인지 확인
             // 정상응답
-            System.out.println("정상적으로 불러옴");
+            System.out.println("정상적으로 업로드");
             byte by[] = huc.getInputStream().readAllBytes();
             return new JSONObject(new String(by, "utf-8")); // 정상 응답일 경우 리턴
         } else {
@@ -122,8 +129,7 @@ public class Request {
 
             if (err.equals("type_err")) {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
-                System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고
-                                                                                 // 있을때
+                System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
                 throw new Exception(err);
             } else {
                 throw new Exception(err);
@@ -158,14 +164,15 @@ public class Request {
             // empty = 항목 없음
         } */
 
-/*         try {
+        try {
             JSONObject outputjson = new JSONObject();
-            outputjson.put("user_name", "관리자3");
+            outputjson.put("user_name", "관리자1");
+            outputjson.put("file", "asd.png");
 
-            new Request().fileupload("http://korseok.kro.kr/api/uploadprofile", "tsconfig.json", outputjson);
+            new Request().fileupload("http://korseok.kro.kr/api/uploadprofile",  outputjson);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-        } */
+            e.printStackTrace();
+        }
 
     }
 }
