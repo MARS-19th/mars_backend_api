@@ -12,7 +12,7 @@ const uploadMiddleware = multter({
     storage: multter.diskStorage({
         //req = express req, file= 업로드한 파일 done = 다음 작업을 넘기기?
         filename(req, file, done) {
-            const filename = Math.random().toString(16).substring(2, 20); //중복을 방지하기 위한 랜덤 문자열 생성
+            const filename = Math.random().toString(16).substring(2); //중복을 방지하기 위한 랜덤 문자열 생성
             const ext = path.extname(file.originalname);
             done(null, filename + ext); //파일 이름 지정
         },
