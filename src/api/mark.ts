@@ -130,12 +130,13 @@ mark.post("/setuserskill", (req: TypedRequestBody<setuserskill>, res) => {
         return;
     }
 
-    const query = `delete from User_mark where 
-    user_name = "${req.body.user_name}" && 
-    skill_field = "${req.body.skill}" && 
-    mark_list = "${req.body.mark_list}";
-    insert into User_mark (user_name, skill_field, mark_list, progress) values 
-    ("${req.body.user_name}", "${req.body.skill}", "${req.body.mark_list}", ${req.body.progress});`;
+    const query = `insert into User_mark (user_name, skill_field, mark_list, progress) 
+    values ("${req.body.user_name}", "${req.body.skill}", "${req.body.mark_list}", ${req.body.progress}) on duplicate key update 
+    user_name = "${req.body.user_name}", 
+    skill_field="${req.body.skill}", 
+    mark_list = "${req.body.mark_list}", 
+    progress = ${req.body.progress}, 
+    date = current_date();`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();

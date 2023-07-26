@@ -118,23 +118,23 @@ user.post("/setuser", (req: TypedRequestBody<setuser>, res) => {
 });
 
 //블루투스 mac 설정 (닉네임, mac 주소): err or ok
-type setbt = {
+type setbtmac = {
     user_name: string;
     bt_mac: string;
 };
-const setbt = {
+const setbtmac = {
     user_name: "string",
     bt_mac: "string",
 };
-user.post("/setbtmac", (req: TypedRequestBody<setbt>, res) => {
-    if (!sameobj(setbt, req.body)) {
+user.post("/setbtmac", (req: TypedRequestBody<setbtmac>, res) => {
+    if (!sameobj(setbtmac, req.body)) {
         console.error("값이 잘못넘어옴");
-        res.status(500).json({ err: "type_err", type: setbt });
+        res.status(500).json({ err: "type_err", type: setbtmac });
         return;
     }
 
-    const query = `delete from User_data where user_id = "${req.body.user_name}";
-    insert into User_bluetooth values("${req.body.user_name}", "${req.body.bt_mac}");`;
+    const query = `insert into User_bluetooth values ("${req.body.user_name}", "${req.body.bt_mac}") 
+    on duplicate key update bt_mac = "${req.body.bt_mac}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -218,7 +218,7 @@ user.post("/setlife", (req: TypedRequestBody<setlife>, res) => {
     dbconect.end();
 });
 
-// 유저 목숨 조정 (닉네임, 값): err or 조정한 값
+// 유저 레벨 조정 (닉네임, 값): err or 조정한 값
 type setlevel = {
     user_name: string;
     value: number;
@@ -251,6 +251,7 @@ user.post("/setlevel", (req: TypedRequestBody<setlevel>, res) => {
     dbconect.end();
 });
 
+// 유저 칭호 변경 (닉네임, 값): err or 조정한 값
 type setusertitle = {
     user_name: string;
     value: number;
@@ -280,6 +281,45 @@ user.post("/setusertitle", (req: TypedRequestBody<setusertitle>, res) => {
             res.json({ results: req.body.value });
         }
     });
+    dbconect.end();
+});
+
+// 유저 이름 변경 (기존이름, 바꾼이름): err: exist or 바꾼 값
+type setname = {
+    curname: string; // 기존이름
+    newname: string; // 바꾼이름
+};
+const setname = {
+    curname: "string",
+    newname: "string",
+};
+user.post("/setname", (req: TypedRequestBody<setname>, res) => {
+    if (!sameobj(setname, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setname });
+        return;
+    }
+
+    const query = `update User_data set user_name = "${req.body.newname}" where user_name = "${req.body.curname}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            //ER_FOREIGN_DUPLICATE_KEY_WITH_CHILD_INFO 닉네임 중복 발생
+            if (err.code === "ER_FOREIGN_DUPLICATE_KEY_WITH_CHILD_INFO") {
+                console.error("중복발생");
+                res.status(500).json({ err: "exist" });
+            } else {
+                console.error(err);
+                res.status(500).json({ err: err.code });
+            }
+        } else {
+            res.json({ results: req.body.newname });
+        }
+    });
+
     dbconect.end();
 });
 

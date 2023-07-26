@@ -1,28 +1,19 @@
-import * as mysql from "mysql";
 import * as fs from "fs";
 const serverset = JSON.parse(fs.readFileSync("server.json", "utf-8"));
 
-function gettest() {
-    const query = `SELECT id, passwd from User;`;
+async function gettest(url: string) {
+    const response = await fetch(`http://korseok.kro.kr/api/${url}`);
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
-
-    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
-        results?.forEach((line) => {
-            console.log(line);
-        });
-        if (err) {
-            console.log(err);
-        }
-    });
-
-    dbconect.end();
+    const res = await response.json();
+    console.log(res);
 }
 
 async function settest(url: string) {
-    const user_name = "관리자1";
-    const value = 50;
+    const user_name = "관리자2";
+    const element1 = 1;
+    const element2 = 2;
+    const element3 = 3;
+    const element4 = 4;
 
     const response = await fetch(`http://korseok.kro.kr/api/${url}`, {
         method: "post",
@@ -31,7 +22,10 @@ async function settest(url: string) {
         },
         body: JSON.stringify({
             user_name: user_name,
-            value: value,
+            element1: element1,
+            element2: element2,
+            element3: element3,
+            element4: element4,
         }),
     });
 
@@ -39,4 +33,4 @@ async function settest(url: string) {
     console.log(res);
 }
 
-settest("setlife");
+settest("/avatar/setuseravatar");
