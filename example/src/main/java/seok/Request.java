@@ -108,7 +108,7 @@ public class Request {
         dos.flush();
         dos.close();
         // 마지막 바운더리 추가
-        
+
         if (huc.getResponseCode() == HttpURLConnection.HTTP_OK) { // 맞는 응답인지 확인
             // 정상응답
             System.out.println("정상적으로 불러옴");
@@ -122,7 +122,8 @@ public class Request {
 
             if (err.equals("type_err")) {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
-                System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
+                System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고
+                                                                                 // 있을때
                 throw new Exception(err);
             } else {
                 throw new Exception(err);
@@ -131,46 +132,40 @@ public class Request {
     }
 
     public static void main(String[] args) {
-        /*
-         * try {
-         * JSONObject outputjson = new JSONObject();
-         * outputjson.put("user_name", "관리자1");
-         * outputjson.put("element1", 1);
-         * outputjson.put("element2", 2);
-         * outputjson.put("element3", 3);
-         * outputjson.put("element4", "null"); // null 추가할 시
-         * // json 데이터 만들기
-         * 
-         * JSONObject jsonObject = new
-         * Request().reqpost("http://korseok.kro.kr/api/avatar/setuseravatar",
-         * outputjson);
-         * System.out.println(jsonObject.get("results")); // 정상 결과의 경우 results 라는 json 을
-         * 
-         * } catch (Exception e) {
-         * System.out.println(e.getMessage());
-         * // ER_DUP_ENTRY = 중복오류
-         * }
-         */
+/*         try {
+            JSONObject outputjson = new JSONObject();
+            outputjson.put("user_name", "관리자1");
+            outputjson.put("element1", 1);
+            outputjson.put("element2", 2);
+            outputjson.put("element3", 3);
+            outputjson.put("element4", "null"); // null 추가할 시
+            // json 데이터 만들기
 
-        /*
-         * try {
-         * JSONObject jsonObject = new
-         * Request().reqget("http://korseok.kro.kr/api/getmark");
-         * System.out.println(jsonObject.get("results"));
-         * } catch (Exception e) {
-         * System.out.println(e.getMessage());
-         * // empty = 항목 없음
-         * }
-         */
+            JSONObject jsonObject = new Request().reqpost("http://korseok.kro.kr/api/avatar/setuseravatar",
+                    outputjson);
+            System.out.println(jsonObject.get("results")); // 정상 결과의 경우 results 라는 json 을
 
-        try {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            // ER_DUP_ENTRY = 중복오류
+        } */
+
+/*         try {
+            JSONObject jsonObject = new Request().reqget("http://korseok.kro.kr/api/getmark");
+            System.out.println(jsonObject.get("results"));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            // empty = 항목 없음
+        } */
+
+/*         try {
             JSONObject outputjson = new JSONObject();
             outputjson.put("user_name", "관리자3");
 
             new Request().fileupload("http://korseok.kro.kr/api/uploadprofile", "tsconfig.json", outputjson);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-        }
+        } */
 
     }
 }
