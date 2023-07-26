@@ -84,19 +84,23 @@ type setuser = {
     user_name: string;
     user_id: string;
     choice_mark: string;
-    profile_local: string;
+    profile_local: string | null;
 };
 const setuser = {
     user_name: "string",
     user_id: "string",
     choice_mark: "string",
-    profile_local: "string",
+    profile_local: "string 또는 null",
 };
 user.post("/setuser", (req: TypedRequestBody<setuser>, res) => {
     if (!sameobj(setuser, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setuser });
         return;
+    }
+    
+    if (!req.body.profile_local) {
+        req.body.profile_local = "default_profile.png"
     }
 
     const query = `insert into User_data(user_name, user_id, choice_mark, profile_local) values 
