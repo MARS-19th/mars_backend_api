@@ -97,7 +97,7 @@ const setuseravatar = {
     element4: "string 또는 null",
 };
 avatar.post("/avatar/setuseravatar", (req: TypedRequestBody<setuseravatar>, res) => {
-    if (!req.body.user_name) {
+    if (!sameobj(setuseravatar, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setuseravatar });
         return;
