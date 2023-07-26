@@ -1,21 +1,13 @@
+<!-- public/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
-    <title>관리자</title>
+    <title>Image Server</title>
 </head>
 <body>
-    <div>
-        <form>
-            <input type="text" id="id"> 아이디 <br>
-            <input type="password" id="passwd"> 비번 <br>
-            <div style="text-align: center; margin-top: 5px;">
-                <input type="submit" id="add" value="추가">
-            </div>
-        </form>
-    </div>
-    <script src="event.js"></script>
+    <form action="/api/test" method="POST" enctype="multipart/form-data">
+        <input type="file" name="myFile" />
+        <button type="submit">Upload</button>
+    </form>
 </body>
 </html>

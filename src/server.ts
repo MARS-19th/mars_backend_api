@@ -5,6 +5,7 @@ import person from "./api/person";
 import user from "./api/user";
 import mark from "./api/mark";
 import avatar from "./api/avatar";
+import fileupload from "./api/fileupload";
 const server = express();
 
 server.use(express.json());
@@ -14,6 +15,7 @@ server.use("/api", person); // 가입부분
 server.use("/api", user); // 유저 부분
 server.use("/api", mark); // 목표&스킬트리 부분
 server.use("/api", avatar); // 아바타/상점 부분
+server.use("/api", fileupload); // 프로필 사진 업로드/다운로드 구현
 
 //실행시 프로젝트 파일에서 실행함으로 상대경로 적용
 const serverset = JSON.parse(fs.readFileSync("bin/server.json", "utf-8"));
@@ -23,7 +25,7 @@ server.listen(serverset.port, () => {
 });
 
 // 같은 객체 타입확인
-function sameobj(obj1: {}, obj2: {}): boolean {    
+function sameobj(obj1: {}, obj2: {}): boolean {
     return (
         JSON.stringify(Object.keys(obj1).sort()) ===
         JSON.stringify(Object.keys(obj2).sort())

@@ -1,6 +1,7 @@
 /* 아바타 커스텀/상점 */
 import express = require("express");
 import mysql = require("mysql");
+import path = require("path");
 import { TypedRequestBody, sameobj, serverset } from "../server";
 const avatar = express.Router();
 
@@ -21,7 +22,7 @@ avatar.get("/avatar/getitem/:id", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.sendFile(__dirname + results[0].local);
+                res.sendFile(path.join(__dirname, "../res", results[0].local));
             }
         }
     });
