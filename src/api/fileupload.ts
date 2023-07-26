@@ -20,6 +20,16 @@ const uploadMiddleware = multter({
             done(null, savepath); //파일 저장 위치
         },
     }),
+    fileFilter(req, file, done) {
+        const exec = [".jpg", ".jpeg", ".png"];
+        console.log(path.extname(file.originalname));
+        
+        if (exec.includes(path.extname(file.originalname))) {
+            done(null, true);
+        } else {
+            done(null, false);
+        }
+    },
 }).single("file");
 
 // 프로필 사진 업로드 (닉네임): err or results
