@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "build": "npx tsc && xcopy src build\\ /k /e /y /exclude:.nocopy",
-    "start": "xcopy src build\\ /k /e /y /exclude:.nocopy && node build/server.js"
+    "build": "npx tsc && xcopy src bin\\ /k /e /y /exclude:.nocopy",
+    "start": "xcopy src bin\\ /k /e /y /exclude:.nocopy && node bin/server.js"
   },
   "author": "",
   "license": "ISC",

@@ -2,5 +2,5 @@
 git pull
 npm install
 npx tsc
-rsync -av --exclude '*.ts' ./src/ ./build/
-sudo node build/server.js
+rsync -av --exclude '*.ts' ./src/ ./bin/
+sudo node bin/server.js

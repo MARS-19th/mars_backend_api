@@ -15,7 +15,8 @@ server.use("/api", user); // 유저 부분
 server.use("/api", mark); // 목표&스킬트리 부분
 server.use("/api", avatar); // 아바타/상점 부분
 
-const serverset = JSON.parse(fs.readFileSync("server.json", "utf-8"));
+//실행시 프로젝트 파일에서 실행함으로 상대경로 적용
+const serverset = JSON.parse(fs.readFileSync("bin/server.json", "utf-8"));  
 
 server.listen(serverset.port, () => {
     console.log(`서버가 ${serverset.port}포트로 열림`);
