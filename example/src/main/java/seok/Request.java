@@ -147,7 +147,7 @@ public class Request {
             outputjson.put("element4", "null"); // null 추가할 시
             // json 데이터 만들기
 
-            JSONObject jsonObject = new Request().reqpost("http://korseok.kro.kr/api/avatar/setuseravatar",
+            JSONObject jsonObject = new Request().reqpost("http://dmumars.kro.kr/avatar/setuseravatar",
                     outputjson);
             System.out.println(jsonObject.get("results")); // 정상 결과의 경우 results 라는 json 을
 
@@ -157,7 +157,7 @@ public class Request {
         } */
 
 /*         try {
-            JSONObject jsonObject = new Request().reqget("http://korseok.kro.kr/api/getmark");
+            JSONObject jsonObject = new Request().reqget("http://dmumars.kro.kr/api/getmark");
             System.out.println(jsonObject.get("results"));
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -167,9 +167,9 @@ public class Request {
         try {
             JSONObject outputjson = new JSONObject();
             outputjson.put("user_name", "관리자1");
-            outputjson.put("file", "asd.png");
+            outputjson.put("file", "test.png");
 
-            new Request().fileupload("http://korseok.kro.kr/api/uploadprofile",  outputjson);
+            new Request().fileupload("http://dmumars.kro.kr/api/uploadprofile",  outputjson);
         } catch (Exception e) {
             e.printStackTrace();
         }
