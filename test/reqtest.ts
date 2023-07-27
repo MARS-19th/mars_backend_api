@@ -1,5 +1,5 @@
 import * as fs from "fs";
-const serverset = JSON.parse(fs.readFileSync("server.json", "utf-8"));
+const serverset = JSON.parse(fs.readFileSync("bin/server.json", "utf-8"));
 
 async function gettest(url: string) {
     const response = await fetch(`http://korseok.kro.kr/api/${url}`);
