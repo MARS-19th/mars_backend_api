@@ -2,9 +2,9 @@
 -   앱에 필요한 요청/응답 처리를 위한 Node.js 기반 Restful API 입니다.
 
 ## API 사용법
-요청 메인 URL: <code><b>http://dmumars.kro.kr/api</b></code>
-
 API 목록을 참고하여 필요한 주소로 GET/POST 요청을 하면 됩니다.
+
+요청 메인 URL: <code><b>http://dmumars.kro.kr/api</b></code>
 > 예시: /getuserdata = `http://dmumars.kro.kr/api/getuserdata`
 * 관리자1 로그인 = `admin1, admin`
 * 관리자2 로그인 = `admin2, admin`
@@ -352,3 +352,34 @@ body: {
 -   <details>
       <summary>POST 요청</summary>
     </details>
+
+### 안드로이드 스튜디오에서 사용
+#### HTTP 설정
+안드로이드는 기본적으로 HTTP 통신이 막혀있어 허용을 해줘야 합니다.
+
+
+1. `AndroidManifest.xml` 에서 manifest 항목 안에 해당 구문을 추가합니다<br>
+
+    ```xml
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+    <!-- 기존내용 -->
+
+    <!-- 추가 -->
+    <uses-permission android:name="android.permission.INTERNET" /> 
+    ```
+
+
+2. `AndroidManifest.xml` 에서 application 항목 끝에 해당 구문을 추가합니다
+    ```xml
+    <application
+        ...생략...
+        android:usesCleartextTraffic="true"> 
+    ```
+#### 메인 쓰레드 문제
+액티비티가 작동중인 쓰레드에서 웹 요청 같은 작업을 하면 오류가 납니다. 따라서 쓰레드를 분리 후 작업해야 합니다.
+```java
+Thread {
+    //웹 요청 작업
+}.start();
+```
