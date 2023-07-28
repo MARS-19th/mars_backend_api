@@ -258,11 +258,11 @@ user.post("/setlevel", (req: TypedRequestBody<setlevel>, res) => {
 // 유저 칭호 변경 (닉네임, 값): err or 조정한 값
 type setusertitle = {
     user_name: string;
-    value: number;
+    value: string;
 };
 const setusertitle = {
     user_name: "string",
-    value: "int",
+    value: "string",
 };
 user.post("/setusertitle", (req: TypedRequestBody<setusertitle>, res) => {
     if (!sameobj(setusertitle, req.body)) {

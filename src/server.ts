@@ -24,6 +24,10 @@ server.get("/", (req, res) => {
     res.send("서버가 작동중");
 });
 
+server.get("/api", (req, res) => {  //github readme 페이지로 이동
+    res.redirect("https://github.com/MARS-19th/mars_backend_api/blob/main/README.md")
+});
+
 server.listen(serverset.port, () => {
     console.log(`서버가 ${serverset.port}포트로 열림`);
 });
