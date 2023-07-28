@@ -2,16 +2,19 @@ package seok;
 
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.rmi.ServerException;
 import java.util.UUID;
 
 import org.json.JSONObject;
 
 public class Request {
 
-    public JSONObject reqpost(String url, JSONObject outputjson) throws Exception {
+    public JSONObject reqpost(String url, JSONObject outputjson) throws ServerException, IOException {
         URL link = new URL(url);
         HttpURLConnection huc = (HttpURLConnection) link.openConnection();
         // http 연결 부분
@@ -30,7 +33,6 @@ public class Request {
             System.out.println("정상적으로 추가됨");
             byte by[] = huc.getInputStream().readAllBytes();
             return new JSONObject(new String(by, "utf-8")); // 정상 응답일 경우 리턴
-
         } else {
             // 비정상 응답
             byte by[] = huc.getErrorStream().readAllBytes();
@@ -40,14 +42,14 @@ public class Request {
             if (err.equals("type_err")) {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
                 System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
-                throw new Exception(err);
+                throw new ServerException(err);
             } else {
-                throw new Exception(err);
+                throw new ServerException(err);
             }
         }
     }
 
-    public JSONObject reqget(String url) throws Exception {
+    public JSONObject reqget(String url) throws ServerException, IOException {
         URL link = new URL(url);
         HttpURLConnection huc = (HttpURLConnection) link.openConnection();
         // http 연결 부분
@@ -63,14 +65,14 @@ public class Request {
             JSONObject jo = new JSONObject(new String(by, "utf-8"));
             String err = jo.getString("err"); // 모든 오류는 err 이라는 json을 가짐
 
-            throw new Exception(err);
+            throw new ServerException(err);
         }
     }
 
-    public JSONObject fileupload(String url, JSONObject outputjson) throws Exception {
+    public JSONObject fileupload(String url, JSONObject outputjson) throws ServerException, IOException, FileNotFoundException {
         if (outputjson.isNull("user_name") || outputjson.isNull("file")) {
             //값이 빠지지는 않았는지 유효성 검사
-            throw new Exception("less_data");
+            throw new ServerException("less_data");
         }
 
         String file = outputjson.getString("file");
@@ -130,9 +132,9 @@ public class Request {
             if (err.equals("type_err")) {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
                 System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
-                throw new Exception(err);
+                throw new ServerException(err);
             } else {
-                throw new Exception(err);
+                throw new ServerException(err);
             }
         }
     }
@@ -169,10 +171,18 @@ public class Request {
             outputjson.put("user_name", "관리자1");
             outputjson.put("file", "test.png");
 
-            new Request().fileupload("http://dmumars.kro.kr/api/uploadprofile",  outputjson);
+            new Request().fileupload("http://korseok.kro.kr/api/uploadprofile",  outputjson);
+        } catch (ServerException e) {
+            // 모든 서버에서 발생하는 에러는 해당 catch 구문 에서 처리
+            String messge = e.getMessage(); // 해당 주소에서 발생가능한 애러 메세지 (api 사용법 참고)
+            if (messge == "less_data") {
+                System.out.println("파일 업로드 중에 오류 발생");
+            }
+            System.out.println(messge);
+        } catch (FileNotFoundException e) {
+            System.out.println("파일없음");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }

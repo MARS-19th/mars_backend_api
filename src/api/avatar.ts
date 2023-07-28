@@ -31,10 +31,9 @@ avatar.get("/avatar/getitem/:id", (req, res) => {
     dbconect.end();
 });
 
-// 같은 타입(얼굴, 몸...)에 해당하는 아바타 아이디 리턴 (타입): err or results: [...아이디]
-// 아바타 생성시 타입을 넘어 갈때마다 요청
+// 같은 타입(얼굴, 몸...)에 해당하는 아바타 아이디, 파일 경로 리턴 (타입): err or results: [{아이디, 경로}]
 avatar.get("/avatar/getid/:type", (req, res) => {
-    const query = `select object_id from Avatar_item where type = "${req.params.type}";`;
+    const query = `select object_id, local from Avatar_item where type = "${req.params.type}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -48,9 +47,6 @@ avatar.get("/avatar/getid/:type", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                results = results?.map((line) => {
-                    return line.object_id;
-                });
                 res.json({ results });
             }
         }
