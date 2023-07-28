@@ -84,7 +84,7 @@ type setuser = {
     user_name: string;
     user_id: string;
     choice_mark: string;
-    profile_local: string | null;
+    profile_local: string | null;   // profile_local 은 있거나 없거나
 };
 const setuser = {
     user_name: "string",
@@ -100,7 +100,7 @@ user.post("/setuser", (req: TypedRequestBody<setuser>, res) => {
     }
     
     if (!req.body.profile_local) {
-        req.body.profile_local = "default_profile.png"
+        req.body.profile_local = "default_profile.png"  //기본 이미지
     }
 
     const query = `insert into User_data(user_name, user_id, choice_mark, profile_local) values 

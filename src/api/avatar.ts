@@ -7,8 +7,7 @@ import { TypedRequestBody, sameobj, serverset } from "../server";
 const avatar = express.Router();
 const savepath = path.join(__dirname, "../res");
 
-// 아바타 아이템 파일 리턴 (아이템 아이디): file
-// 안드로이드에서 네트워크로 리소스 불러올수 있게
+// 아바타 아이템 파일 경로 리턴 (아이템 아이디): 파일경로
 avatar.get("/avatar/getitem/:id", (req, res) => {
     const query = `select local from Avatar_item where object_id = ${req.params.id};`;
 
@@ -24,12 +23,7 @@ avatar.get("/avatar/getitem/:id", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                const local = path.join(savepath, results[0].local);
-                if (fs.existsSync(local)) {
-                    res.sendFile(local);
-                } else {
-                    res.sendFile(path.join(savepath, "default_profile.png"));
-                }
+                res.json({results: results[0].local});
             }
         }
     });
@@ -93,17 +87,17 @@ avatar.get("/avatar/getuseravatar/:name", (req, res) => {
 // 추후 요소명 수정
 type setuseravatar = {
     user_name: string;
-    element1: string | null;
-    element2: string | null;
-    element3: string | null;
-    element4: string | null;
+    element1: number | null;
+    element2: number | null;
+    element3: number | null;
+    element4: number | null;
 };
 const setuseravatar = {
     user_name: "string",
-    element1: "string 또는 null",
-    element2: "string 또는 null",
-    element3: "string 또는 null",
-    element4: "string 또는 null",
+    element1: "int 또는 null",
+    element2: "int 또는 null",
+    element3: "int 또는 null",
+    element4: "int 또는 null",
 };
 avatar.post("/avatar/setuseravatar", (req: TypedRequestBody<setuseravatar>, res) => {
     if (!sameobj(setuseravatar, req.body)) {

@@ -20,6 +20,10 @@ server.use("/api", fileupload); // 프로필 사진 업로드/다운로드 구�
 //실행시 프로젝트 파일에서 실행함으로 상대경로 적용
 const serverset = JSON.parse(fs.readFileSync("bin/server.json", "utf-8"));
 
+server.get("/", (req, res) => {
+    res.send("서버가 작동중");
+});
+
 server.listen(serverset.port, () => {
     console.log(`서버가 ${serverset.port}포트로 열림`);
 });
