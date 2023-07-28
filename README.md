@@ -3,7 +3,9 @@
 
 ## API 사용법
 요청 메인 URL: <code><b>http://dmumars.kro.kr/api</b></code>
+
 API 목록을 참고하여 필요한 주소로 GET/POST 요청을 하면 됩니다.
+> 예시: /getuserdata = `http://dmumars.kro.kr/api/getuserdata`
 * 관리자1 로그인 = `admin1, admin`
 * 관리자2 로그인 = `admin2, admin`
 
@@ -269,9 +271,9 @@ body: {
     -   정상응답 (code: 200)
       
     ```javascript
-        { 
-            results: "관리자3"  //바꾼이름
-        }
+    { 
+        results: "관리자3"  //바꾼이름
+    }
     ```
 
     오류응답 (code: 500)

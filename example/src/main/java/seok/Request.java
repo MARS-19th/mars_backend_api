@@ -1,20 +1,41 @@
 package seok;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.rmi.ServerException;
+import java.net.UnknownServiceException;
 import java.util.UUID;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Request {
+    public JSONObject reqget(String url) throws UnknownServiceException, IOException, JSONException {
+        URL link = new URL(url);
+        HttpURLConnection huc = (HttpURLConnection) link.openConnection();
+        // http 연결 부분
 
-    public JSONObject reqpost(String url, JSONObject outputjson) throws ServerException, IOException {
+        if (huc.getResponseCode() == HttpURLConnection.HTTP_OK) { // 맞는 응답인지 확인
+            // 정상응답
+            System.out.println("정상적으로 동작함");
+            String json = new BufferedReader(new InputStreamReader(huc.getInputStream(), "utf-8")).readLine();   //json 읽기
+            return new JSONObject(json); // 정상 응답일 경우 리턴
+        } else {
+            // 비정상 응답
+            String json = new BufferedReader(new InputStreamReader(huc.getErrorStream(), "utf-8")).readLine();
+            JSONObject jo = new JSONObject(json);   //json 읽기
+            String err = jo.getString("err"); // 모든 오류는 err 이라는 json을 가짐
+            throw new UnknownServiceException(err);
+        }
+    }
+
+    public JSONObject reqpost(String url, JSONObject outputjson) throws UnknownServiceException, IOException, JSONException {
         URL link = new URL(url);
         HttpURLConnection huc = (HttpURLConnection) link.openConnection();
         // http 연결 부분
@@ -30,49 +51,29 @@ public class Request {
 
         if (huc.getResponseCode() == HttpURLConnection.HTTP_OK) { // 맞는 응답인지 확인
             // 정상응답
-            System.out.println("정상적으로 추가됨");
-            byte by[] = huc.getInputStream().readAllBytes();
-            return new JSONObject(new String(by, "utf-8")); // 정상 응답일 경우 리턴
+            System.out.println("정상적으로 동작함");
+            String json = new BufferedReader(new InputStreamReader(huc.getInputStream(), "utf-8")).readLine();   //json 파일 읽기
+            return new JSONObject(json); // 정상 응답일 경우 리턴
         } else {
             // 비정상 응답
-            byte by[] = huc.getErrorStream().readAllBytes();
-            JSONObject jo = new JSONObject(new String(by, "utf-8"));
+            String json = new BufferedReader(new InputStreamReader(huc.getErrorStream(), "utf-8")).readLine();   //json 파일 읽기
+            JSONObject jo = new JSONObject(json);
             String err = jo.getString("err"); // 모든 오류는 err 이라는 json을 가짐
 
             if (err.equals("type_err")) {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
                 System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
-                throw new ServerException(err);
+                throw new UnknownServiceException(err);
             } else {
-                throw new ServerException(err);
+                throw new UnknownServiceException(err);
             }
         }
     }
 
-    public JSONObject reqget(String url) throws ServerException, IOException {
-        URL link = new URL(url);
-        HttpURLConnection huc = (HttpURLConnection) link.openConnection();
-        // http 연결 부분
-
-        if (huc.getResponseCode() == HttpURLConnection.HTTP_OK) { // 맞는 응답인지 확인
-            // 정상응답
-            System.out.println("정상적으로 불러옴");
-            byte by[] = huc.getInputStream().readAllBytes();
-            return new JSONObject(new String(by, "utf-8")); // 정상 응답일 경우 리턴
-        } else {
-            // 비정상 응답
-            byte by[] = huc.getErrorStream().readAllBytes();
-            JSONObject jo = new JSONObject(new String(by, "utf-8"));
-            String err = jo.getString("err"); // 모든 오류는 err 이라는 json을 가짐
-
-            throw new ServerException(err);
-        }
-    }
-
-    public JSONObject fileupload(String url, JSONObject outputjson) throws ServerException, IOException, FileNotFoundException {
+    public JSONObject fileupload(String url, JSONObject outputjson) throws IOException, FileNotFoundException, JSONException {
         if (outputjson.isNull("user_name") || outputjson.isNull("file")) {
             //값이 빠지지는 않았는지 유효성 검사
-            throw new ServerException("less_data");
+            throw new UnknownServiceException("less_data");
         }
 
         String file = outputjson.getString("file");
@@ -121,68 +122,81 @@ public class Request {
         if (huc.getResponseCode() == HttpURLConnection.HTTP_OK) { // 맞는 응답인지 확인
             // 정상응답
             System.out.println("정상적으로 업로드");
-            byte by[] = huc.getInputStream().readAllBytes();
-            return new JSONObject(new String(by, "utf-8")); // 정상 응답일 경우 리턴
+            String json = new BufferedReader(new InputStreamReader(huc.getInputStream(), "utf-8")).readLine();
+            return new JSONObject(json); // 정상 응답일 경우 리턴
         } else {
             // 비정상 응답
-            byte by[] = huc.getErrorStream().readAllBytes();
-            JSONObject jo = new JSONObject(new String(by, "utf-8"));
+            String json = new BufferedReader(new InputStreamReader(huc.getErrorStream(), "utf-8")).readLine();   //json 읽기
+            JSONObject jo = new JSONObject(json);
             String err = jo.getString("err"); // 모든 오류는 err 이라는 json을 가짐
 
             if (err.equals("type_err")) {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
                 System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
-                throw new ServerException(err);
+                throw new UnknownServiceException(err);
             } else {
-                throw new ServerException(err);
+                throw new UnknownServiceException(err);
             }
         }
     }
 
     public static void main(String[] args) {
-/*         try {
-            JSONObject outputjson = new JSONObject();
-            outputjson.put("user_name", "관리자1");
-            outputjson.put("element1", 1);
-            outputjson.put("element2", 2);
-            outputjson.put("element3", 3);
-            outputjson.put("element4", "null"); // null 추가할 시
-            // json 데이터 만들기
-
-            JSONObject jsonObject = new Request().reqpost("http://dmumars.kro.kr/avatar/setuseravatar",
-                    outputjson);
-            System.out.println(jsonObject.get("results")); // 정상 결과의 경우 results 라는 json 을
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            // ER_DUP_ENTRY = 중복오류
-        } */
+        Request rq = new Request();
 
 /*         try {
-            JSONObject jsonObject = new Request().reqget("http://dmumars.kro.kr/api/getmark");
-            System.out.println(jsonObject.get("results"));
+            JSONObject jsonObject = rq.reqget("http://dmumars.kro.kr/api/getmark");    //get요청
+            System.out.println(jsonObject.getJSONArray("results").getJSONObject(0).getString("mark"));
+            // /getmark 부분 파싱 results에서 JSONArray 뽑고 JSONArray[0] 에 mark
         } catch (Exception e) {
+            // API 사용법에 나와있는 모든 오류응답은 여기서 처리
             System.out.println(e.getMessage());
-            // empty = 항목 없음
+            // 이미 reqget() 메소드에서 파싱 했기에 json 형태가 아닌 value 만 저장 된 상태 만약 {err: "type_err"} 인데 e.getMessage() 는 type_err만 반환
         } */
 
         try {
+            JSONObject outputjson = new JSONObject();   //json 생성
+            outputjson.put("user_name", "관리자1");
+            outputjson.put("look", 1);  //int 데이터
+            outputjson.put("color", 2);
+            //  outputjson.put("color", "null"); 값의 null이 들어가능 경우 문자열 "null로"
+            /*
+            해당 구문을 통해 json 형태의 요청 텍스트를 만듬
+            {id: "id", look: 1, color: 2} 이런식으로 만들어짐
+             */
+
+            JSONObject jsonObject = rq.reqpost("http://dmumars.kro.kr/avatar/setuseravatar", outputjson);
+            // jsonObject 변수에는 정상응답 json 객체가 저장되어있음
+            System.out.println(jsonObject.getString("results")); //results 데이터가 ture만 나오는 경우 굳이 처리 해줄 필요 없은
+            // getter는 자료형 별로 getint getJSONArray 이런것들이 있으니 결과 값에 따라 메소드를 변경해서 쓸것
+
+        } catch (UnknownServiceException e) {
+            // API 사용법에 나와있는 모든 오류응답은 여기서 처리
+            if (e.getMessage().equals("ER_DUP_ENTRY ")) { /* 중복오류 발생 예외처리구문 */}
+            System.out.println(e.getMessage());
+            // 이미 reqget() 메소드에서 파싱 했기에 json 형태가 아닌 value 만 저장 된 상태 만약 {err: "type_err"} 인데 e.getMessage() 는 type_err만 반환
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+/*         try {
             JSONObject outputjson = new JSONObject();
             outputjson.put("user_name", "관리자1");
             outputjson.put("file", "test.png");
 
-            new Request().fileupload("http://korseok.kro.kr/api/uploadprofile",  outputjson);
-        } catch (ServerException e) {
-            // 모든 서버에서 발생하는 에러는 해당 catch 구문 에서 처리
+            rq.fileupload("http://korseok.kro.kr/api/uploadprofile",  outputjson);
+            // 사실상 응답 데이터가 {results: true} 밖에 없서서 데이터를 따로 저장하진 않음
+        } catch (UnknownServiceException e) {
+            // API 사용법에 나와있는 모든 오류응답은 여기서 처리
             String messge = e.getMessage(); // 해당 주소에서 발생가능한 애러 메세지 (api 사용법 참고)
-            if (messge == "less_data") {
+            if (messge.equals("less_data")) {
                 System.out.println("파일 업로드 중에 오류 발생");
             }
             System.out.println(messge);
         } catch (FileNotFoundException e) {
+            //선택한 파일이 없어진 경우
             System.out.println("파일없음");
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        } */
     }
 }
