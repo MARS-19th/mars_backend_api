@@ -10,10 +10,8 @@ async function gettest(url: string) {
 
 async function settest(url: string) {
     const user_name = "관리자2";
-    const element1 = 1;
-    const element2 = 2;
-    const element3 = 3;
-    const element4 = 4;
+    const look = 1;
+    const color = 3;
 
     const response = await fetch(`http://korseok.kro.kr/api/${url}`, {
         method: "post",
@@ -22,10 +20,8 @@ async function settest(url: string) {
         },
         body: JSON.stringify({
             user_name: user_name,
-            element1: element1,
-            element2: element2,
-            element3: element3,
-            element4: element4,
+            look: look,
+            color: color,
         }),
     });
 
