@@ -534,7 +534,6 @@ body: {
 
 ## 예제
 ### `Kotlin` 
-
 -    #### GET 요청
 https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Getrequest.kt#L10-L44
 
@@ -544,6 +543,33 @@ https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e5771
 -    #### 파일 업로드
 https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Fileupload.kt#L14-L109
 
--    <b>[해당 텍스트](https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Request.kt) 
-를 눌러 전체 소스코드를 다운받아 안드로이드 프로젝트에서 바로 쓸 수 있습니다.</b>
+-    <b>[해당 텍스트](https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Request.kt) 를 눌러 전체 소스코드를 다운받아 안드로이드 프로젝트에서 바로 쓸 수 있습니다.</b>
 
+
+## 빌드 및 테스트
+> DB 주소와 로그인은 따로 물어봐 주세요
+
+### 윈도우 환경
+
+1. [Node.js 와 npm 을 설치합니다.](https://nodejs.org/ko/download)
+2. 해당 리포지토리를 복제 또는 다운로드 합니다 `git clone https://github.com/MARS-19th/mars_backend_api.git`
+3. clone된 디렉토리로 이동한 뒤 `src` 폴더의 `server.json` setdb 부분을 DB와 연결할 수 있도록 수정합니다.
+4. 최상위 디렉토리로 이동한 뒤 커멘트 창을 열고, `npm run build` 와 `npm run start`를 차례대로 입력합니다.
+
+### 리눅스 환경
+1. [Node.js 와 npm 을 설치합니다.](https://nodejs.org/ko/download)
+2. 해당 리포지토리를 복제 합니다 `git clone https://github.com/MARS-19th/mars_backend_api.git`
+3. clone된 디렉토리로 이동한 뒤 `src` 폴더의 `server.json` setdb 부분을 수정합니다.
+3. 최상위 디렉토리로 이동한 뒤 `$chmod +x start.sh` 를 입력합니다.
+4. `./start.sh`를 입력하여 서버를 실행합니다.
+
+## 개발 환경
+
+### DB
+-   `Mariadb 10.6.14` (AWS-RDS)
+-   ER 다이어그램 https://www.erdcloud.com/d/yNHoxjs6rhwj2unsS
+
+### 개발 언어
+-   `Typescript`
+-   `Node.js`
+-   `Express.js`
