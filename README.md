@@ -11,6 +11,7 @@ API 목록을 참고하여 필요한 주소로 GET/POST 요청을 하면 됩니�
 
 ### 주의사항
 -   모든 요청/응답 처리는 `JSON` 으로 처리합니다. 따라서 `JSONobject` 및 `JSONarray` 의 사용법을 숙지하시기 바랍니다.
+-   POST 요청시 `JSON` 변수타입(int, string 등등) 유의하여 요청해 주세요
 -   모든 오류응답은 `{err: 오류...}`로 반환 됩니다.
 -   처리 해야하는 오류들만 정리하였으나, 필요하다면 [해당링크](https://dev.mysql.com/doc/mysql-errors/8.0/en/server-error-reference.html)에서 DB오류 코드를 참고하세요.
 
@@ -393,6 +394,36 @@ body: {
     ```
     오류응답 (code: 500)
     - `{ err: "empty" }`: 해당 목표id 가 존재하지 않음
+
+    #### [/getskilltree/[목표명]](http://dmumars.kro.kr/api/getskilltree/프로그래밍): 해당 목표에 대한 스킬트리 리턴
+    > 목표: 프로그래밍, 등산
+
+    정상응답 (code: 200)
+    ```javascript
+    {
+        "results":
+        [
+            {"skill_field":"css","skill_level":1},
+            {"skill_field":"python","skill_level":1},
+            {"skill_field":"html","skill_level":1},
+            {"skill_field":"java","skill_level":1},
+            {"skill_field":"js","skill_level":2},
+            {"skill_field":"backend","skill_level":3},
+            {"skill_field":"frontend","skill_level":3},
+            {"skill_field":"중간시험","skill_level":4},
+            {"skill_field":"jsp","skill_level":5},
+            {"skill_field":"node","skill_level":5},
+            {"skill_field":"diango","skill_level":5},
+            {"skill_field":"react","skill_level":5},
+            {"skill_field":"spring","skill_level":5}
+        ]
+
+        // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    }
+    ```
+
+    오류응답 (code: 500)
+    - `{ err: "empty" }`: 해당 목표가 존재하지않음
 </details>
 
 -   <details>

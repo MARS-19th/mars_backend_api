@@ -4,6 +4,33 @@ import mysql = require("mysql");
 import { TypedRequestBody, sameobj, serverset } from "../server";
 const mark = express.Router();
 
+// 스킬 트리 리턴
+mark.get("/getskilltree/:tartget_mark", (req, res) => {
+    const query = `select skill_field, skill_level from Skill_Mark 
+    where target_mark = "${req.params.tartget_mark}"
+    order by skill_level;`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                res.json({ results });
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
+
 // 세부 목록 리턴 스킬명(목표명/레벨): [{mark_id, mark_list}]
 mark.get("/getdetailmark/:skill/:level", (req, res) => {
     const query = `select mark_id, mark_list from Details_mark 

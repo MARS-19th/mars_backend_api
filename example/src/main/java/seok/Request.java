@@ -62,7 +62,7 @@ public class Request {
 
             if (err.equals("type_err")) {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
-                System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
+                System.out.println("타입 오류, 올바른 타입:" + jo.getJSONObject("type"));
                 throw new UnknownServiceException(err);
             } else {
                 throw new UnknownServiceException(err);
@@ -132,7 +132,7 @@ public class Request {
 
             if (err.equals("type_err")) {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
-                System.out.println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")); // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
+                System.out.println("타입 오류, 올바른 타입:" + jo.getJSONObject("type"));
                 throw new UnknownServiceException(err);
             } else {
                 throw new UnknownServiceException(err);
@@ -143,15 +143,15 @@ public class Request {
     public static void main(String[] args) {
         Request rq = new Request();
 
-/*         try {
-            JSONObject jsonObject = rq.reqget("http://dmumars.kro.kr/api/getmark");    //get요청
-            System.out.println(jsonObject.getJSONArray("results").getJSONObject(0).getString("mark"));
-            // /getmark 부분 파싱 results에서 JSONArray 뽑고 JSONArray[0] 에 mark
+        try {
+            JSONObject jsonObject = rq.reqget("http://dmumars.kro.kr/api/getdetailmark/css/1");    //get요청
+            System.out.println(jsonObject.getJSONArray("results").getJSONObject(0).getInt("mark_id"));
+            // /getdetailmark 부분 파싱 results에서 JSONArray 뽑고 JSONArray[0]에 mark_id = 3
         } catch (Exception e) {
             // API 사용법에 나와있는 모든 오류응답은 여기서 처리
             System.out.println(e.getMessage());
             // 이미 reqget() 메소드에서 파싱 했기에 json 형태가 아닌 value 만 저장 된 상태 만약 {err: "type_err"} 인데 e.getMessage() 는 type_err만 반환
-        } */
+        }
 
         try {
             JSONObject outputjson = new JSONObject();   //json 생성
