@@ -480,7 +480,7 @@ body: {
     요청
     ```javascript
     {
-        user_name: "관리자1",
+        user_name: "관리자1",    //유저 닉네임
         look: "식별하는무언가", //표정
         color: "식별하는무언가2",   //색상
 
@@ -544,6 +544,6 @@ https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e5771
 -    #### 파일 업로드
 https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Fileupload.kt#L14-L109
 
--    <b>[해당 텍스트](https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Request.java) 
+-    <b>[해당 텍스트](https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Request.kt) 
 를 눌러 전체 소스코드를 다운받아 안드로이드 프로젝트에서 바로 쓸 수 있습니다.</b>
 
