@@ -31,7 +31,7 @@ mark.get("/getdetailmark/:skill/:level", (req, res) => {
 });
 
 // 유저 선택 스킬트리 (닉네임): skills: [...스킬들]
-mark.get("/userskill/:name", (req, res) => {
+mark.get("/getuserskill/:name", (req, res) => {
     const query = `select skill_field from User_skill where user_name = "${req.params.name}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
@@ -59,7 +59,7 @@ mark.get("/userskill/:name", (req, res) => {
 });
 
 // 사용자 목표 현황 (이름/스킬명/레벨): [{mark_id, progress, date}]
-mark.get("/usermark/:user_name/:skill/:level", (req, res) => {
+mark.get("/getusermark/:user_name/:skill/:level", (req, res) => {
     const query = `select Details_mark.mark_id, User_mark.progress, User_mark.date from User_mark 
     join Details_mark on User_mark.mark_id = Details_mark.mark_id
     where User_mark.user_name = "${req.params.user_name}" && 
@@ -87,7 +87,7 @@ mark.get("/usermark/:user_name/:skill/:level", (req, res) => {
 });
 
 // 세부목표 추가 정보사항 유튜브 링크 같은거(세부목표 id): [추가정보들] or err
-mark.get("/moredata/:mark_id", (req, res) => {
+mark.get("/getmoredata/:mark_id", (req, res) => {
     const query = `select info_data from More_data where mark_id = ${req.params.mark_id};`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
