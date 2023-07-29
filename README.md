@@ -525,19 +525,19 @@ https://github.com/MARS-19th/mars_backend_api/blob/5f12fcdafcad3af66ebddfa39015c
 메인함수
 
 ```Kotlin
-    fun main() {
-        try {
-            val jsonObject = reqget("http://dmumars.kro.kr/api/getdetailmark/css/1") //get요청
-            println(jsonObject.getJSONArray("results").getJSONObject(0).getInt("mark_id"))
-            // /getdetailmark 부분 파싱 results에서 JSONArray 뽑고 JSONArray[0] 에 mark_id = 3
-        } catch (e: UnknownServiceException) {
-            // API 사용법에 나와있는 모든 오류응답은 여기서 처리
-            println(e.message)
-            // 이미 reqget() 메소드에서 파싱 했기에 json 형태가 아닌 value 만 저장 된 상태 만약 {err: "type_err"} 인데 e.getMessage() 는 type_err만 반환
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+fun main() {
+    try {
+        val jsonObject = reqget("http://dmumars.kro.kr/api/getdetailmark/css/1") //get요청
+        println(jsonObject.getJSONArray("results").getJSONObject(0).getInt("mark_id"))
+        // /getdetailmark 부분 파싱 results에서 JSONArray 뽑고 JSONArray[0] 에 mark_id = 3
+    } catch (e: UnknownServiceException) {
+        // API 사용법에 나와있는 모든 오류응답은 여기서 처리
+        println(e.message)
+        // 이미 reqget() 메소드에서 파싱 했기에 json 형태가 아닌 value 만 저장 된 상태 만약 {err: "type_err"} 인데 e.getMessage() 는 type_err만 반환
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+}
 ```
 
 -    #### POST 요청
@@ -546,34 +546,34 @@ https://github.com/MARS-19th/mars_backend_api/blob/5f12fcdafcad3af66ebddfa39015c
 메인함수
 
 ```Kotlin
-    fun main(args: Array<String>) {
-        try {
-            val outputjson = JSONObject() //json 생성
-            outputjson.put("user_name", "관리자1")
-            outputjson.put("look", 1) //int 데이터
-            outputjson.put("color", 2)
-            //  outputjson.put("color", "null"); 값의 null이 들어가능 경우 문자열 "null로"
-            /*
-            해당 구문을 통해 json 형태의 요청 텍스트를 만듬
-            {id: "id", look: 1, color: 2} 이런식으로 만들어짐
-             */
+fun main(args: Array<String>) {
+    try {
+        val outputjson = JSONObject() //json 생성
+        outputjson.put("user_name", "관리자1")
+        outputjson.put("look", 1) //int 데이터
+        outputjson.put("color", 2)
+        //  outputjson.put("color", "null"); 값의 null이 들어가능 경우 문자열 "null로"
+        /*
+        해당 구문을 통해 json 형태의 요청 텍스트를 만듬
+        {id: "id", look: 1, color: 2} 이런식으로 만들어짐
+         */
 
-            val jsonObject = reqpost("http://dmumars.kro.kr/api/avatar/setuseravatar", outputjson)
-            // jsonObject 변수에는 정상응답 json 객체가 저장되어있음
+        val jsonObject = reqpost("http://dmumars.kro.kr/api/avatar/setuseravatar", outputjson)
+        // jsonObject 변수에는 정상응답 json 객체가 저장되어있음
 
-            println(jsonObject.getString("results")) //results 데이터가 ture만 나오는 경우 굳이 처리 해줄 필요 없은
-            // getter는 자료형 별로 getint getJSONArray 이런것들이 있으니 결과 값에 따라 메소드를 변경해서 쓸것
-        } catch (e: UnknownServiceException) {
-            // API 사용법에 나와있는 모든 오류응답은 여기서 처리
+        println(jsonObject.getString("results")) //results 데이터가 ture만 나오는 경우 굳이 처리 해줄 필요 없은
+        // getter는 자료형 별로 getint getJSONArray 이런것들이 있으니 결과 값에 따라 메소드를 변경해서 쓸것
+    } catch (e: UnknownServiceException) {
+        // API 사용법에 나와있는 모든 오류응답은 여기서 처리
 
-            if (e.message == "ER_DUP_ENTRY ") { /* 중복오류 발생 예외처리구문 */
-            }
-            println(e.message)
-            // 이미 reqget() 메소드에서 파싱 했기에 json 형태가 아닌 value 만 저장 된 상태 만약 {err: "type_err"} 인데 e.getMessage() 는 type_err만 반환
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (e.message == "ER_DUP_ENTRY ") { /* 중복오류 발생 예외처리구문 */
         }
+        println(e.message)
+        // 이미 reqget() 메소드에서 파싱 했기에 json 형태가 아닌 value 만 저장 된 상태 만약 {err: "type_err"} 인데 e.getMessage() 는 type_err만 반환
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+}
 ```
 
 -    #### 파일 업로드
@@ -582,29 +582,29 @@ https://github.com/MARS-19th/mars_backend_api/blob/5f12fcdafcad3af66ebddfa39015c
 메인함수
 
 ```Kotlin
-    fun main() {
-        try {
-            val outputjson = JSONObject()
-            outputjson.put("user_name", "관리자1")
-            outputjson.put("file", "test.png")
+fun main() {
+    try {
+        val outputjson = JSONObject()
+        outputjson.put("user_name", "관리자1")
+        outputjson.put("file", "test.png")
 
-            fileupload("http://korseok.kro.kr/api/uploadprofile", outputjson)
-            // 사실상 응답 데이터가 {results: true} 밖에 없서서 데이터를 따로 저장하진 않음
-        } catch (e: UnknownServiceException) {
-            // API 사용법에 나와있는 모든 오류응답은 여기서 처리
-            val messge = e.message // 해당 주소에서 발생가능한 애러 메세지 (api 사용법 참고)
-            if (messge == "less_data") {
-                println("파일 업로드 중에 오류 발생")
-            }
-
-            println(messge)
-        } catch (e: FileNotFoundException) {
-            //선택한 파일이 없어진 경우
-            println("파일없음")
-        } catch (e: Exception) {
-            e.printStackTrace()
+        fileupload("http://korseok.kro.kr/api/uploadprofile", outputjson)
+        // 사실상 응답 데이터가 {results: true} 밖에 없서서 데이터를 따로 저장하진 않음
+    } catch (e: UnknownServiceException) {
+        // API 사용법에 나와있는 모든 오류응답은 여기서 처리
+        val messge = e.message // 해당 주소에서 발생가능한 애러 메세지 (api 사용법 참고)
+        if (messge == "less_data") {
+            println("파일 업로드 중에 오류 발생")
         }
+
+        println(messge)
+    } catch (e: FileNotFoundException) {
+        //선택한 파일이 없어진 경우
+        println("파일없음")
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
+}
 ```
 
 ## 빌드 및 테스트
