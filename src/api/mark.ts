@@ -4,7 +4,7 @@ import mysql = require("mysql");
 import { TypedRequestBody, sameobj, serverset } from "../server";
 const mark = express.Router();
 
-// 스킬 트리 리턴
+// 스킬 트리 리턴 (목표): [스킬트리] or err
 mark.get("/getskilltree/:tartget_mark", (req, res) => {
     const query = `select skill_field, skill_level from Skill_Mark 
     where target_mark = "${req.params.tartget_mark}"
