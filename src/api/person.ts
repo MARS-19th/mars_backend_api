@@ -37,12 +37,14 @@ person.post("/setperson", (req: TypedRequestBody<sername>, res) => {
     dbconect.end();
 });
 
-//탈퇴 (이름): err or ok
+//탈퇴 (아이디, 비밀번호): err or ok
 type delname = {
-    user_name: string; //사용자 이름
+    id: string; //사용자 이름
+    passwd: string;
 };
 const delname = {
-    user_name: "string",
+    id: "string",
+    passwd: "string",
 };
 person.post("/deluser", (req: TypedRequestBody<delname>, res) => {
     if (!sameobj(delname, req.body)) {
@@ -51,8 +53,7 @@ person.post("/deluser", (req: TypedRequestBody<delname>, res) => {
         return;
     }
 
-    const query = `delete from User where id = 
-    (select user_id from User_data where user_name = "${req.body.user_name}");`;
+    const query = `delete from User where id = "${req.body.id}" && passwd = "${req.body.passwd}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -102,7 +103,44 @@ person.post("/login", (req: TypedRequestBody<login>, res) => {
                 res.status(500).json({ err: "empty" });
             } else if (!results[0].user_name) {
                 console.log("신규유저");
-                res.json({ err: "is_new" });
+                res.status(500).json({ err: "is_new" });
+            } else {
+                res.json(results[0]);
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
+// 유저 아이디 비밀번호 얻기 (닉네임): id, passwd or err
+type getuseridpd = {
+    user_name: string; // 유저 닉네임
+};
+const getuseridpd = {
+    user_name: "string",
+};
+person.post("/getuseridpd", (req: TypedRequestBody<getuseridpd>, res) => {
+    if (!sameobj(getuseridpd, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: getuseridpd });
+        return;
+    }
+
+    const query = `select User.id, User.passwd from User join User_data on User.id = User_data.user_id
+    where User_data.user_name = "${req.body.user_name}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
             } else {
                 res.json(results[0]);
             }

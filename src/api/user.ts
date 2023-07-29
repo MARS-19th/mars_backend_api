@@ -423,7 +423,7 @@ user.post("/checkname", (req: TypedRequestBody<chname>, res) => {
         } else {
             if (results?.length) {
                 console.error("중복발견");
-                res.status(500).json({ results: false });
+                res.json({ results: false });
             } else {
                 res.json({ results: true });
             }
