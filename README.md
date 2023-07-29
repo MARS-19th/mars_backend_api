@@ -516,6 +516,9 @@ body: {
 
 ## 예제코드
 ### `Kotlin` 
+
+<b>[해당 텍스트](https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Request.kt) 를 눌러 전체 소스코드를 다운받아 안드로이드 프로젝트에서 바로 쓸 수 있습니다.</b>
+
 -    #### GET 요청
 https://github.com/MARS-19th/mars_backend_api/blob/5f12fcdafcad3af66ebddfa39015c13deabed876/example/src/main/java/seok/Request.kt#L16-L34
 
@@ -603,9 +606,6 @@ https://github.com/MARS-19th/mars_backend_api/blob/5f12fcdafcad3af66ebddfa39015c
         }
     }
 ```
-
--   <b>[해당 텍스트](https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Request.kt) 를 눌러 전체 소스코드를 다운받아 안드로이드 프로젝트에서 바로 쓸 수 있습니다.</b>
-
 
 ## 빌드 및 테스트
 > DB 주소와 로그인은 따로 물어봐 주세요
