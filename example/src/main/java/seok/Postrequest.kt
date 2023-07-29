@@ -1,5 +1,3 @@
-package com.example.myapplication2
-
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -38,7 +36,7 @@ class Postrequest {
 
             if (err == "type_err") {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
-                println("타입 오류, 올바른 타입:" + jo.getJSONObject("type")) // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
+                println("타입 오류, 올바른 타입:" + jo.getJSONObject("type"))
                 throw UnknownServiceException(err)
             } else {
                 throw UnknownServiceException(err)

@@ -1,5 +1,3 @@
-package com.example.myapplication2
-
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -14,6 +12,7 @@ import java.net.UnknownServiceException
 import java.util.UUID
 
 class Request {
+    //get요청 메소드
     @Throws(UnknownServiceException::class, IOException::class, JSONException::class)
     fun reqget(url: String?): JSONObject {
         val link = URL(url)
@@ -34,6 +33,7 @@ class Request {
         }
     }
 
+    //post 요청 메소드
     @Throws(UnknownServiceException::class, IOException::class, JSONException::class)
     fun reqpost(url: String?, outputjson: JSONObject): JSONObject {
         val link = URL(url)
@@ -62,7 +62,7 @@ class Request {
 
             if (err == "type_err") {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
-                println("타입 오류, 올바른 타입:" + jo.getJSONObject("type")) // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
+                println("타입 오류, 올바른 타입:" + jo.getJSONObject("type"))
                 throw UnknownServiceException(err)
             } else {
                 throw UnknownServiceException(err)
@@ -70,11 +70,12 @@ class Request {
         }
     }
 
+    //파일 업로드 메소드
     @Throws(IOException::class, FileNotFoundException::class, JSONException::class)
     fun fileupload(url: String?, outputjson: JSONObject): JSONObject {
         if (outputjson.isNull("user_name") || outputjson.isNull("file")) {
             //값이 빠지지는 않았는지 유효성 검사
-            throw UnknownServiceException("less_data")
+            throw UnknownServiceException("less_data")  // 파일이 없으면 less_data 라는 Exception 발생하게
         }
 
         val file = outputjson.getString("file")
@@ -133,7 +134,7 @@ class Request {
 
             if (err == "type_err") {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
-                println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")) // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
+                println("타입 오류, 올바른 타입:" + jo.getJSONObject("type"))
                 throw UnknownServiceException(err)
             } else {
                 throw UnknownServiceException(err)

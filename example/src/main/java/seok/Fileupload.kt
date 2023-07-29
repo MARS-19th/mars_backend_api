@@ -1,5 +1,3 @@
-package com.example.myapplication2
-
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -18,7 +16,7 @@ class Fileupload {
     fun fileupload(url: String?, outputjson: JSONObject): JSONObject {
         if (outputjson.isNull("user_name") || outputjson.isNull("file")) {
             //값이 빠지지는 않았는지 유효성 검사
-            throw UnknownServiceException("less_data")
+            throw UnknownServiceException("less_data")  // 파일이 없으면 less_data 라는 Exception 발생하게
         }
 
         val file = outputjson.getString("file")
@@ -71,14 +69,13 @@ class Fileupload {
             JSONObject(json) // 정상 응답일 경우 리턴
         } else {
             // 비정상 응답
-            val json =
-                BufferedReader(InputStreamReader(huc.errorStream, "utf-8")).readLine() //json 읽기
+            val json = BufferedReader(InputStreamReader(huc.errorStream, "utf-8")).readLine() //json 읽기
             val jo = JSONObject(json)
             val err = jo.getString("err") // 모든 오류는 err 이라는 json을 가짐
 
             if (err == "type_err") {
                 // 데이터 보낼시 json 타입이 안맞아 발생하는 오류
-                println("타입 오류, 올바른 타입:" + jo.optJSONObject("type")) // optJSONObject 해당하는 객체가 또다른 객체를 가지고 있을때
+                println("타입 오류, 올바른 타입:" + jo.getJSONObject("type"))
                 throw UnknownServiceException(err)
             } else {
                 throw UnknownServiceException(err)
@@ -91,6 +88,7 @@ class Fileupload {
             val outputjson = JSONObject()
             outputjson.put("user_name", "관리자1")
             outputjson.put("file", "test.png")
+
             fileupload("http://korseok.kro.kr/api/uploadprofile", outputjson)
             // 사실상 응답 데이터가 {results: true} 밖에 없서서 데이터를 따로 저장하진 않음
         } catch (e: UnknownServiceException) {
@@ -99,6 +97,7 @@ class Fileupload {
             if (messge == "less_data") {
                 println("파일 업로드 중에 오류 발생")
             }
+
             println(messge)
         } catch (e: FileNotFoundException) {
             //선택한 파일이 없어진 경우

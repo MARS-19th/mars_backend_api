@@ -1,5 +1,3 @@
-package com.example.myapplication2
-
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
@@ -32,9 +30,9 @@ class Getrequest {
 
     fun main() {
         try {
-            val jsonObject = reqget("http://dmumars.kro.kr/api/getmark") //get요청
-            println(jsonObject.getJSONArray("results").getJSONObject(0).getString("mark"))
-            // /getmark 부분 파싱 results에서 JSONArray 뽑고 JSONArray[0] 에 mark
+            val jsonObject = reqget("http://dmumars.kro.kr/api/getdetailmark/css/1") //get요청
+            println(jsonObject.getJSONArray("results").getJSONObject(0).getInt("mark_id"))
+            // /getdetailmark 부분 파싱 results에서 JSONArray 뽑고 JSONArray[0] 에 mark_id = 3
         } catch (e: UnknownServiceException) {
             // API 사용법에 나와있는 모든 오류응답은 여기서 처리
             println(e.message)
