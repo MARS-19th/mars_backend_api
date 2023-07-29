@@ -9,9 +9,9 @@ async function gettest(url: string) {
 }
 
 async function settest(url: string) {
-    const user_name = "관리자2";
-    const look = 1;
-    const color = 3;
+    const user_name = "관리자1";
+    const look = "식별하는 무언가1";
+    const color = "식별하는 무언가2";
 
     const response = await fetch(`http://korseok.kro.kr/api/${url}`, {
         method: "post",
@@ -19,9 +19,9 @@ async function settest(url: string) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify({
-            user_name: user_name,
-            look: look,
-            color: color,
+            user_name: "관리자1",
+            mark_id: 1,
+            progress: 100,
         }),
     });
 
@@ -29,4 +29,4 @@ async function settest(url: string) {
     console.log(res);
 }
 
-settest("/avatar/setuseravatar");
+settest("setuserskill");
