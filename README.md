@@ -559,7 +559,7 @@ https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e5771
 ### 리눅스 환경
 1. [Node.js 와 npm 을 설치합니다.](https://nodejs.org/ko/download)
 2. 해당 리포지토리를 복제 합니다 `git clone https://github.com/MARS-19th/mars_backend_api.git`
-3. clone된 디렉토리로 이동한 뒤 `src` 폴더의 `server.json` setdb 부분을 수정합니다.
+3. clone된 디렉토리로 이동한 뒤 `src` 폴더의 `server.json` setdb 부분을 DB와 연결할 수 있도록 수정합니다.
 3. 최상위 디렉토리로 이동한 뒤 `$chmod +x start.sh` 를 입력합니다.
 4. `./start.sh`를 입력하여 서버를 실행합니다.
 

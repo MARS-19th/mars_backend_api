@@ -1,3 +1,4 @@
+/* 파일 업로드 필요한 API 들 */
 import express = require("express");
 import mysql = require("mysql");
 import multter = require("multer");

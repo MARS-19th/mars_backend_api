@@ -6,6 +6,7 @@ import user from "./api/user";
 import mark from "./api/mark";
 import avatar from "./api/avatar";
 import fileupload from "./api/fileupload";
+import vr_info from "./api/vr_info";
 const server = express();
 
 server.use(express.json());
@@ -16,6 +17,7 @@ server.use("/api", user); // 유저 부분
 server.use("/api", mark); // 목표&스킬트리 부분
 server.use("/api", avatar); // 아바타/상점 부분
 server.use("/api", fileupload); // 프로필 사진 업로드/다운로드 구현
+server.use("/api", vr_info); // vr에 필요한 데이터
 
 //실행시 프로젝트 파일에서 실행함으로 상대경로 적용
 const serverset = JSON.parse(fs.readFileSync("bin/server.json", "utf-8"));
