@@ -527,7 +527,7 @@ https://github.com/MARS-19th/mars_backend_api/blob/5f12fcdafcad3af66ebddfa39015c
 ```Kotlin
 fun main() {
     try {
-        val jsonObject = reqget("http://dmumars.kro.kr/api/getdetailmark/css/1") //get요청
+        val jsonObject = Request().reqget("http://dmumars.kro.kr/api/getdetailmark/css/1") //get요청
         println(jsonObject.getJSONArray("results").getJSONObject(0).getInt("mark_id"))
         // /getdetailmark 부분 파싱 results에서 JSONArray 뽑고 JSONArray[0] 에 mark_id = 3
     } catch (e: UnknownServiceException) {
@@ -558,7 +558,7 @@ fun main(args: Array<String>) {
         {id: "id", look: 1, color: 2} 이런식으로 만들어짐
          */
 
-        val jsonObject = reqpost("http://dmumars.kro.kr/api/avatar/setuseravatar", outputjson)
+        val jsonObject = Request().reqpost("http://dmumars.kro.kr/api/avatar/setuseravatar", outputjson)
         // jsonObject 변수에는 정상응답 json 객체가 저장되어있음
 
         println(jsonObject.getString("results")) //results 데이터가 ture만 나오는 경우 굳이 처리 해줄 필요 없은
@@ -588,7 +588,7 @@ fun main() {
         outputjson.put("user_name", "관리자1")
         outputjson.put("file", "test.png")
 
-        fileupload("http://korseok.kro.kr/api/uploadprofile", outputjson)
+        Request().fileupload("http://korseok.kro.kr/api/uploadprofile", outputjson)
         // 사실상 응답 데이터가 {results: true} 밖에 없서서 데이터를 따로 저장하진 않음
     } catch (e: UnknownServiceException) {
         // API 사용법에 나와있는 모든 오류응답은 여기서 처리
