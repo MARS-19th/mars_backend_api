@@ -510,7 +510,7 @@ body: {
 
     ```Kotlin
     Thread {
-        //웹 요청 작업
+        //GET, POST 요청 작업들 
     }.start();
     ```
 
@@ -558,7 +558,7 @@ fun main(args: Array<String>) {
         {id: "id", look: 1, color: 2} 이런식으로 만들어짐
          */
 
-        val jsonObject = Request().reqpost("http://dmumars.kro.kr/api/avatar/setuseravatar", outputjson)
+        val jsonObject = Request().reqpost("http://dmumars.kro.kr/api/setuseravatar", outputjson)
         // jsonObject 변수에는 정상응답 json 객체가 저장되어있음
 
         println(jsonObject.getString("results")) //results 데이터가 ture만 나오는 경우 굳이 처리 해줄 필요 없은

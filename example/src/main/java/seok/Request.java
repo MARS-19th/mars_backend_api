@@ -164,7 +164,7 @@ public class Request {
             {id: "id", look: 1, color: 2} 이런식으로 만들어짐
              */
 
-            JSONObject jsonObject = rq.reqpost("http://dmumars.kro.kr/avatar/setuseravatar", outputjson);
+            JSONObject jsonObject = rq.reqpost("http://dmumars.kro.kr/api/setuseravatar", outputjson);
             // jsonObject 변수에는 정상응답 json 객체가 저장되어있음
             System.out.println(jsonObject.getString("results")); //results 데이터가 ture만 나오는 경우 굳이 처리 해줄 필요 없은
             // getter는 자료형 별로 getint getJSONArray 이런것들이 있으니 결과 값에 따라 메소드를 변경해서 쓸것
