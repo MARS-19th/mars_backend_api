@@ -351,10 +351,10 @@ body: {
             [
                 {
                     mark_id: 3, //스킬 아이디
-                    mark_list: "css의 1주차 강의를 들으시오.", // 세부목표 내용 
+                    mark_list: "CSS 1주차 강의 듣기", // 세부목표 내용 
                     level: 1    //주차
                 },
-                { mark_id: 4, mark_list: "심화", level: 2 }
+                { mark_id: 4, mark_list: "CSS 2주차 강의 듣기", level: 2 }
             ]
     } 
 
@@ -373,7 +373,7 @@ body: {
             [ 
                 {
                     mark_id: 1, //스킬 아이디
-                    mark_list: "css의 1주차 강의를 들으시오."   //세부목표 내용
+                    mark_list: "CSS 1주차 강의 듣기"   //세부목표 내용
                 }, 
             ] 
     }
