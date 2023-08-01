@@ -19,7 +19,7 @@ vr_info.get("/vr/getallexam/:mark", (req, res) => {
             console.error(err);
             res.status(500).json({ err: err.code });
         } else {
-            if (!results?.length) {
+            if (!results?.length || !results[0].length) {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
