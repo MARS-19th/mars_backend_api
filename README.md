@@ -577,6 +577,9 @@ VR 문제 부분
             // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
     ```
 
+    오류응답 (code: 500)
+    - `{ err: "empty" }`: 해당 목표가 DB에 존재하지 않음
+
     #### [/vr/getallexam/[목표명]/[스킬명]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 해당 목표와 스킬에 대한 랜덤 문제 리턴
     정상응답 (code: 200)
     ```javascript
@@ -611,7 +614,7 @@ VR 문제 부분
     ```
 
     오류응답 (code: 500)
-    - `{ err: "empty" }`: 
+    - `{ err: "empty" }`: 해당 닉네임이 DB에 존재하지 않음
 
 
 </details>
