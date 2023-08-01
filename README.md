@@ -301,6 +301,25 @@ body: {
     오류응답 (code: 500)
     -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 
+    #### [/setbtmac](http://dmumars.kro.kr/api/setbtmac): 사용자 블루투스 mac 설정
+    요청
+    ```javascript
+    {
+        user_name: "관리자1",   //닉네임
+        bt_mac: "블루투스 mac 주소" //블루투스 mac주소
+    }
+    ```
+
+    정상응답 (code: 200)
+    ```javascript
+    { results: true }
+    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+    ```
+
+    오류응답 (code: 500)
+    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 해당 닉네임이 DB에 존재하지 않음
+
     #### [/uploadprofile](http://dmumars.kro.kr/api/uploadprofile): 프로필 사진 업로드
     > 파일 업로드 부분은 예제코드 참고, 파일은 [jpg, jpeg, png] 만 업로드 가능
 
@@ -324,10 +343,40 @@ body: {
 -   <details>
     <summary>GET 요청</summary>
 
+    #### [/getdetailmark/[스킬명]](http://dmumars.kro.kr/api/getdetailmark/css): 해당 스킬에 전체 세부목록 리턴
+    정상응답 (code: 200)
+    ```javascript
+    {
+        results:    //스킬명 = css
+            [
+                {
+                    mark_id: 3, //스킬 아이디
+                    mark_list: "css의 1주차 강의를 들으시오.", // 세부목표 내용 
+                    level :1    //주차
+                },
+                { mark_id: 4, mark_list: "심화", level: 2}
+            ]
+    } 
+
+    /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    스킬명은 스킬트리에 적힌 스킬명 */
+    ```
+
+    오류응답 (code: 500)
+    - `{err: "empty"}`: 스킬명이나 해당 주차가 DB에 존재하지 않음
+
     #### [/getdetailmark/[스킬명]/[주차]](http://dmumars.kro.kr/api/getdetailmark/css/1): 세부 목표에 id 값과 세부목표를 리턴
     정상응답 (code: 200)
     ```javascript
-    { results: [ {mark_id: 1, mark_list: "css의 1주차 강의를 들으시오."}, ] }  //스킬명 = css , 주차 = 1
+    { 
+        results:    //스킬명 = css, 주차 = 1
+            [ 
+                {
+                    mark_id: 1, //스킬 아이디
+                    mark_list: "css의 1주차 강의를 들으시오."   //세부목표 내용
+                }, 
+            ] 
+    }
 
     /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
     스킬명은 스킬트리에 적힌 스킬명 */
@@ -413,7 +462,27 @@ body: {
 -   <details>
     <summary>POST 요청</summary>
 
-    #### [/setuserskill](http://dmumars.kro.kr/api/setuserskill): 사용자 세부진행 목표 설정
+    #### [/setuserskill](http://dmumars.kro.kr/api/setuserskill): 사용자 스킬트리 추가
+    요청
+    ```javascript
+    {
+        user_name: "관리자1",   //닉네임
+        skill: "js" //추가할 스킬
+    }
+    ```
+
+    정상응답 (code: 200)
+    ```javascript
+    { results: true }
+    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+    ```
+
+    오류응답 (code: 500)  
+    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 추가할 스킬이 DB에 존재하지 않음<br>
+    -   `{err: "ER_DUP_ENTRY"}`: 이미 추가된 스킬
+
+    #### [/setuserdetailskill](http://dmumars.kro.kr/api/setuserdetailskill): 사용자 세부진행 목표 설정
     요청
     ```javascript
     {
@@ -628,7 +697,7 @@ fun main() {
 
 ### DB
 -   `Mariadb 10.6.14` (AWS-RDS)
--   ER 다이어그램 https://www.erdcloud.com/d/yNHoxjs6rhwj2unsS
+-   ER 다이어그램(DB 구조) https://www.erdcloud.com/d/yNHoxjs6rhwj2unsS
 
 ### 개발 언어
 -   `Typescript`
