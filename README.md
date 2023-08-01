@@ -352,9 +352,9 @@ body: {
                 {
                     mark_id: 3, //스킬 아이디
                     mark_list: "css의 1주차 강의를 들으시오.", // 세부목표 내용 
-                    level :1    //주차
+                    level: 1    //주차
                 },
-                { mark_id: 4, mark_list: "심화", level: 2}
+                { mark_id: 4, mark_list: "심화", level: 2 }
             ]
     } 
 
@@ -363,7 +363,7 @@ body: {
     ```
 
     오류응답 (code: 500)
-    - `{err: "empty"}`: 스킬명이나 해당 주차가 DB에 존재하지 않음
+    - `{err: "empty"}`: 스킬명이 DB에 존재하지 않음
 
     #### [/getdetailmark/[스킬명]/[주차]](http://dmumars.kro.kr/api/getdetailmark/css/1): 세부 목표에 id 값과 세부목표를 리턴
     정상응답 (code: 200)
@@ -394,14 +394,14 @@ body: {
     오류응답 (code: 500)
     - `{err: "empty"}`: 해당 유저가 DB 에 존재하지 않음
 
-    #### [/getusermark/[유저이름]/[스킬명]/[주차]](http://dmumars.kro.kr/api/getusermark/관리자1/css/1): 해당 유저의 세부목표 진행상황 리턴
+    #### [/getusermark/[유저이름]/[스킬명]/[주차]](http://dmumars.kro.kr/api/getusermark/관리자1/html/1): 해당 유저의 세부목표 진행상황 리턴
     정상응답 (code: 200)
     ```javascript
     {
         results:
         [
             {
-                mark_id: 3,    //목표 아이디
+                mark_id: 1,    //목표 아이디
                 progress: 100, //진행도
                 date: "2023-07-09T00:00:00.000Z"   //진행날짜
 
@@ -548,6 +548,96 @@ body: {
     오류응답 (code: 500)  
     -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
     -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임이 DB에 존재하지 않음
+</details>
+
+VR 문제 부분
+
+-   <details>
+    <summary>GET 요청</summary>
+
+    #### [/vr/getallexam/[목표명]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍): 해당 목표에 모든 문제들 리턴
+    정상응답 (code: 200)
+    ```javascript
+    {
+        "results":  //목표명 = 프로그래밍
+            [
+                {
+                    exam_id: 1, //문제 id
+                    skill_field: "html",    //타겟스킬
+                    exam: "문제1",  //문제명
+                    correct: "답2", //정답
+                    rate: 50,   //정답률
+                    exam_option: ["답1","답2","답3","답4"]  //문제 선지들
+                },
+                { exam_id: 2, skill_field: "html", exam: "문제2", correct: "답3", rate: 0, exam_option: ["답1","답2","답3","답4"] },
+                { exam_id: 3, skill_field: "css", exam: "문제1", correct: "답4", rate: 0, exam_option: ["답1","답2","답3","답4"] },
+                /* 이하 생략 */
+            ]}
+
+            // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    ```
+
+    #### [/vr/getallexam/[목표명]/[스킬명]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 해당 목표와 스킬에 대한 랜덤 문제 리턴
+    정상응답 (code: 200)
+    ```javascript
+    // 목표 = 프로그래밍, 스킬 = html
+    {   
+        exam_id: 2, //문재 id
+        exam: "문제2",  //문제명
+        correct: "답3", //정답
+        rate: 0,    //정답룰
+        exam_option: ["답1","답2","답3","답4"]  //문제 선지들
+    }
+    //요청할때 마다 문제가 바뀜
+    ```
+
+    오류응답 (code: 500)
+    - `{ err: "empty" }`: 해당 닉네임이 DB에 존재하지 않음
+
+    #### [/vr/userexam/[닉네임]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 사용자가 푼 문제 리턴
+    정상응답 (code: 200)
+    ```javascript
+    {
+        results: 
+            [
+                { 
+                    exam: "문제1",  //문제이름
+                    is_correct: 100 //맞춘여부 (100 이면 맞은거, 0 이면 틀린거)
+                }
+            ],
+    }
+
+    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    ```
+
+    오류응답 (code: 500)
+    - `{ err: "empty" }`: 
+
+
+</details>
+
+-   <details>
+    <summary>POST 요청</summary>
+
+    #### [/vr/iscorrect](http://dmumars.kro.kr/api/vr/iscorrect): 사용자 정답 여부 (유저가 답을 입력한경우 요청바람)
+    요청
+    ```javascript
+    {
+        user_name: "관리자1",   // 닉네임
+        exam_id: 1, // 문제 id
+        iscorrect: 100  // 맞춘경우 100으로, 틀린경우 0으로 설정 바람
+    }
+    ```
+
+    정상응답 (code: 200)
+    ```javascript
+    { results: true }
+    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+    ```
+
+    오류응답 (code: 500)  
+    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 문제 id가 DB에 존재하지 않음
 </details>
 
 ### 안드로이드 스튜디오에서 사용
