@@ -595,7 +595,7 @@ VR 문제 부분
     ```
 
     오류응답 (code: 500)
-    - `{ err: "empty" }`: 해당 닉네임이 DB에 존재하지 않음
+    - `{ err: "empty" }`: 해당 목표 또는 스킬이 DB에 존재하지 않음
 
     #### [/vr/userexam/[닉네임]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 사용자가 푼 문제 리턴
     정상응답 (code: 200)
