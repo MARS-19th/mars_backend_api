@@ -59,7 +59,6 @@ vr_info.get("/vr/getallexam/:mark/:skill", (req, res) => {
             console.error(err);
             res.status(500).json({ err: err.code });
         } else {
-            /* [{문제id, 문제, 선지 [] 정답, 정답률, }] */
             if (!results?.length || !results[0].length) {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });

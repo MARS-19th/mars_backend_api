@@ -158,7 +158,7 @@ public class Request {
             outputjson.put("user_name", "관리자1");
             outputjson.put("look", 1);  //int 데이터
             outputjson.put("color", 2);
-            //  outputjson.put("color", "null"); 값의 null이 들어가능 경우 문자열 "null로"
+            //  outputjson.put("color", JSONObject.NULL); 값의 null이 들어가능 경우 JSONObject.NULL 로 입력
             /*
             해당 구문을 통해 json 형태의 요청 텍스트를 만듬
             {id: "id", look: 1, color: 2} 이런식으로 만들어짐
