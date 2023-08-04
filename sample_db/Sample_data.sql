@@ -45,7 +45,7 @@ insert Shop_item (type, item_name, local, price) values
 
 select *from Shop_item;
 
-insert into More_data values ("https://www.youtube.com/watch?v=pkr48S22zH0", 1), ("https://www.youtube.com/watch?v=--D4WMPEIZI", 2);
+insert into More_data values ("https://www.youtube.com/watch?v=pkr48S22zH0", 1, "타입지정바람"), ("https://www.youtube.com/watch?v=--D4WMPEIZI", 2, "타입지정 바람");
 
 select *from More_data;
 
@@ -140,8 +140,8 @@ INSERT into User_bluetooth VALUES
 SELECT *from User_bluetooth;
 
 insert into User_avatar values
-("관리자1", "식별하는무언가1", "식별하는무언가2", 1),
-("관리자2", "식별하는무언가3", "식별하는무언가4", 2);
+("관리자1", "cat", "식별하는무언가1", "식별하는무언가2", 1),
+("관리자2", "monkey", "식별하는무언가3", "식별하는무언가4", 2);
 
 select *from User_avatar;
 

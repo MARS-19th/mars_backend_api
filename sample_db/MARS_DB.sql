@@ -34,6 +34,7 @@ CREATE TABLE `User_skill` (
 
 CREATE TABLE `User_avatar` (
 	`user_name`	varchar(100)	NOT NULL,
+	`type`	varchar(100)	NOT NULL	COMMENT '고양이, 원숭이',
 	`look`	varchar(100)	NOT NULL,
 	`color`	varchar(100)	NOT NULL,
 	`shop_element1`	int	NULL
@@ -86,7 +87,8 @@ CREATE TABLE `User_bluetooth` (
 
 CREATE TABLE `More_data` (
 	`info_data`	varchar(100)	NOT NULL,
-	`mark_id`	int	NOT NULL
+	`mark_id`	int	NOT NULL,
+	`type`	varchar(100)	NOT NULL	COMMENT '자료타입'
 );
 
 CREATE TABLE `VR_exam` (
@@ -107,6 +109,11 @@ CREATE TABLE `VR_exam_stat` (
 	`user_name`	varchar(100)	NOT NULL,
 	`exam_id`	int	NOT NULL	COMMENT '순차부여',
 	`is_correct`	int	NOT NULL	COMMENT '정답=100, 오답=0'
+);
+
+CREATE TABLE `User_get_title` (
+	`user_name`	varchar(100)	NOT NULL,
+	`user_title`	varchar(100)	NOT NULL
 );
 
 ALTER TABLE `User` ADD CONSTRAINT `PK_USER` PRIMARY KEY (
@@ -184,6 +191,11 @@ ALTER TABLE `VR_exam_stat` ADD CONSTRAINT `PK_VR_EXAM_STAT` PRIMARY KEY (
 	`exam_id`
 );
 
+ALTER TABLE `User_get_title` ADD CONSTRAINT `PK_USER_GET_TITLE` PRIMARY KEY (
+	`user_name`,
+	`user_title`
+);
+
 alter table User_data alter column profile_local set default "default_profile.png";
 alter table User_data alter column user_title set default "새싹";
 alter table User_data alter column life set default 3;
@@ -202,7 +214,6 @@ alter table Shop_item modify object_id INT NOT NULL AUTO_INCREMENT;
 alter table Details_mark modify mark_id INT NOT NULL AUTO_INCREMENT;
 
 alter table VR_exam modify exam_id INT NOT NULL AUTO_INCREMENT;
-
 
 ALTER TABLE `User_data` ADD CONSTRAINT `FK_User_TO_User_data_1` FOREIGN KEY (
 	`user_id`
@@ -365,6 +376,20 @@ REFERENCES `VR_exam` (
 	`exam_id`
 ) on UPDATE CASCADE on DELETE CASCADE;
 
+ALTER TABLE `User_get_title` ADD CONSTRAINT `FK_User_data_TO_User_get_title_1` FOREIGN KEY (
+	`user_name`
+)
+REFERENCES `User_data` (
+	`user_name`
+) on UPDATE CASCADE on DELETE CASCADE;
+
+ALTER TABLE `User_get_title` ADD CONSTRAINT `FK_User_Title_TO_User_get_title_1` FOREIGN KEY (
+	`user_title`
+)
+REFERENCES `User_Title` (
+	`user_title`
+) on UPDATE CASCADE on DELETE CASCADE;
+
 -- vr 평균 트리거 (insert) 
 DELIMITER //
 CREATE TRIGGER VR_rate_insert
@@ -395,5 +420,29 @@ CREATE TRIGGER VR_rate_delete
     FOR EACH ROW
 BEGIN
 	update VR_exam set rate = ifnull((select avg(is_correct) from VR_exam_stat where exam_id = old.exam_id), 0) where exam_id = old.exam_id;
+END; //
+DELIMITER ;
+
+-- 유저 달성 칭호 트리거 (insert)
+DELIMITER //
+CREATE TRIGGER User_get_title_insert
+	AFTER insert
+	ON User_data
+    FOR EACH ROW
+BEGIN
+	insert into User_get_title values (new.user_name, new.user_title);
+END; //
+DELIMITER ;
+
+-- 유저 달성 칭호 트리거 (update)
+DELIMITER //
+CREATE TRIGGER User_get_title_update
+	AFTER update
+	ON User_data
+    FOR EACH ROW
+BEGIN
+	if old.user_title != new.user_title then
+		insert into User_get_title values (new.user_name, new.user_title);
+	end if;
 END; //
 DELIMITER ;

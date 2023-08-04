@@ -79,6 +79,33 @@ user.get("/getfriend/:name", (req, res) => {
     dbconect.end();
 });
 
+// 사용자가 획득한 칭호들 리턴 (닉네임): err or results: [...칭호들]
+user.get("/usergettitle/:name", (req, res) => {    
+    const query = `select user_title from User_get_title where user_name = "${req.params.name}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                results = results.map((line) => {
+                    return line.user_title;
+                });
+                res.json({results});
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
 // 모든 회원 정보 추가 (닉네임, 아이디, 목표, 프사경로): ok or err
 type setuser = {
     user_name: string;

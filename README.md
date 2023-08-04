@@ -133,7 +133,17 @@ body: {
     정상응답 (code: 200)   
     ```javascript
     { results: ["관리자2"] } //유저이름은 관리자1
-    //jsonarray 타입임
+    // jsonarray 타입임
+    ```
+
+    오류응답 (code: 500)  
+    -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+
+     #### [/usergettitle/[유저이름]](http://dmumars.kro.kr/api/usergettitle/관리자1): 해당 유저가 획득한 칭호들 리턴
+    정상응답 (code: 200)
+    ```javascript
+    { results: ["관리자"] }  //유저이름은 관리자1
+    // jsonarray 타입임
     ```
 
     오류응답 (code: 500)  
@@ -359,10 +369,10 @@ body: {
                 },
                 { mark_id: 4, mark_list: "CSS 2주차 강의 듣기", level: 2 }
             ]
-    } 
 
-    /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-    스킬명은 스킬트리에 적힌 스킬명 */
+            /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+            스킬명은 스킬트리에 적힌 스킬명 */
+    }
     ```
 
     오류응답 (code: 500)
@@ -378,11 +388,12 @@ body: {
                     mark_id: 1, //스킬 아이디
                     mark_list: "CSS 1주차 강의 듣기"   //세부목표 내용
                 }, 
-            ] 
+            ]
+            
+            /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+            스킬명은 스킬트리에 적힌 스킬명 */
     }
 
-    /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-    스킬명은 스킬트리에 적힌 스킬명 */
     ```
 
     오류응답 (code: 500)
@@ -402,16 +413,16 @@ body: {
     ```javascript
     {
         results:
-        [
-            {
-                mark_id: 1,    //목표 아이디
-                progress: 100, //진행도
-                date: "2023-07-09T00:00:00.000Z"   //진행날짜
+            [
+                {
+                    mark_id: 1,    //목표 아이디
+                    progress: 100, //진행도
+                    date: "2023-07-09T00:00:00.000Z"   //진행날짜
+                },
+            ]
 
-                /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-                목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 */
-            },
-        ]
+            /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+            목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 */
     }
     ```
 
@@ -422,10 +433,19 @@ body: {
     정상응답 (code: 200)
     ```javascript
     {
-        results: ["https://www.youtube.com/watch?v=asasd", "https://www.youtube.com/watch?v=pkr48S22zH0"]
+        results:
+            [
+                { 
+                    info_data: "https://www.youtube.com/watch?v=8kJwTrs6e-4&t=10s", 
+                    type: "타입지정바람"
+                },
+            ]
 
-        /* 해당 세부목표에 유튜브 링크 같은 요소 제공 
-        목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 */
+            /* 
+            results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+            해당 세부목표에 유튜브 링크 같은 요소 제공 
+            목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 
+            */
     }
     ```
     오류응답 (code: 500)
@@ -518,6 +538,7 @@ body: {
     정상응답 (code: 200)
     ```javascript
     {
+        type: "cat" //아바타 타입(cat, monkey)
         look: "식별하는무언가1",   //표정
         color: "식별하는무언가2"   //색상
     }
@@ -535,6 +556,7 @@ body: {
     ```javascript
     {
         user_name: "관리자1",    //유저 닉네임
+        type: "cat",    //아바타 타입(cat, monkey)
         look: "식별하는무언가", //표정
         color: "식별하는무언가2",   //색상
 
@@ -575,9 +597,11 @@ VR 문제 부분
                 { exam_id: 2, skill_field: "html", exam: "문제2", correct: "답3", rate: 0, exam_option: ["답1","답2","답3","답4"] },
                 { exam_id: 3, skill_field: "css", exam: "문제1", correct: "답4", rate: 0, exam_option: ["답1","답2","답3","답4"] },
                 /* 이하 생략 */
-            ]}
+            ]
 
             // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    }
+            
     ```
 
     오류응답 (code: 500)

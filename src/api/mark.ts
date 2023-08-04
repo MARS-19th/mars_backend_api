@@ -140,7 +140,7 @@ mark.get("/getusermark/:user_name/:skill/:level", (req, res) => {
 
 // 세부목표 추가 정보사항 유튜브 링크 같은거(세부목표 id): [추가정보들] or err
 mark.get("/getmoredata/:mark_id", (req, res) => {
-    const query = `select info_data from More_data where mark_id = ${req.params.mark_id};`;
+    const query = `select info_data, type from More_data where mark_id = ${req.params.mark_id};`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -154,10 +154,6 @@ mark.get("/getmoredata/:mark_id", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                results = results.map((line) => {
-                    return line.info_data;
-                });
-
                 res.json({ results });
             }
         }
