@@ -30,645 +30,661 @@ body: {
 ### API 목록
 회원가입/로그인 부분
 
--   <details>
-    <summary>POST 요청</summary>
+<dl>
+<dd>
+<details>
+<summary>POST 요청</summary>
 
-    #### [/setperson](http://dmumars.kro.kr/api/setperson): 처음 회원 가입시
-    요청
-    ```javascript
-    { id: "id", passwd: "passwd" }
-    ```
+#### [/setperson](http://dmumars.kro.kr/api/setperson): 처음 회원 가입시
+요청
+```javascript
+{ id: "id", passwd: "passwd" }
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "ER_DUP_ENTRY"}`: 아이디가 중복되는 오류
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_DUP_ENTRY"}`: 아이디가 중복되는 오류
 
-    #### [/login](http://dmumars.kro.kr/api/login): 로그인
-    요청
-    ```javascript
-    { id: "admin1", passwd: "admin" }
-    ```
+#### [/login](http://dmumars.kro.kr/api/login): 로그인
+요청
+```javascript
+{ id: "admin1", passwd: "admin" }
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    {
-        user_name: "관리자1",   //이름
-        user_id: "admin1",  //아이디
-        choice_mark: "프로그래밍",  //설정 목표
-        user_title: "관리자",   //칭호
-        profile_local: "default_profile.png",   //프사 경로
-        life: 3,    //목숨
-        money: 0,   //제화
-        level: 1    //레벨
-    }
-    ```
+정상응답 (code: 200)
+```javascript
+{
+    user_name: "관리자1",   //이름
+    user_id: "admin1",  //아이디
+    choice_mark: "프로그래밍",  //설정 목표
+    user_title: "관리자",   //칭호
+    profile_local: "default_profile.png",   //프사 경로
+    life: 3,    //목숨
+    money: 0,   //제화
+    level: 1    //레벨
+}
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "is_new"}`: 회원 가입만 해놓고 아무런 정보를 입력하지 않은 상태<br>
-    -   `{err: "empty"}`: DB에서 해당 회원을 찾을 수 없음(아이디, 페스워드 입력오류)
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "is_new"}`: 회원 가입만 해놓고 아무런 정보를 입력하지 않은 상태<br>
+-   `{err: "empty"}`: DB에서 해당 회원을 찾을 수 없음(아이디, 페스워드 입력오류)
 
-    #### [/deluser](http://dmumars.kro.kr/api/deluser): 회원 탈퇴
-    요청
-    ```javascript
-    { id: "id", passwd: "passwd" }
-    ```
+#### [/deluser](http://dmumars.kro.kr/api/deluser): 회원 탈퇴
+요청
+```javascript
+{ id: "id", passwd: "passwd" }
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 
-    #### [/getuseridpd](http://dmumars.kro.kr/api/getuseridpd): 닉네임으로 아이디, 비번 리턴
-    요청
-    ```javascript
-    { user_name: "관리자1" } //닉네임
-    ```
+#### [/getuseridpd](http://dmumars.kro.kr/api/getuseridpd): 닉네임으로 아이디, 비번 리턴
+요청
+```javascript
+{ user_name: "관리자1" } //닉네임
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { passwd: "admin", id: "admin1" }
-    ```
+정상응답 (code: 200)
+```javascript
+{ passwd: "admin", id: "admin1" }
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
-    -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+-   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+
 </details>
+</dd>
 
 유저 데이터 부분
 
--   <details>
-    <summary>GET 요청</summary>
+<dd>
+<details>
+<summary>GET 요청</summary>
 
-    #### [/getuserdata/[유저이름]](http://dmumars.kro.kr/api/getuserdata/관리자1): 해당 유저의 정보 리턴
-    정상응답 (code: 200)
-    ```javascript
-    {
-        user_name: "관리자1",   //이름
-        user_id: "admin1",  //아이디
-        choice_mark: "프로그래밍",  //설정 목표
-        user_title: "관리자",   //칭호
-        profile_local: "default_profile.png",   //프사 경로
-        life: 3,    //목숨
-        money: 0,   //제화
-        level: 1    //레벨
-        //유저이름은 관리자1
-    }
-    ```
+#### [/getuserdata/[유저이름]](http://dmumars.kro.kr/api/getuserdata/관리자1): 해당 유저의 정보 리턴
+정상응답 (code: 200)
+```javascript
+{
+    user_name: "관리자1",   //이름
+    user_id: "admin1",  //아이디
+    choice_mark: "프로그래밍",  //설정 목표
+    user_title: "관리자",   //칭호
+    profile_local: "default_profile.png",   //프사 경로
+    life: 3,    //목숨
+    money: 0,   //제화
+    level: 1    //레벨
+    //유저이름은 관리자1
+}
+```
 
-    오류응답 (code: 500)
-    -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+오류응답 (code: 500)
+-   `{err: "empty"}`: 해당 유저를 찾을 수 없음
 
-    #### [/getfriend/[유저이름]](http://dmumars.kro.kr/api/getfriend/관리자1): 해당 유저의 친구 목록 리턴
-    정상응답 (code: 200)   
-    ```javascript
-    { results: ["관리자2"] } //유저이름은 관리자1
-    // jsonarray 타입임
-    ```
+#### [/getfriend/[유저이름]](http://dmumars.kro.kr/api/getfriend/관리자1): 해당 유저의 친구 목록 리턴
+정상응답 (code: 200)   
+```javascript
+{ results: ["관리자2"] } //유저이름은 관리자1
+// jsonarray 타입임
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+오류응답 (code: 500)  
+-   `{err: "empty"}`: 해당 유저를 찾을 수 없음
 
-     #### [/usergettitle/[유저이름]](http://dmumars.kro.kr/api/usergettitle/관리자1): 해당 유저가 획득한 칭호들 리턴
-    정상응답 (code: 200)
-    ```javascript
-    { results: ["관리자"] }  //유저이름은 관리자1
-    // jsonarray 타입임
-    ```
+#### [/usergettitle/[유저이름]](http://dmumars.kro.kr/api/usergettitle/관리자1): 해당 유저가 획득한 칭호들 리턴
+정상응답 (code: 200)
+```javascript
+{ results: ["관리자"] }  //유저이름은 관리자1
+// jsonarray 타입임
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+오류응답 (code: 500)  
+-   `{err: "empty"}`: 해당 유저를 찾을 수 없음
 
-    #### [/getbtmac/[유저이름]](http://dmumars.kro.kr/api/getbtmac/관리자1): 해당 유저의 블루투스 mac 주소 리턴
-    정상응답 (code: 200)
-    ```javascript
-    { bt_mac: "bt_mac1" }  //유저이름은 관리자1
-    ```
+#### [/getbtmac/[유저이름]](http://dmumars.kro.kr/api/getbtmac/관리자1): 해당 유저의 블루투스 mac 주소 리턴
+정상응답 (code: 200)
+```javascript
+{ bt_mac: "bt_mac1" }  //유저이름은 관리자1
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+오류응답 (code: 500)  
+-   `{err: "empty"}`: 해당 유저를 찾을 수 없음
 </details>
+</dd>
 
--   <details>
-    <summary>POST 요청</summary>
+<dd>
+<details>
+<summary>POST 요청</summary>
 
-    #### [/setuser](http://dmumars.kro.kr/api/setuser): 유저 정보입력 (최종가입)
-    요청
-    ```javascript
-    {
-        user_name: "name",  //닉네임
-        user_id: "id",  //아이디
-        choice_mark: "프로그래밍",  //선택한 목표
-        profile_local: "프사파일 이름" 또는 null //프사 설정 안할꺼면 null 로 설정
-    }
-    ```
+#### [/setuser](http://dmumars.kro.kr/api/setuser): 유저 정보입력 (최종가입)
+요청
+```javascript
+{
+    user_name: "name",  //닉네임
+    user_id: "id",  //아이디
+    choice_mark: "프로그래밍",  //선택한 목표
+    profile_local: "프사파일 이름" 또는 null //프사 설정 안할꺼면 null 로 설정
+}
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "ER_DUP_ENTRY"}`: 중복발생<br>
-    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 설정하려는 id, 목표가 DB에 없음(외래키 문제)
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_DUP_ENTRY"}`: 중복발생<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 설정하려는 id, 목표가 DB에 없음(외래키 문제)
 
-    #### [/setmoney](http://dmumars.kro.kr/api/setmoney): 유저 재화 조정
-    요청
-    ```javascript
-    { user_name: "관리자1", value: 1000 }
-    ```
+#### [/setmoney](http://dmumars.kro.kr/api/setmoney): 유저 재화 조정
+요청
+```javascript
+{ user_name: "관리자1", value: 1000 }
+```
 
-    정상응답 (code: 200)
+정상응답 (code: 200)
       
-    ```javascript
-    { results: 1000 }   //설정한 value 값
-    ```
+```javascript
+{ results: 1000 }   //설정한 value 값
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 
-    #### [/setlife](http://dmumars.kro.kr/api/setlife): 유저 목숨 조정
-    요청
-    ```javascript
-    { user_name: "관리자1", value: 2 }
-    ```
+#### [/setlife](http://dmumars.kro.kr/api/setlife): 유저 목숨 조정
+요청
+```javascript
+{ user_name: "관리자1", value: 2 }
+```
 
-    정상응답 (code: 200)  
-    ```javascript
-    { results: 2 }  //설정한 value 값
-    ```
+정상응답 (code: 200)  
+```javascript
+{ results: 2 }  //설정한 value 값
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 
-    #### [/setlevel](http://dmumars.kro.kr/api/setlevel): 유저 레벨 조정
-    요청
-    ```javascript
-    { user_name: "관리자1", value: 1 }
-    ```
+#### [/setlevel](http://dmumars.kro.kr/api/setlevel): 유저 레벨 조정
+요청
+```javascript
+{ user_name: "관리자1", value: 1 }
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: 1 }  //설정한 value 값
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: 1 }  //설정한 value 값
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 
-    #### [/setusertitle](http://dmumars.kro.kr/api/setusertitle): 유저 칭호 변경
-    요청
-    ```javascript
-    { user_name: "관리자1", value: "새싹" } //추가 되는 칭호가 있으면 연락 바람
-    ```
+#### [/setusertitle](http://dmumars.kro.kr/api/setusertitle): 유저 칭호 변경
+요청
+```javascript
+{ user_name: "관리자1", value: "새싹" } //추가 되는 칭호가 있으면 연락 바람
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: "새싹" } //설정한 value 값
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: "새싹" } //설정한 value 값
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 설정하려는 칭호가 DB에 없음(외래키 문제)
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 설정하려는 칭호가 DB에 없음(외래키 문제)
 
-    #### [/setname](http://dmumars.kro.kr/api/setname): 유저 이름 변경
-    요청
-    ```javascript
-    {
-        curname: "관리자1", //기존이름
-        newname: "관리자3"  //바꿀이름
-    }
-    ```
+#### [/setname](http://dmumars.kro.kr/api/setname): 유저 이름 변경
+요청
+```javascript
+{
+    curname: "관리자1", //기존이름
+    newname: "관리자3"  //바꿀이름
+}
+```
 
-    정상응답 (code: 200)  
-    ```javascript
-    { results: "관리자3" }  //바꾼이름
-    ```
+정상응답 (code: 200)  
+```javascript
+{ results: "관리자3" }  //바꾼이름
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "exist"}`: 닉네임 중복 발생
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "exist"}`: 닉네임 중복 발생
 
-    #### [/checkname](http://dmumars.kro.kr/api/checkname): 닉네임 중복 체크
-    요청
-    ```javascript
-    { user_name: "닉네임" } //닉네임 
-    ```
+#### [/checkname](http://dmumars.kro.kr/api/checkname): 닉네임 중복 체크
+요청
+```javascript
+{ user_name: "닉네임" } //닉네임 
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: true 또는 false }    //중복이면 false 아니면 true
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: true 또는 false }    //중복이면 false 아니면 true
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 
-    #### [/setfriend](http://dmumars.kro.kr/api/setfriend): 친구추가
-    요청
-    ```javascript
-    {
-        user_name: "관리자1",   //친구추가 요청자 닉네임
-        friend: "관리자2"  //친구 닉네임
-    }
-    ```
+#### [/setfriend](http://dmumars.kro.kr/api/setfriend): 친구추가
+요청
+```javascript
+{
+    user_name: "관리자1",   //친구추가 요청자 닉네임
+    friend: "관리자2"  //친구 닉네임
+}
+```
 
-    정상응답 (code: 200)  
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)  
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "ER_DUP_ENTRY"}`: 이미 친구 상태임
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_DUP_ENTRY"}`: 이미 친구 상태임
 
-    #### [/delfriend](http://dmumars.kro.kr/api/delfriend): 친구삭제
-    요청
-    ```javascript
-    {
-        user_name: "관리자1", // 친삭 요청자 닉네임
-        friend: "관리자2"  // 친구 닉네임
-    }
-    ```
+#### [/delfriend](http://dmumars.kro.kr/api/delfriend): 친구삭제
+요청
+```javascript
+{
+    user_name: "관리자1", // 친삭 요청자 닉네임
+    friend: "관리자2"  // 친구 닉네임
+}
+```
 
-    정상응답 (code: 200)  
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)  
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 
-    #### [/setbtmac](http://dmumars.kro.kr/api/setbtmac): 사용자 블루투스 mac 설정
-    요청
-    ```javascript
-    {
-        user_name: "관리자1",   //닉네임
-        bt_mac: "블루투스 mac 주소" //블루투스 mac주소
-    }
-    ```
+#### [/setbtmac](http://dmumars.kro.kr/api/setbtmac): 사용자 블루투스 mac 설정
+요청
+```javascript
+{
+    user_name: "관리자1",   //닉네임
+    bt_mac: "블루투스 mac 주소" //블루투스 mac주소
+}
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
-    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 해당 닉네임이 DB에 존재하지 않음
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 해당 닉네임이 DB에 존재하지 않음
 
-    #### [/uploadprofile](http://dmumars.kro.kr/api/uploadprofile): 프로필 사진 업로드
-    > 파일 업로드 부분은 예제코드 참고, 파일은 [jpg, jpeg, png] 만 업로드 가능
+#### [/uploadprofile](http://dmumars.kro.kr/api/uploadprofile): 프로필 사진 업로드
+> 파일 업로드 부분은 예제코드 참고, 파일은 [jpg, jpeg, png] 만 업로드 가능
 
-    요청
-    ```javascript
-    { 
-        user_name: "관리자1",   // 닉네임
-        file: "파일경로"    // 파일경로
-    }
-    ```
+요청
+```javascript
+{ 
+    user_name: "관리자1",   // 닉네임
+    file: "파일경로"    // 파일경로
+}
+```
 
-    정상응답 (code: 200)  
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)  
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)
-    -   `{err: "file_upload_err"}`: 파일 업로드 과정에서 오류가 생김<br><br>
+오류응답 (code: 500)
+-   `{err: "file_upload_err"}`: 파일 업로드 과정에서 오류가 생김<br><br>
 </details>
+</dd>
 
 유저 목표 부분
 
--   <details>
-    <summary>GET 요청</summary>
+<dd>
+<details>
+<summary>GET 요청</summary>
 
-    #### [/getdetailmark/[스킬명]](http://dmumars.kro.kr/api/getdetailmark/css): 해당 스킬에 전체 세부목록 리턴
-    정상응답 (code: 200)
-    ```javascript
-    {
-        results:    //스킬명 = css
-            [
-                {
-                    mark_id: 3, //스킬 아이디
-                    mark_list: "CSS 1주차 강의 듣기", // 세부목표 내용 
-                    level: 1    //주차
-                },
-                { mark_id: 4, mark_list: "CSS 2주차 강의 듣기", level: 2 }
-            ]
-
-            /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-            스킬명은 스킬트리에 적힌 스킬명 */
-    }
-    ```
-
-    오류응답 (code: 500)
-    - `{err: "empty"}`: 스킬명이 DB에 존재하지 않음
-
-    #### [/getdetailmark/[스킬명]/[주차]](http://dmumars.kro.kr/api/getdetailmark/css/1): 세부 목표에 id 값과 세부목표를 리턴
-    정상응답 (code: 200)
-    ```javascript
-    { 
-        results:    //스킬명 = css, 주차 = 1
-            [ 
-                {
-                    mark_id: 1, //스킬 아이디
-                    mark_list: "CSS 1주차 강의 듣기"   //세부목표 내용
-                }, 
-            ]
-            
-            /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-            스킬명은 스킬트리에 적힌 스킬명 */
-    }
-
-    ```
-
-    오류응답 (code: 500)
-    - `{err: "empty"}`: 스킬명이나 해당 주차가 DB에 존재하지 않음
-
-    #### [/getuserskill/[유저이름]](http://dmumars.kro.kr/api/getuserskill/관리자1): 해당 유저의 선택한 스킬트리를 리턴
-    정상응답 (code: 200)
-    ```javascript
-    { results: ["css","html","java","python"] }  //선택한 스킬트리
-    ```
-
-    오류응답 (code: 500)
-    - `{err: "empty"}`: 해당 유저가 DB 에 존재하지 않음
-
-    #### [/getusermark/[유저이름]/[스킬명]/[주차]](http://dmumars.kro.kr/api/getusermark/관리자1/html/1): 해당 유저의 세부목표 진행상황 리턴
-    정상응답 (code: 200)
-    ```javascript
-    {
-        results:
-            [
-                {
-                    mark_id: 1,    //목표 아이디
-                    progress: 100, //진행도
-                    date: "2023-07-09T00:00:00.000Z"   //진행날짜
-                },
-            ]
-
-            /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-            목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 */
-    }
-    ```
-
-    오류응답 (code: 500)
-    - `{err: "empty"}`: 이름, 스킬명, 해당주차가 DB에 존재하지 않음
-
-    #### [/getmoredata/[목표 아이디]](http://dmumars.kro.kr/api/getmoredata/1): 해당 세부목표에 추가 자료를 제공 ex) 유튜브 링크같은거
-    정상응답 (code: 200)
-    ```javascript
-    {
-        results:
-            [
-                { 
-                    info_data: "https://www.youtube.com/watch?v=8kJwTrs6e-4&t=10s", 
-                    type: "타입지정바람"
-                },
-            ]
-
-            /* 
-            results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-            해당 세부목표에 유튜브 링크 같은 요소 제공 
-            목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 
-            */
-    }
-    ```
-    오류응답 (code: 500)
-    - `{err: "empty"}`: 해당 목표id 가 존재하지 않음
-
-    #### [/getskilltree/[목표명]](http://dmumars.kro.kr/api/getskilltree/프로그래밍): 해당 목표에 대한 스킬트리 리턴
-    > 목표: 프로그래밍, 등산
-
-    정상응답 (code: 200)
-    ```javascript
-    {
-        results:
+#### [/getdetailmark/[스킬명]](http://dmumars.kro.kr/api/getdetailmark/css): 해당 스킬에 전체 세부목록 리턴
+정상응답 (code: 200)
+```javascript
+{
+    results:    //스킬명 = css
         [
-            { skill_field: "css", skill_level: 1 },
-            { skill_field: "python", skill_level: 1 },
-            { skill_field: "html", skill_level: 1 },
-            { skill_field: "java", skill_level: 1 },
-            { skill_field: "js", skill_level: 2 },
-            { skill_field: "backend", skill_level: 3 },
-            { skill_field: "frontend", skill_level: 3 },
-            { skill_field: "중간시험", skill_level: 4 },
-            { skill_field: "jsp", skill_level: 5 },
-            { skill_field: "node", skill_level: 5 },
-            { skill_field: "diango", skill_level: 5 },
-            { skill_field: "react", skill_level: 5 },
-            { skill_field: "spring", skill_level: 5 },
+            {
+                mark_id: 3, //스킬 아이디
+                mark_list: "CSS 1주차 강의 듣기", // 세부목표 내용 
+                level: 1    //주차
+            },
+            { mark_id: 4, mark_list: "CSS 2주차 강의 듣기", level: 2 }
         ]
 
-        // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-    }
-    ```
+        /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+        스킬명은 스킬트리에 적힌 스킬명 */
+}
+ ```
 
-    오류응답 (code: 500)
-    - `{err: "empty"}`: 해당 목표가 존재하지않음
+오류응답 (code: 500)
+- `{err: "empty"}`: 스킬명이 DB에 존재하지 않음
+
+#### [/getdetailmark/[스킬명]/[주차]](http://dmumars.kro.kr/api/getdetailmark/css/1): 세부 목표에 id 값과 세부목표를 리턴
+정상응답 (code: 200)
+```javascript
+{ 
+    results:    //스킬명 = css, 주차 = 1
+        [ 
+            {
+                mark_id: 1, //스킬 아이디
+                mark_list: "CSS 1주차 강의 듣기"   //세부목표 내용
+            }, 
+        ]
+        
+        /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+        스킬명은 스킬트리에 적힌 스킬명 */
+}
+```
+
+오류응답 (code: 500)
+- `{err: "empty"}`: 스킬명이나 해당 주차가 DB에 존재하지 않음
+
+#### [/getuserskill/[유저이름]](http://dmumars.kro.kr/api/getuserskill/관리자1): 해당 유저의 선택한 스킬트리를 리턴
+정상응답 (code: 200)
+```javascript
+{ results: ["css","html","java","python"] }  //선택한 스킬트리
+```
+
+오류응답 (code: 500)
+- `{err: "empty"}`: 해당 유저가 DB 에 존재하지 않음
+
+#### [/getusermark/[유저이름]/[스킬명]/[주차]](http://dmumars.kro.kr/api/getusermark/관리자1/html/1): 해당 유저의 세부목표 진행상황 리턴
+정상응답 (code: 200)
+```javascript
+{
+    results:
+        [
+            {
+                mark_id: 1,    //목표 아이디
+                progress: 100, //진행도
+                date: "2023-07-09T00:00:00.000Z"   //진행날짜
+            },
+        ]
+
+        /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+        목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 */
+}
+```
+
+오류응답 (code: 500)
+- `{err: "empty"}`: 이름, 스킬명, 해당주차가 DB에 존재하지 않음
+
+#### [/getmoredata/[목표 아이디]](http://dmumars.kro.kr/api/getmoredata/1): 해당 세부목표에 추가 자료를 제공 ex) 유튜브 링크같은거
+정상응답 (code: 200)
+```javascript
+{
+    results:
+        [
+            { 
+                info_data: "https://www.youtube.com/watch?v=8kJwTrs6e-4&t=10s", 
+                type: "타입지정바람"
+            },
+        ]
+
+        /* 
+        results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+        해당 세부목표에 유튜브 링크 같은 요소 제공 
+        목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 
+        */
+}
+```
+
+오류응답 (code: 500)
+- `{err: "empty"}`: 해당 목표id 가 존재하지 않음
+
+#### [/getskilltree/[목표명]](http://dmumars.kro.kr/api/getskilltree/프로그래밍): 해당 목표에 대한 스킬트리 리턴
+> 목표: 프로그래밍, 등산
+
+정상응답 (code: 200)
+```javascript
+{
+    results:
+    [
+        { skill_field: "css", skill_level: 1 },
+        { skill_field: "python", skill_level: 1 },
+        { skill_field: "html", skill_level: 1 },
+        { skill_field: "java", skill_level: 1 },
+        { skill_field: "js", skill_level: 2 },
+        { skill_field: "backend", skill_level: 3 },
+        { skill_field: "frontend", skill_level: 3 },
+        { skill_field: "중간시험", skill_level: 4 },
+        { skill_field: "jsp", skill_level: 5 },
+        { skill_field: "node", skill_level: 5 },
+        { skill_field: "diango", skill_level: 5 },
+        { skill_field: "react", skill_level: 5 },
+        { skill_field: "spring", skill_level: 5 },
+    ]
+
+    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+}
+```
+
+오류응답 (code: 500)
+- `{err: "empty"}`: 해당 목표가 존재하지않음
 </details>
+</dd>
 
--   <details>
-    <summary>POST 요청</summary>
+<dd>
+<details>
+<summary>POST 요청</summary>
 
-    #### [/setuserskill](http://dmumars.kro.kr/api/setuserskill): 사용자 스킬트리 추가
-    요청
-    ```javascript
-    {
-        user_name: "관리자1",   //닉네임
-        skill: "js" //추가할 스킬
-    }
-    ```
+#### [/setuserskill](http://dmumars.kro.kr/api/setuserskill): 사용자 스킬트리 추가
+요청
+```javascript
+{
+    user_name: "관리자1",   //닉네임
+    skill: "js" //추가할 스킬
+}
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 추가할 스킬이 DB에 존재하지 않음<br>
-    -   `{err: "ER_DUP_ENTRY"}`: 이미 추가된 스킬
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 추가할 스킬이 DB에 존재하지 않음<br>
+-   `{err: "ER_DUP_ENTRY"}`: 이미 추가된 스킬
 
-    #### [/setuserdetailskill](http://dmumars.kro.kr/api/setuserdetailskill): 사용자 세부진행 목표 설정
-    요청
-    ```javascript
-    {
-        user_name: "관리자1",   //닉네임
-        mark_id: 1, //목표아이디
-        progress: 100,  //진행도
+#### [/setuserdetailskill](http://dmumars.kro.kr/api/setuserdetailskill): 사용자 세부진행 목표 설정
+요청
+```javascript
+{
+    user_name: "관리자1",   //닉네임
+    mark_id: 1, //목표아이디
+    progress: 100,  //진행도
 
-        /* 세부 목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것
-        세부목표 추가시 연락할것 */
-    }
-    ```
+    /* 세부 목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것
+    세부목표 추가시 연락할것 */
+}
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 목표아이디가 DB에 존재하지 않음
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 목표아이디가 DB에 존재하지 않음
 </details>
+</dd>
 
 아바타 설정/상점 아이템 부분
 
--   <details>
-    <summary>GET 요청</summary>
+<dd>
+<details>
+<summary>GET 요청</summary>
 
-    #### [/getuseravatar/[유저이름]](http://dmumars.kro.kr/api/getuseravatar/관리자1): 유저의 아바타 파일들 불러오기
-    정상응답 (code: 200)
-    ```javascript
-    {
-        type: "cat" //아바타 타입(cat, monkey)
-        look: "식별하는무언가1",   //표정
-        color: "식별하는무언가2"   //색상
-    }
-    ```
+#### [/getuseravatar/[유저이름]](http://dmumars.kro.kr/api/getuseravatar/관리자1): 유저의 아바타 파일들 불러오기
+정상응답 (code: 200)
+```javascript
+{
+    type: "cat" //아바타 타입(cat, monkey)
+    look: "식별하는무언가1",   //표정
+    color: "식별하는무언가2"   //색상
+}
+```
 
-    오류응답 (code: 500)
-    - `{ err: "empty" }`: 해당 유저가 DB 에 존재하지 않음
+오류응답 (code: 500)
+- `{ err: "empty" }`: 해당 유저가 DB 에 존재하지 않음
 </details>
 
--   <details>
-    <summary>POST 요청</summary>
+<details>
+<summary>POST 요청</summary>
 
-    #### [/setuseravatar](http://dmumars.kro.kr/api/setuseravatar): 유저 아바타 파일 저장
-    요청
-    ```javascript
-    {
-        user_name: "관리자1",    //유저 닉네임
-        type: "cat",    //아바타 타입(cat, monkey)
-        look: "식별하는무언가", //표정
-        color: "식별하는무언가2",   //색상
+#### [/setuseravatar](http://dmumars.kro.kr/api/setuseravatar): 유저 아바타 파일 저장
+요청
+```javascript
+{
+    user_name: "관리자1",    //유저 닉네임
+    type: "cat",    //아바타 타입(cat, monkey)
+    look: "식별하는무언가", //표정
+    color: "식별하는무언가2",   //색상
 
-        /* 프론트에서 유저가 선택한 표정이랑 색상정보를 식별할수 있는 값으로 저장 해야함 */
-    }
-    ```
+    /* 프론트에서 유저가 선택한 표정이랑 색상정보를 식별할수 있는 값으로 저장 해야함 */
+}
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임이 DB에 존재하지 않음
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임이 DB에 존재하지 않음
 </details>
+</dd>
 
 VR 문제 부분
 
--   <details>
-    <summary>GET 요청</summary>
+<dd>
+<details>
+<summary>GET 요청</summary>
 
-    #### [/vr/getallexam/[목표명]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍): 해당 목표에 모든 문제들 리턴
-    정상응답 (code: 200)
-    ```javascript
-    {
-        "results":  //목표명 = 프로그래밍
-            [
-                {
-                    exam_id: 1, //문제 id
-                    skill_field: "html",    //타겟스킬
-                    exam: "문제1",  //문제명
-                    correct: "답2", //정답
-                    rate: 50,   //정답률
-                    exam_option: ["답1","답2","답3","답4"]  //문제 선지들
-                },
-                { exam_id: 2, skill_field: "html", exam: "문제2", correct: "답3", rate: 0, exam_option: ["답1","답2","답3","답4"] },
-                { exam_id: 3, skill_field: "css", exam: "문제1", correct: "답4", rate: 0, exam_option: ["답1","답2","답3","답4"] },
-                /* 이하 생략 */
-            ]
+#### [/vr/getallexam/[목표명]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍): 해당 목표에 모든 문제들 리턴
+정상응답 (code: 200)
+```javascript
+{
+    "results":  //목표명 = 프로그래밍
+        [
+            {
+                exam_id: 1, //문제 id
+                skill_field: "html",    //타겟스킬
+                exam: "문제1",  //문제명
+                correct: "답2", //정답
+                rate: 50,   //정답률
+                exam_option: ["답1","답2","답3","답4"]  //문제 선지들
+            },
+            { exam_id: 2, skill_field: "html", exam: "문제2", correct: "답3", rate: 0, exam_option: ["답1","답2","답3","답4"] },
+            { exam_id: 3, skill_field: "css", exam: "문제1", correct: "답4", rate: 0, exam_option: ["답1","답2","답3","답4"] },
+            /* 이하 생략 */
+        ]
 
-            // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-    }
-            
-    ```
+        // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+}  
+```
 
-    오류응답 (code: 500)
-    - `{ err: "empty" }`: 해당 목표가 DB에 존재하지 않음
+오류응답 (code: 500)
+- `{ err: "empty" }`: 해당 목표가 DB에 존재하지 않음
 
-    #### [/vr/getallexam/[목표명]/[스킬명]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 해당 목표와 스킬에 대한 랜덤 문제 리턴
-    정상응답 (code: 200)
-    ```javascript
-    // 목표 = 프로그래밍, 스킬 = html
-    {   
-        exam_id: 2, //문재 id
-        exam: "문제2",  //문제명
-        correct: "답3", //정답
-        rate: 0,    //정답룰
-        exam_option: ["답1","답2","답3","답4"]  //문제 선지들
-    }
-    //요청할때 마다 문제가 바뀜
-    ```
+#### [/vr/getallexam/[목표명]/[스킬명]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 해당 목표와 스킬에 대한 랜덤 문제 리턴
+정상응답 (code: 200)
+```javascript
+// 목표 = 프로그래밍, 스킬 = html
+{   
+    exam_id: 2, //문재 id
+    exam: "문제2",  //문제명
+    correct: "답3", //정답
+    rate: 0,    //정답룰
+    exam_option: ["답1","답2","답3","답4"]  //문제 선지들
+}
+//요청할때 마다 문제가 바뀜
+```
 
-    오류응답 (code: 500)
-    - `{ err: "empty" }`: 해당 목표 또는 스킬이 DB에 존재하지 않음
+오류응답 (code: 500)
+- `{ err: "empty" }`: 해당 목표 또는 스킬이 DB에 존재하지 않음
 
-    #### [/vr/userexam/[닉네임]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 사용자가 푼 문제 리턴
-    정상응답 (code: 200)
-    ```javascript
-    {
-        results: 
-            [
-                { 
-                    exam: "문제1",  //문제이름
-                    is_correct: 100 //맞춘여부 (100 이면 맞은거, 0 이면 틀린거)
-                }
-            ],
-    }
+#### [/vr/userexam/[닉네임]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 사용자가 푼 문제 리턴
+정상응답 (code: 200)
+```javascript
+{
+    results: 
+        [
+            { 
+                exam: "문제1",  //문제이름
+                is_correct: 100 //맞춘여부 (100 이면 맞은거, 0 이면 틀린거)
+            }
+        ],
+}
 
-    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-    ```
+// results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+```
 
-    오류응답 (code: 500)
-    - `{ err: "empty" }`: 해당 닉네임이 DB에 존재하지 않음
-
-
+오류응답 (code: 500)
+- `{ err: "empty" }`: 해당 닉네임이 DB에 존재하지 않음
 </details>
+</dd>
 
--   <details>
-    <summary>POST 요청</summary>
+<dd>
+<details>
+<summary>POST 요청</summary>
 
-    #### [/vr/iscorrect](http://dmumars.kro.kr/api/vr/iscorrect): 사용자 정답 여부 (유저가 답을 입력한경우 요청바람)
-    요청
-    ```javascript
-    {
-        user_name: "관리자1",   // 닉네임
-        exam_id: 1, // 문제 id
-        iscorrect: 100  // 맞춘경우 100으로, 틀린경우 0으로 설정 바람
-    }
-    ```
+#### [/vr/iscorrect](http://dmumars.kro.kr/api/vr/iscorrect): 사용자 정답 여부 (유저가 답을 입력한경우 요청바람)
+요청
+```javascript
+{
+    user_name: "관리자1",   // 닉네임
+    exam_id: 1, // 문제 id
+    iscorrect: 100  // 맞춘경우 100으로, 틀린경우 0으로 설정 바람
+}
+```
 
-    정상응답 (code: 200)
-    ```javascript
-    { results: true }
-    // 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
-    ```
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
 
-    오류응답 (code: 500)  
-    -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
-    -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 문제 id가 DB에 존재하지 않음
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 문제 id가 DB에 존재하지 않음
 </details>
+</dd>
+</dl>
 
 ### 안드로이드 스튜디오에서 사용
 #### HTTP 설정
