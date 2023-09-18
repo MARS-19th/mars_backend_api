@@ -28,9 +28,34 @@ user.get("/getuserdata/:name", (req, res) => {
     dbconect.end();
 });
 
-// 회원 블루투스 mac 리턴 (유저이름): err or bt_mac
-user.get("/getbtmac/:name", (req, res) => {
-    const query = `select bt_mac from User_bluetooth where user_name = "${req.params.name}";`;
+// 회원 블루투스 uuid 리턴 (유저이름): err or bt_mac
+user.get("/getuserbtuuid/:name", (req, res) => {
+    const query = `select bt_uuid from User_bluetooth_UUID where user_name = "${req.params.name}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                res.json(results[0]);
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
+// 회원 블루투스 uuid 로 사용자 정보들 리턴 err or 모든 유저 정보
+user.get("/getbtuserdata/:uuid", (req, res) => {
+    const query = `select *from User_data where user_name = 
+    (select user_name from User_bluetooth_UUID where bt_uuid = "${req.params.uuid}")`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -148,24 +173,24 @@ user.post("/setuser", (req: TypedRequestBody<setuser>, res) => {
     dbconect.end();
 });
 
-//블루투스 mac 설정 (닉네임, mac 주소): err or ok
+//유저 블루투스 uuid 설정 (닉네임, mac 주소): err or ok
 type setbtmac = {
     user_name: string;
-    bt_mac: string;
+    bt_uuid: string;
 };
 const setbtmac = {
     user_name: "string",
-    bt_mac: "string",
+    bt_uuid: "string",
 };
-user.post("/setbtmac", (req: TypedRequestBody<setbtmac>, res) => {
+user.post("/setuserbtuuid", (req: TypedRequestBody<setbtmac>, res) => {
     if (!sameobj(setbtmac, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setbtmac });
         return;
     }
 
-    const query = `insert into User_bluetooth values ("${req.body.user_name}", "${req.body.bt_mac}") 
-    on duplicate key update bt_mac = "${req.body.bt_mac}";`;
+    const query = `insert into User_bluetooth_UUID values ("${req.body.user_name}", "${req.body.bt_uuid}") 
+    on duplicate key update bt_uuid = "${req.body.bt_uuid}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();

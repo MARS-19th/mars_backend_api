@@ -80,9 +80,9 @@ CREATE TABLE `User_space` (
 	`element2`	int	NULL
 );
 
-CREATE TABLE `User_bluetooth` (
-	`user_name`	varchar(100)	NOT NULL,
-	`bt_mac`	varchar(100)	NOT NULL
+CREATE TABLE `User_bluetooth_UUID` (
+    `user_name`	varchar(100)	NOT NULL,
+    `bt_uuid`	varchar(100)	NOT NULL
 );
 
 CREATE TABLE `More_data` (
@@ -168,8 +168,8 @@ ALTER TABLE `User_space` ADD CONSTRAINT `PK_USER_SPACE` PRIMARY KEY (
 	`user_name`
 );
 
-ALTER TABLE `User_bluetooth` ADD CONSTRAINT `PK_USER_BLUETOOTH` PRIMARY KEY (
-	`user_name`
+ALTER TABLE `User_bluetooth_UUID` ADD CONSTRAINT `PK_USER_BLUETOOTH_UUID` PRIMARY KEY (
+    `user_name`
 );
 
 ALTER TABLE `More_data` ADD CONSTRAINT `PK_MORE_DATA` PRIMARY KEY (
@@ -334,11 +334,11 @@ REFERENCES `Shop_item` (
 	`object_id`
 ) on UPDATE CASCADE on DELETE set NULL;
 
-ALTER TABLE `User_bluetooth` ADD CONSTRAINT `FK_User_data_TO_User_Bluetooth_1` FOREIGN KEY (
-	`user_name`
+ALTER TABLE `User_bluetooth_UUID` ADD CONSTRAINT `FK_User_data_TO_User_bluetooth_UUID_1` FOREIGN KEY (
+    `user_name`
 )
 REFERENCES `User_data` (
-	`user_name`
+    `user_name`
 ) on UPDATE CASCADE on DELETE CASCADE;
 
 ALTER TABLE `More_data` ADD CONSTRAINT `FK_Details_mark_TO_More_data_1` FOREIGN KEY (
