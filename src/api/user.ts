@@ -174,18 +174,18 @@ user.post("/setuser", (req: TypedRequestBody<setuser>, res) => {
 });
 
 //유저 블루투스 uuid 설정 (닉네임, mac 주소): err or ok
-type setbtmac = {
+type setuserbtuuid = {
     user_name: string;
     bt_uuid: string;
 };
-const setbtmac = {
+const setuserbtuuid = {
     user_name: "string",
     bt_uuid: "string",
 };
-user.post("/setuserbtuuid", (req: TypedRequestBody<setbtmac>, res) => {
-    if (!sameobj(setbtmac, req.body)) {
+user.post("/setuserbtuuid", (req: TypedRequestBody<setuserbtuuid>, res) => {
+    if (!sameobj(setuserbtuuid, req.body)) {
         console.error("값이 잘못넘어옴");
-        res.status(500).json({ err: "type_err", type: setbtmac });
+        res.status(500).json({ err: "type_err", type: setuserbtuuid });
         return;
     }
 
