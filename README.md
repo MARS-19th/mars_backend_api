@@ -163,7 +163,7 @@ body: {
 오류응답 (code: 500)  
 -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
 
-#### [/getbtuserdata/[uuid]](http://dmumars.kro.kr/api/getbtuserdata/e02a6f45-b516-4bc8-8e9f-9835fe0be8a0): 해당 블루투스 uuid에 해당하는 유저 데이터 리턴
+#### [/getbtuserdata/[uuid]](http://dmumars.kro.kr/api/getbtuserdata/1c99ad9c-8767-40d9-83f2-3d64e3e95d32): 해당 블루투스 uuid에 해당하는 유저 데이터 리턴
 정상응답 (code: 200)
 ```javascript
 {
