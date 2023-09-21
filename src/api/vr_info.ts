@@ -4,9 +4,10 @@ import mysql = require("mysql");
 import { TypedRequestBody, sameobj, serverset } from "../server";
 const vr_info = express.Router();
 
-// 해당 목표에 모든 문제들 리턴(목표): [{문제id, 스킬, 문제, 정답, 정답률, 선지 []}]
+// 해당 목표에 모든 문제들 리턴(목표): [{문제id, 스킬, 문제, 정답, 문제타입, 정답률, 선지 []}]
+// 문제타입은 4지선다="stand" ox 문제="ox"
 vr_info.get("/vr/getallexam/:mark", (req, res) => {
-    const query = `select exam_id, skill_field, exam, correct, rate from VR_exam where 
+    const query = `select exam_id, skill_field, exam, correct, exam_type, rate from VR_exam where 
     target_mark = "${req.params.mark}";
     select exam_id, exam_option from VR_exam_option where exam_id in (select exam_id from VR_exam where 
     target_mark = "${req.params.mark}");`;
@@ -44,12 +45,13 @@ vr_info.get("/vr/getallexam/:mark", (req, res) => {
     dbconect.end();
 });
 
-// 해당 목표와 스킬에 대한 랜덤 문제 리턴(목표, 스킬): {문제id, 문제, 정답, 정답률, 선지 []}
-vr_info.get("/vr/getallexam/:mark/:skill", (req, res) => {
+// 해당 목표와 스킬에 대한 특정 랜덤 문제 리턴(목표, 스킬, 문제타입): {문제id, 문제, 정답, 정답률, 선지 []}
+// 문제타입은 4지선다="stand" ox 문제="ox"
+vr_info.get("/vr/getallexam/:mark/:skill/:type", (req, res) => {
     const query = `select exam_id, exam, correct, rate from VR_exam where 
-    target_mark = "${req.params.mark}" && skill_field = "${req.params.skill}";
+    target_mark = "${req.params.mark}" && skill_field = "${req.params.skill}" && exam_type = "${req.params.type}";
     select exam_id, exam_option from VR_exam_option where exam_id in (select exam_id from VR_exam where 
-    target_mark = "${req.params.mark}" && skill_field = "${req.params.skill}");`;
+    target_mark = "${req.params.mark}" && skill_field = "${req.params.skill}" && exam_type = "${req.params.type}");`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();

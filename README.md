@@ -357,7 +357,6 @@ body: {
 
 #### [/uploadprofile](http://dmumars.kro.kr/api/uploadprofile): 프로필 사진 업로드
 > 파일 업로드 부분은 예제코드 참고, 파일은 [jpg, jpeg, png] 만 업로드 가능
-
 요청
 ```javascript
 { 
@@ -622,13 +621,12 @@ VR 문제 부분
             {
                 exam_id: 1, //문제 id
                 skill_field: "html",    //타겟스킬
-                exam: "문제1",  //문제명
-                correct: "답2", //정답
+                exam: "HTML에서 외부 링크를 생성하는 태그는 무엇인가요?",  //문제명
+                correct: "<a>", //정답
+                exam_type: "stand", //문제타입 (4지선다=stand, ox=ox)
                 rate: 50,   //정답률
-                exam_option: ["답1","답2","답3","답4"]  //문제 선지들
+                exam_option: ["<a>","<href>","<link>","<src>"]  //문제 선지들
             },
-            { exam_id: 2, skill_field: "html", exam: "문제2", correct: "답3", rate: 0, exam_option: ["답1","답2","답3","답4"] },
-            { exam_id: 3, skill_field: "css", exam: "문제1", correct: "답4", rate: 0, exam_option: ["답1","답2","답3","답4"] },
             /* 이하 생략 */
         ]
 
@@ -639,10 +637,11 @@ VR 문제 부분
 오류응답 (code: 500)
 - `{ err: "empty" }`: 해당 목표가 DB에 존재하지 않음
 
-#### [/vr/getallexam/[목표명]/[스킬명]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 해당 목표와 스킬에 대한 랜덤 문제 리턴
+#### [/vr/getallexam/[목표명]/[스킬명]/[문제타입]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html/stand): 해당 목표와 스킬, 문제타입에 대한 랜덤 문제 리턴
+> 문제타입: 4지선다="stand" ox문제="ox"로 표기
 정상응답 (code: 200)
 ```javascript
-// 목표 = 프로그래밍, 스킬 = html
+// 목표 = 프로그래밍, 스킬 = html, 문제타입 = stand
 {   
     exam_id: 2, //문재 id
     exam: "문제2",  //문제명

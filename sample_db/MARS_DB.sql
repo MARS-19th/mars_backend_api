@@ -97,8 +97,8 @@ CREATE TABLE `VR_exam` (
 	`skill_field`	varchar(100)	NOT NULL	COMMENT 'html, css...',
 	`exam`	varchar(100)	NOT NULL,
 	`correct`	varchar(100)	NOT NULL,
-	`rate`	int	NOT NULL	COMMENT 'VR_exam_stat 트리거 설정',
-	`exam_type`	varchar(100)	NOT NULL	COMMENT 'ox문제=ox, 4지선다=stand 로'
+	`exam_type`	varchar(100)	NOT NULL	COMMENT 'ox문제=ox, 4지선다=stand 로',
+	`rate`	int	NOT NULL	COMMENT 'VR_exam_stat 트리거 설정'
 );
 
 CREATE TABLE `VR_exam_option` (
