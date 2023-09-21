@@ -154,14 +154,32 @@ body: {
 오류응답 (code: 500)  
 -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
 
-#### [/getbtmac/[유저이름]](http://dmumars.kro.kr/api/getbtmac/관리자1): 해당 유저의 블루투스 mac 주소 리턴
+#### [/getuserbtuuid/[유저이름]](http://dmumars.kro.kr/api/getuserbtuuid/관리자1): 해당 유저의 블루투스 uuid 주소 리턴
 정상응답 (code: 200)
 ```javascript
-{ bt_mac: "bt_mac1" }  //유저이름은 관리자1
+{ bt_uuid: "e02a6f45-b516-4bc8-8e9f-9835fe0be8a0" }  //유저이름은 관리자1
 ```
 
 오류응답 (code: 500)  
 -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+
+#### [/getbtuserdata/[uuid]](http://dmumars.kro.kr/api/getbtuserdata/1c99ad9c-8767-40d9-83f2-3d64e3e95d32): 해당 블루투스 uuid에 해당하는 유저 데이터 리턴
+정상응답 (code: 200)
+```javascript
+{
+    user_name: "관리자1",   //이름
+    user_id: "admin1",  //아이디
+    choice_mark: "프로그래밍",  //설정 목표
+    user_title: "관리자",   //칭호
+    profile_local: "default_profile.png",   //프사 경로
+    life: 3,    //목숨
+    money: 0,   //제화
+    level: 1    //레벨
+}
+```
+
+오류응답 (code: 500)  
+-   `{err: "empty"}`: 해당 uuid에 해당하는 유저를 찾을 수 없음
 </details>
 </dd>
 
@@ -318,12 +336,12 @@ body: {
 오류응답 (code: 500)
 -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 
-#### [/setbtmac](http://dmumars.kro.kr/api/setbtmac): 사용자 블루투스 mac 설정
+#### [/setuserbtuuid](http://dmumars.kro.kr/api/setuserbtuuid): 사용자 블루투스 uuid 설정
 요청
 ```javascript
 {
     user_name: "관리자1",   //닉네임
-    bt_mac: "블루투스 mac 주소" //블루투스 mac주소
+    bt_uuid: "블루투스 mac 주소" //블루투스 mac주소
 }
 ```
 
