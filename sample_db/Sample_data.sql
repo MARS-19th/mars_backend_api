@@ -49,15 +49,15 @@ insert into More_data values ("https://www.youtube.com/watch?v=pkr48S22zH0", 1, 
 
 select *from More_data;
 
-insert into VR_exam (target_mark, skill_field, exam, correct) values 
-("프로그래밍", "html", "문제1", "답2"),
-("프로그래밍", "html", "문제2", "답3"),
-("프로그래밍", "css", "문제1", "답4"),
-("프로그래밍", "css", "문제2", "답1"),
-("프로그래밍", "java", "문제1", "답3"),
-("프로그래밍", "java", "문제2", "답4"),
-("프로그래밍", "js", "문제1", "답1"),
-("프로그래밍", "js", "문제2", "답3");
+insert into VR_exam (target_mark, skill_field, exam, correct, exam_type) values 
+("프로그래밍", "html", "문제1", "답2", "stand"),
+("프로그래밍", "html", "문제2", "답3", "stand"),
+("프로그래밍", "css", "문제1", "답4", "stand"),
+("프로그래밍", "css", "문제2", "답1", "stand"),
+("프로그래밍", "java", "문제1", "답3", "stand"),
+("프로그래밍", "java", "문제2", "답4", "stand"),
+("프로그래밍", "js", "문제1", "답1", "stand"),
+("프로그래밍", "js", "문제2", "답3", "stand");
 
 select *from VR_exam;
 
