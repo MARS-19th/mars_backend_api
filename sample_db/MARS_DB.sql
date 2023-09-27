@@ -117,6 +117,20 @@ CREATE TABLE `User_get_title` (
 	`user_title`	varchar(100)	NOT NULL
 );
 
+CREATE TABLE `Date_mark` (
+    `mark_id`	int	NOT NULL	COMMENT '순차부여',
+    `target_mark`	varchar(100)	NOT NULL	COMMENT '프로그래밍, 등산',
+    `skill_field`	varchar(100)	NOT NULL	COMMENT 'html, css...',
+    `mark_list`	varchar(100)	NOT NULL	COMMENT '목표 주제',
+    `type`	varchar(100)	NOT NULL	COMMENT '일간, 주간'
+);
+
+CREATE TABLE `User_date_mark` (
+	`user_name`	varchar(100)	NOT NULL,
+	`mark_id`	int	NOT NULL,
+	`is_clear`	tinyint(1)	NOT NULL	COMMENT 'ture, false'
+);
+
 ALTER TABLE `User` ADD CONSTRAINT `PK_USER` PRIMARY KEY (
 	`id`
 );
@@ -197,6 +211,15 @@ ALTER TABLE `User_get_title` ADD CONSTRAINT `PK_USER_GET_TITLE` PRIMARY KEY (
 	`user_title`
 );
 
+ALTER TABLE `Date_mark` ADD CONSTRAINT `PK_DATE_MARK` PRIMARY KEY (
+	`mark_id`
+);
+
+ALTER TABLE `User_date_mark` ADD CONSTRAINT `PK_USER_DATE_MARK` PRIMARY KEY (
+	`user_name`,
+	`mark_id`
+);
+
 alter table User_data alter column profile_local set default "default_profile.png";
 alter table User_data alter column user_title set default "새싹";
 alter table User_data alter column life set default 3;
@@ -215,6 +238,8 @@ alter table Shop_item modify object_id INT NOT NULL AUTO_INCREMENT;
 alter table Details_mark modify mark_id INT NOT NULL AUTO_INCREMENT;
 
 alter table VR_exam modify exam_id INT NOT NULL AUTO_INCREMENT;
+
+alter table Date_mark modify mark_id INT NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `User_data` ADD CONSTRAINT `FK_User_TO_User_data_1` FOREIGN KEY (
 	`user_id`
@@ -389,6 +414,34 @@ ALTER TABLE `User_get_title` ADD CONSTRAINT `FK_User_Title_TO_User_get_title_1` 
 )
 REFERENCES `User_Title` (
 	`user_title`
+) on UPDATE CASCADE on DELETE CASCADE;
+
+ALTER TABLE `Date_mark` ADD CONSTRAINT `FK_Skill_Mark_TO_Date_mark_1` FOREIGN KEY (
+	`skill_field`
+)
+REFERENCES `Skill_Mark` (
+	`skill_field`
+) on UPDATE CASCADE on DELETE CASCADE;
+
+ALTER TABLE `Date_mark` ADD CONSTRAINT `FK_Skill_Mark_TO_Date_mark_2` FOREIGN KEY (
+	`target_mark`
+)
+REFERENCES `Skill_Mark` (
+	`target_mark`
+) on UPDATE CASCADE on DELETE CASCADE;
+
+ALTER TABLE `User_date_mark` ADD CONSTRAINT `FK_User_data_TO_User_date_mark_1` FOREIGN KEY (
+	`user_name`
+)
+REFERENCES `User_data` (
+	`user_name`
+) on UPDATE CASCADE on DELETE CASCADE;
+
+ALTER TABLE `User_date_mark` ADD CONSTRAINT `FK_Date_mark_TO_User_date_mark_1` FOREIGN KEY (
+	`mark_id`
+)
+REFERENCES `Date_mark` (
+	`mark_id`
 ) on UPDATE CASCADE on DELETE CASCADE;
 
 -- vr 평균 트리거 (insert) 

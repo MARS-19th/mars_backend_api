@@ -37,17 +37,37 @@ INSERT into Details_mark (target_mark, skill_field, mark_list, level) VALUES
 
 SELECT *from Details_mark;
 
-insert Shop_item (type, item_name, local, price) values 
+insert into More_data values ("https://www.youtube.com/watch?v=pkr48S22zH0", 1, "타입지정바람"), ("https://www.youtube.com/watch?v=--D4WMPEIZI", 2, "타입지정 바람");
+
+select *from More_data;
+
+insert into Date_mark(target_mark, skill_field, mark_list, type) values
+("프로그래밍", "html", "일간목표1", "일간"),
+("프로그래밍", "html", "일간목표2", "일간"),
+("프로그래밍", "html", "주간목표1", "주간"),
+("프로그래밍", "html", "주간목표2", "주간"),
+("프로그래밍", "css", "일간목표1", "일간"),
+("프로그래밍", "css", "일간목표2", "일간"),
+("프로그래밍", "css", "주간목표1", "주간"),
+("프로그래밍", "css", "주간목표2", "주간"),
+("프로그래밍", "java", "일간목표1", "일간"),
+("프로그래밍", "java", "일간목표2", "일간"),
+("프로그래밍", "java", "주간목표1", "주간"),
+("프로그래밍", "java", "주간목표2", "주간"),
+("프로그래밍", "python", "일간목표1", "일간"),
+("프로그래밍", "python", "일간목표2", "일간"),
+("프로그래밍", "python", "주간목표1", "주간"),
+("프로그래밍", "python", "주간목표2", "주간");
+
+select *from Date_mark;
+
+insert into Shop_item (type, item_name, local, price) values
 ("shop", "1번템", "object.png", 1000),
 ("shop", "2번템", "object.png", 1000),
 ("shop", "3번템", "object.png", 1000),
 ("shop", "4번템", "object.png", 1000);
 
 select *from Shop_item;
-
-insert into More_data values ("https://www.youtube.com/watch?v=pkr48S22zH0", 1, "타입지정바람"), ("https://www.youtube.com/watch?v=--D4WMPEIZI", 2, "타입지정 바람");
-
-select *from More_data;
 
 insert into VR_exam (target_mark, skill_field, exam, correct, exam_type) values 
 ("프로그래밍", "html", "문제1", "답2", "stand"),
@@ -132,6 +152,14 @@ INSERT into User_mark VALUES
 ("관리자1", 1, 100, current_time()), ("관리자2", 4, 100, current_time());
 
 SELECT *from User_mark;
+
+insert into User_date_mark values
+("관리자1", 1, true),
+("관리자1", 2, false),
+("관리자2", 3, true),
+("관리자2", 4, false);
+
+select  *from User_date_mark;
 
 INSERT into User_bluetooth_UUID VALUES
 ("관리자1", "c4ab6dc8-e2ce-4fa4-a6b6-76f49309ae14"),
