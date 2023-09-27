@@ -852,7 +852,7 @@ fun main() {
 
 ### DB
 -   `Mariadb 10.6.14` (AWS-RDS)
--   ER 다이어그램(DB 구조) https://www.erdcloud.com/d/yNHoxjs6rhwj2unsS
+-   ER 다이어그램(DB 구조): https://www.erdcloud.com/d/DTJM4Xsnybqyun7vd
 
 ### 개발 언어
 -   `Typescript`
