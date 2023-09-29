@@ -33,11 +33,14 @@ CREATE TABLE `User_skill` (
 );
 
 CREATE TABLE `User_avatar` (
-	`user_name`	varchar(100)	NOT NULL,
-	`type`	varchar(100)	NOT NULL	COMMENT '고양이, 원숭이',
-	`look`	varchar(100)	NOT NULL,
-	`color`	varchar(100)	NOT NULL,
-	`shop_element1`	int	NULL
+    `user_name`	varchar(100)	NOT NULL,
+    `type`	varchar(100)	NOT NULL	COMMENT '고양이, 원숭이',
+    `look`	varchar(100)	NOT NULL,
+    `color`	varchar(100)	NOT NULL,
+    `shop_cap`	int	NULL,
+    `shop_top`	int	NULL,
+    `shop_bottom`	int	NULL,
+    `shop_glass`	int	NULL
 );
 
 CREATE TABLE `User_friend` (
@@ -153,7 +156,7 @@ ALTER TABLE `User_skill` ADD CONSTRAINT `PK_USER_SKILL` PRIMARY KEY (
 );
 
 ALTER TABLE `User_avatar` ADD CONSTRAINT `PK_USER_AVATAR` PRIMARY KEY (
-	`user_name`
+    `user_name`
 );
 
 ALTER TABLE `User_friend` ADD CONSTRAINT `PK_USER_FRIEND` PRIMARY KEY (
@@ -229,7 +232,10 @@ alter table User_data alter column level set default 1;
 alter table User_mark alter column progress set default 0;
 alter table User_mark alter column date set default (current_date);
 
-alter table User_avatar alter column shop_element1 set default NULL;
+alter table User_avatar alter column shop_cap set default NULL;
+alter table User_avatar alter column shop_top set default NULL;
+alter table User_avatar alter column shop_bottom set default NULL;
+alter table User_avatar alter column shop_glass set default NULL;
 
 alter table VR_exam alter column rate set default 0;
 
@@ -284,11 +290,32 @@ REFERENCES `User_data` (
 ) on UPDATE CASCADE on DELETE CASCADE;
 
 ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_1` FOREIGN KEY (
-	`shop_element1`
+	`shop_cap`
 )
 REFERENCES `Shop_item` (
 	`object_id`
-) on UPDATE CASCADE on DELETE set NULL;
+) on UPDATE CASCADE on DELETE SET NULL;
+
+ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_2` FOREIGN KEY (
+	`shop_top`
+)
+REFERENCES `Shop_item` (
+	`object_id`
+) on UPDATE  CASCADE  on DELETE SET NULL;
+
+ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_3` FOREIGN KEY (
+	`shop_bottom`
+)
+REFERENCES `Shop_item` (
+	`object_id`
+) on UPDATE  CASCADE  on DELETE SET NULL;
+
+ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_4` FOREIGN KEY (
+	`shop_glass`
+)
+REFERENCES `Shop_item` (
+	`object_id`
+) on UPDATE  CASCADE  on DELETE SET NULL;
 
 ALTER TABLE `User_friend` ADD CONSTRAINT `FK_User_data_TO_User_friend_1` FOREIGN KEY (
 	`user_name`

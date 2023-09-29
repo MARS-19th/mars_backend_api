@@ -167,9 +167,9 @@ INSERT into User_bluetooth_UUID VALUES
 
 SELECT *from User_bluetooth_UUID;
 
-insert into User_avatar values
-("관리자1", "cat", "식별하는무언가1", "식별하는무언가2", 1),
-("관리자2", "monkey", "식별하는무언가3", "식별하는무언가4", 2);
+insert into User_avatar (user_name, type, look, color) values
+("관리자1", "cat", "식별하는무언가1", "식별하는무언가2"),
+("관리자2", "monkey", "식별하는무언가3", "식별하는무언가4");
 
 select *from User_avatar;
 
