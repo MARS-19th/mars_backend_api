@@ -387,18 +387,17 @@ body: {
 정상응답 (code: 200)
 ```javascript
 {
-    results:    //스킬명 = css
-        [
-            {
-                mark_id: 3, //스킬 아이디
-                mark_list: "CSS 1주차 강의 듣기", // 세부목표 내용 
-                level: 1    //주차
-            },
-            { mark_id: 4, mark_list: "CSS 2주차 강의 듣기", level: 2 }
-        ]
+    results: [  //스킬명 = css
+        {
+            mark_id: 3, //스킬 아이디
+            mark_list: "CSS 1주차 강의 듣기", // 세부목표 내용 
+            level: 1    //주차
+        },
+        { mark_id: 4, mark_list: "CSS 2주차 강의 듣기", level: 2 }
+    ]
 
-        /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-        스킬명은 스킬트리에 적힌 스킬명 */
+    /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    스킬명은 스킬트리에 적힌 스킬명 */
 }
  ```
 
@@ -409,16 +408,15 @@ body: {
 정상응답 (code: 200)
 ```javascript
 { 
-    results:    //스킬명 = css, 주차 = 1
-        [ 
-            {
-                mark_id: 1, //스킬 아이디
-                mark_list: "CSS 1주차 강의 듣기"   //세부목표 내용
-            }, 
-        ]
-        
-        /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-        스킬명은 스킬트리에 적힌 스킬명 */
+    results: [  //스킬명 = css, 주차 = 1
+        {
+            mark_id: 1, //스킬 아이디
+            mark_list: "CSS 1주차 강의 듣기"   //세부목표 내용
+        }, 
+    ]
+
+    /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    스킬명은 스킬트리에 적힌 스킬명 */
 }
 ```
 
@@ -438,17 +436,16 @@ body: {
 정상응답 (code: 200)
 ```javascript
 {
-    results:
-        [
-            {
-                mark_id: 1,    //목표 아이디
-                progress: 100, //진행도
-                date: "2023-07-09T00:00:00.000Z"   //진행날짜
-            },
-        ]
+    results: [
+        {
+            mark_id: 1,    //목표 아이디
+            progress: 100, //진행도
+            date: "2023-07-09T00:00:00.000Z"   //진행날짜
+        },
+    ]
 
-        /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-        목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 */
+    /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 */
 }
 ```
 
@@ -459,19 +456,18 @@ body: {
 정상응답 (code: 200)
 ```javascript
 {
-    results:
-        [
-            { 
-                info_data: "https://www.youtube.com/watch?v=8kJwTrs6e-4&t=10s", 
-                type: "타입지정바람"
-            },
-        ]
+    results: [
+        { 
+            info_data: "https://www.youtube.com/watch?v=8kJwTrs6e-4&t=10s", 
+            type: "타입지정바람"
+        },
+    ]
 
-        /* 
-        results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-        해당 세부목표에 유튜브 링크 같은 요소 제공 
-        목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 
-        */
+    /* 
+    results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    해당 세부목표에 유튜브 링크 같은 요소 제공 
+    목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것 
+    */
 }
 ```
 
@@ -484,8 +480,7 @@ body: {
 정상응답 (code: 200)
 ```javascript
 {
-    results:
-    [
+    results: [
         { skill_field: "css", skill_level: 1 },
         { skill_field: "python", skill_level: 1 },
         { skill_field: "html", skill_level: 1 },
@@ -507,6 +502,55 @@ body: {
 
 오류응답 (code: 500)
 - `{err: "empty"}`: 해당 목표가 존재하지않음
+
+#### [/getdatemark/[스킬명]](http://dmumars.kro.kr/api/getdatemark/html): 해당 스킬에 대한 모든 일/주간 목표 리턴
+정상응답 (code: 200)
+```javascript
+{
+    results: [  //스킬명 = html
+        {
+            mark_id: 1, //목표 id
+            mark_list: "일간목표1", //목표 주제
+            type: "day" //목표 타입 (day=일간퀘 week=주간퀘)
+        },
+        {
+            mark_id: 3,
+            mark_list: "주간목표1",
+            type: "week"
+        },
+        /* 아하 생략 */
+    ]
+
+    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+}
+```
+오류응답 (code: 500)
+- `{err: "empty"}`: 해당 스킬명에 대한 일/주간 목표가 존재하지 않음
+
+#### [/getuserdatemark/[닉네임]/[스킬명]](http://dmumars.kro.kr/api/getuserdatemark/관리자1/html): 해당 스킬과 유저에 대한 일/주간 목표 클리어 여부 리턴
+정상응답 (code: 200)
+```javascript
+{
+    results: [  //닉네임 = 관리자1, 스킬명 = html
+        {
+            mark_id: 1, //목표 아이디
+            mark_list: "일간목표1", //목표 주제
+            type: "day", //목표 타입 (day=일간퀘 week=주간퀘)
+            is_clear: true //클리어 여부
+        },
+        {
+            mark_id: 2,
+            mark_list: "일간목표2",
+            type: "day",
+            is_clear: false
+        }
+    ]
+
+    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+}
+```
+오류응답 (code: 500)
+- `{err: "empty"}`: 해당 유저가 아무런 일/주간 목표를 선택하지 않거나 목표 또는 닉네임이 DB에 없음
 </details>
 </dd>
 
@@ -544,6 +588,26 @@ body: {
 
     /* 세부 목표 아이디는 /getdetailmark 에서 값을 얻어 적절히 사용할것
     세부목표 추가시 연락할것 */
+}
+```
+
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
+
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 목표아이디가 DB에 존재하지 않음
+
+#### [/setuserdatemark](http://dmumars.kro.kr/api/setuserdatemark): 사용자 일/주간 목표 달성 여부 설정
+요청
+```javascript
+{
+    user_name: "관리자1", //닉네임
+    mark_id: 1, //일/주간 목표id
+    is_clear: true 또는 false,  //사용자 클리어 여부
 }
 ```
 
@@ -617,22 +681,21 @@ VR 문제 부분
 정상응답 (code: 200)
 ```javascript
 {
-    "results":  //목표명 = 프로그래밍
-        [
-            {
-                exam_id: 1, //문제 id
-                skill_field: "html",    //타겟스킬
-                exam: "HTML에서 외부 링크를 생성하는 태그는 무엇인가요?",  //문제명
-                correct: "<a>", //정답
-                exam_type: "stand", //문제타입 (4지선다=stand, ox=ox)
-                rate: 50,   //정답률
-                exam_option: ["<a>","<href>","<link>","<src>"]  //문제 선지들
-            },
-            /* 이하 생략 */
-        ]
+    results: [ //목표명 = 프로그래밍
+        {
+            exam_id: 1, //문제 id
+            skill_field: "html",    //타겟스킬
+            exam: "HTML에서 외부 링크를 생성하는 태그는 무엇인가요?",  //문제명
+            correct: "<a>", //정답
+            exam_type: "stand", //문제타입 (4지선다=stand, ox=ox)
+            rate: 50,   //정답률
+            exam_option: ["<a>","<href>","<link>","<src>"]  //문제 선지들
+        },
+        /* 이하 생략 */
+    ]
 
-        // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-}  
+    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+}
 ```
 
 오류응답 (code: 500)
@@ -661,16 +724,15 @@ VR 문제 부분
 정상응답 (code: 200)
 ```javascript
 {
-    results: 
-        [
-            { 
-                exam: "문제1",  //문제이름
-                is_correct: 100 //맞춘여부 (100 이면 맞은거, 0 이면 틀린거)
-            }
-        ],
-}
+    results: [
+        { 
+            exam: "문제1",  //문제이름
+            is_correct: 100 //맞춘여부 (100 이면 맞은거, 0 이면 틀린거)
+        }
+    ],
 
-// results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+}
 ```
 
 오류응답 (code: 500)

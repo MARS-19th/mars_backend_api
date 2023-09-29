@@ -9,24 +9,22 @@ async function gettest(url: string) {
 }
 
 async function settest(url: string) {
-    const user_name = "관리자1";
-    const look = "식별하는 무언가1";
-    const color = "식별하는 무언가2";
+    const body = {
+        user_name: "관리자1",
+        mark_id: 10,
+        is_clear: true,
+    };
 
     const response = await fetch(`http://korseok.kro.kr/api/${url}`, {
         method: "post",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-            user_name: "관리자1",
-            mark_id: 1,
-            progress: 100,
-        }),
+        body: JSON.stringify(body),
     });
 
     const res = await response.json();
     console.log(res);
 }
 
-settest("setuserskill");
+settest("setuserdatemark");
