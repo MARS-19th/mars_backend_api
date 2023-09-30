@@ -75,27 +75,43 @@ class Fileupload {
         }
     }
 
-    fun main() {
-        try {
-            val outputjson = JSONObject()
-            outputjson.put("user_name", "관리자1")
-            outputjson.put("file", "test.png")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-            fileupload("http://korseok.kro.kr/api/uploadprofile", outputjson)
-            // 사실상 응답 데이터가 {results: true} 밖에 없서서 데이터를 따로 저장하진 않음
-        } catch (e: UnknownServiceException) {
-            // API 사용법에 나와있는 모든 오류응답은 여기서 처리
-            val messge = e.message // 해당 주소에서 발생가능한 애러 메세지 (api 사용법 참고)
-            if (messge == "less_data") {
-                println("파일 업로드 중에 오류 발생")
-            }
+        // 이미지 선택 Intent 실행
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        launcher.launch(intent)
+    }
 
-            println(messge)
-        } catch (e: FileNotFoundException) {
-            //선택한 파일이 없어진 경우
-            println("파일없음")
-        } catch (e: Exception) {
-            e.printStackTrace()
+    // 이미지 선택 후 콜백 메소드
+    val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == RESULT_OK) {
+            Thread {
+                // 파일 경로 얻기
+                val data = it.data?.data
+                val file = absolutelyPath(data!!, this)
+
+                val json =  JSONObject()
+                json.put("user_name", "관리자1")
+
+                // 파일 보내기
+                Request().fileupload("http://dmumars.kro.kr/api/uploadprofile", json, File(file))
+            }.start()
         }
+    }
+
+    // 절대경로로 파일 반환 함수
+    private fun absolutelyPath(path: Uri?, context : Context): String {
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val c = context.contentResolver.query(path!!, proj, null, null, null)
+        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c?.moveToFirst()
+        val result = c?.getString(index!!)
+        c?.close()
+
+        return result!!
     }
 }
