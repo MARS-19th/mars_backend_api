@@ -124,8 +124,7 @@ CREATE TABLE `Date_mark` (
     `mark_id`	int	NOT NULL	COMMENT '순차부여',
     `target_mark`	varchar(100)	NOT NULL	COMMENT '프로그래밍, 등산',
     `skill_field`	varchar(100)	NOT NULL	COMMENT 'html, css...',
-    `mark_list`	varchar(100)	NOT NULL	COMMENT '목표 주제',
-    `type`	varchar(100)	NOT NULL	COMMENT '일간, 주간'
+    `mark_list`	varchar(100)	NOT NULL	COMMENT '목표 주제'
 );
 
 CREATE TABLE `User_date_mark` (

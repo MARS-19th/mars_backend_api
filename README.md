@@ -503,45 +503,42 @@ body: {
 오류응답 (code: 500)
 - `{err: "empty"}`: 해당 목표가 존재하지않음
 
-#### [/getdatemark/[스킬명]](http://dmumars.kro.kr/api/getdatemark/html): 해당 스킬에 대한 모든 일/주간 목표 리턴
+#### [/getdatemark/[스킬명]](http://dmumars.kro.kr/api/getdatemark/html): 해당 스킬에 대한 모든 일간목표 리턴
 정상응답 (code: 200)
 ```javascript
 {
     results: [  //스킬명 = html
         {
-            mark_id: 1, //목표 id
-            mark_list: "일간목표1", //목표 주제
-            type: "day" //목표 타입 (day=일간퀘 week=주간퀘)
+            mark_id: 1, //일간목표 id
+            mark_list: "일간목표1" //목표 주제
         },
         {
-            mark_id: 3,
-            mark_list: "주간목표1",
-            type: "week"
+            mark_id: 2,
+            mark_list: "일간목표2"
         },
-        /* 아하 생략 */
     ]
 
     // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
 }
 ```
 오류응답 (code: 500)
-- `{err: "empty"}`: 해당 스킬명에 대한 일/주간 목표가 존재하지 않음
+- `{err: "empty"}`: 해당 스킬명에 대한 일간목표가 존재하지 않음
 
-#### [/getuserdatemark/[닉네임]/[스킬명]](http://dmumars.kro.kr/api/getuserdatemark/관리자1/html): 해당 스킬과 유저에 대한 일/주간 목표 클리어 여부 리턴
+#### [/getuserdatemark/[닉네임]](http://dmumars.kro.kr/api/getuserdatemark/관리자1): 해당 유저에 대한 일간목표 클리어 여부 리턴
 정상응답 (code: 200)
 ```javascript
 {
-    results: [  //닉네임 = 관리자1, 스킬명 = html
+    results: [  //닉네임 = 관리자1
         {
             mark_id: 1, //목표 아이디
+            skill_field: "html", //스킬명
             mark_list: "일간목표1", //목표 주제
-            type: "day", //목표 타입 (day=일간퀘 week=주간퀘)
             is_clear: true //클리어 여부
         },
         {
             mark_id: 2,
+            skill_field: "html",
             mark_list: "일간목표2",
-            type: "day",
             is_clear: false
         }
     ]
@@ -550,7 +547,7 @@ body: {
 }
 ```
 오류응답 (code: 500)
-- `{err: "empty"}`: 해당 유저가 아무런 일/주간 목표를 선택하지 않거나 목표 또는 닉네임이 DB에 없음
+- `{err: "empty"}`: 해당 유저가 아무런 일간목표를 선택하지 않거나 닉네임이 DB에 없음
 </details>
 </dd>
 
@@ -601,12 +598,12 @@ body: {
 -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
 -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 목표아이디가 DB에 존재하지 않음
 
-#### [/setuserdatemark](http://dmumars.kro.kr/api/setuserdatemark): 사용자 일/주간 목표 달성 여부 설정
+#### [/setuserdatemark](http://dmumars.kro.kr/api/setuserdatemark): 사용자 일간목표 달성 여부 설정
 요청
 ```javascript
 {
     user_name: "관리자1", //닉네임
-    mark_id: 1, //일/주간 목표id
+    mark_id: 1, //일간목표 id
     is_clear: true 또는 false,  //사용자 클리어 여부
 }
 ```

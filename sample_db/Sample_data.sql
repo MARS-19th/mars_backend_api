@@ -41,23 +41,15 @@ insert into More_data values ("https://www.youtube.com/watch?v=pkr48S22zH0", 1, 
 
 select *from More_data;
 
-insert into Date_mark(target_mark, skill_field, mark_list, type) values
-("프로그래밍", "html", "일간목표1", "일간"),
-("프로그래밍", "html", "일간목표2", "일간"),
-("프로그래밍", "html", "주간목표1", "주간"),
-("프로그래밍", "html", "주간목표2", "주간"),
-("프로그래밍", "css", "일간목표1", "일간"),
-("프로그래밍", "css", "일간목표2", "일간"),
-("프로그래밍", "css", "주간목표1", "주간"),
-("프로그래밍", "css", "주간목표2", "주간"),
-("프로그래밍", "java", "일간목표1", "일간"),
-("프로그래밍", "java", "일간목표2", "일간"),
-("프로그래밍", "java", "주간목표1", "주간"),
-("프로그래밍", "java", "주간목표2", "주간"),
-("프로그래밍", "python", "일간목표1", "일간"),
-("프로그래밍", "python", "일간목표2", "일간"),
-("프로그래밍", "python", "주간목표1", "주간"),
-("프로그래밍", "python", "주간목표2", "주간");
+insert into Date_mark(target_mark, skill_field, mark_list) values
+("프로그래밍", "html", "일간목표1"),
+("프로그래밍", "html", "일간목표2"),
+("프로그래밍", "css", "일간목표1"),
+("프로그래밍", "css", "일간목표2"),
+("프로그래밍", "java", "일간목표1"),
+("프로그래밍", "java", "일간목표2"),
+("프로그래밍", "python", "일간목표1"),
+("프로그래밍", "python", "일간목표2");
 
 select *from Date_mark;
 

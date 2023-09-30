@@ -162,10 +162,10 @@ mark.get("/getmoredata/:mark_id", (req, res) => {
     dbconect.end();
 });
 
-// 해당 스킬에 대한 모든 일/주간 목표 리턴 (스킬명): [{id, 목표들, day or week}] or err
+// 해당 스킬에 대한 모든 일간목표 리턴 (스킬명): [{id, 목표들, day or week}] or err
 mark.get("/getdatemark/:skill_field", (req, res) => {
-    const query = `select mark_id, mark_list, type from Date_mark 
-    where skill_field = "${req.params.skill_field}"`;
+    const query = `select mark_id, mark_list from Date_mark
+    where skill_field = "${req.params.skill_field}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -187,11 +187,11 @@ mark.get("/getdatemark/:skill_field", (req, res) => {
     dbconect.end();
 });
 
-// 해당 스킬과 유저에 대한 일/주간 목표 클리어 여부 리턴 (이름/스킬명): [{id, 목표들, day or week, 클리어 여부}] or err
-mark.get("/getuserdatemark/:name/:skill_field", (req, res) => {
-    const query = `select User_date_mark.mark_id, Date_mark.mark_list, Date_mark.type, User_date_mark.is_clear from User_date_mark
-    join Date_mark on Date_mark.mark_id = User_date_mark.mark_id
-    where User_date_mark.user_name = "${req.params.name}" && Date_mark.skill_field ="${req.params.skill_field}"`;
+// 해당 유저에 대한 일간목표 클리어 여부 리턴 (이름): [{id, 스킬명, 목표들, 클리어 여부}] or err
+mark.get("/getuserdatemark/:name", (req, res) => {
+    const query = `select User_date_mark.mark_id, Date_mark.skill_field, Date_mark.mark_list, User_date_mark.is_clear
+    from User_date_mark join Date_mark on Date_mark.mark_id = User_date_mark.mark_id
+    where User_date_mark.user_name = "${req.params.name}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -294,10 +294,10 @@ mark.post("/setuserdetailskill", (req: TypedRequestBody<setuserdetailskill>, res
     dbconect.end();
 });
 
-// 사용자 일/주간 목표 달성 여부 설정
+// 사용자 일간목표 달성 여부 설정
 type setuserdatemark = {
     user_name: string; // 닉네임
-    mark_id: number; // 일/주간 목표 id
+    mark_id: number; // 일간목표 id
     is_clear: boolean; // 클리어 여부 1=클리어 0=아님
 };
 const setuserdatemark = {
