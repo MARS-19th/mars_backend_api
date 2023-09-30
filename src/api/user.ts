@@ -4,7 +4,7 @@ import mysql = require("mysql");
 import { TypedRequestBody, sameobj, serverset } from "../server";
 const user = express.Router();
 
-//회원 모든 정보 조회 (유저이름): err or 모든 유저 정보
+// 회원 모든 정보 조회 (유저이름): err or 모든 유저 정보
 user.get("/getuserdata/:name", (req, res) => {
     const query = `select *from User_data where user_name = "${req.params.name}";`;
 

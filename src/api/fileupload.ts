@@ -24,7 +24,7 @@ const uploadMiddleware = multter({
     fileFilter(req, file, done) {
         const exec = [".jpg", ".jpeg", ".png"];
         console.log(path.extname(file.originalname));
-        
+
         if (exec.includes(path.extname(file.originalname))) {
             done(null, true);
         } else {
@@ -37,36 +37,41 @@ const uploadMiddleware = multter({
 type uploadprofile = {
     user_name: string;
 };
-fileupload.post("/uploadprofile", uploadMiddleware, (req: TypedRequestBody<uploadprofile>, res) => {
-        console.log(req.file);
-        const filename = req.file?.filename;
-        const user_name = req.body.user_name;
-        
-        if (!filename) {
-            res.status(500).json({ err: "file_upload_err" });
-            return;
-        }
+const uploadprofile = {
+    user_name: "string"
+};
+fileupload.post("/uploadprofile", uploadMiddleware, (req, res) => {
+    console.log(req.file);
+    const filename = req.file?.filename;
+    const data: uploadprofile = JSON.parse(req.body.data);
 
-        const query = `update User_data set profile_local = "${filename}" where user_name = "${user_name}";`;
-
-        const dbconect = mysql.createConnection(serverset.setdb);
-        dbconect.connect();
-
-        dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
-            if (err) {
-                console.error(err);
-                res.status(500).json({ err: err.code });
-            } else {
-                res.json({ results: true });
-            }
-        });
-
-        dbconect.end();
+    if (!filename) {
+        res.status(500).json({ err: "file_upload_err" });
+        return;
+    } else if (!sameobj(uploadprofile, data)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: uploadprofile });
+        return;
     }
-);
 
+    const query = `update User_data set profile_local = "${filename}" where user_name = "${data.user_name}";`;
 
-// 유저 프로필 사잔 리턴 (닉네임): err or file
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            res.json({ results: true });
+        }
+    });
+
+    dbconect.end();
+});
+
+// 유저 프로필 사진 리턴 (닉네임): err or file
 // 안드로이드에서 네트워크로 리소스 불러올수 있게
 fileupload.get("/getprofile/:name", (req, res) => {
     const query = `select profile_local from User_data where user_name = "${req.params.name}";`;
