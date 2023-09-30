@@ -128,7 +128,7 @@ INSERT into User_friend VALUES
 
 SELECT *from User_friend;
 
-INSERT into User_skill VALUES
+INSERT into User_skill (user_name, skill_field) VALUES
 ("관리자1", "html"),
 ("관리자1", "css"),
 ("관리자1", "java"),

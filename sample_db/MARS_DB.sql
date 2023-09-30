@@ -29,7 +29,8 @@ CREATE TABLE `Mark_list` (
 
 CREATE TABLE `User_skill` (
 	`user_name`	varchar(100)	NOT NULL,
-	`skill_field`	varchar(100)	NOT NULL	COMMENT 'html css...'
+	`skill_field`	varchar(100)	NOT NULL	COMMENT 'html css...',
+    `clear_time`    datetime    NOT NULL
 );
 
 CREATE TABLE `User_avatar` (
@@ -230,6 +231,7 @@ alter table User_data alter column level set default 1;
 
 alter table User_mark alter column progress set default 0;
 alter table User_mark alter column date set default (current_date);
+alter table User_skill alter column clear_time set default (now());
 
 alter table User_avatar alter column shop_cap set default NULL;
 alter table User_avatar alter column shop_top set default NULL;

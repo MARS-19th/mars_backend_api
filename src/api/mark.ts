@@ -30,7 +30,7 @@ mark.get("/getskilltree/:tartget_mark", (req, res) => {
     dbconect.end();
 });
 
-// 스킬명 전체 세부목록 리턴 (스킬명): [{mark_id, mark_list, level}]
+// 스킬명 전체 세부목표 리턴 (스킬명): [{mark_id, mark_list, level}]
 mark.get("/getdetailmark/:skill", (req, res) => {
     const query = `select mark_id, mark_list, level from Details_mark 
     where skill_field = "${req.params.skill}"
@@ -84,7 +84,8 @@ mark.get("/getdetailmark/:skill/:level", (req, res) => {
 
 // 유저 선택 스킬트리 (닉네임): skills: [...스킬들]
 mark.get("/getuserskill/:name", (req, res) => {
-    const query = `select skill_field from User_skill where user_name = "${req.params.name}";`;
+    const query = `select skill_field from User_skill where user_name = "${req.params.name}"
+    order by clear_time;`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -238,7 +239,7 @@ mark.post("/setuserskill", (req: TypedRequestBody<setuserskill>, res) => {
         res.status(500).json({ err: "type_err", type: setuserskill });
         return;
     }
-    const query = `insert into User_skill values ("${req.body.user_name}", "${req.body.skill}");`;
+    const query = `insert into User_skill (user_name, skill_field) values ("${req.body.user_name}", "${req.body.skill}");`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
