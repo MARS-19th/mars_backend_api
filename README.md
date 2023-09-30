@@ -426,7 +426,7 @@ body: {
 #### [/getuserskill/[유저이름]](http://dmumars.kro.kr/api/getuserskill/관리자1): 해당 유저의 선택한 스킬트리를 리턴
 정상응답 (code: 200)
 ```javascript
-{ results: ["css","html","java","python"] }  //선택한 스킬트리
+{ results: ["css","html","java","python"] }  //선택한 스킬트리 (얻은 순서대로 정렬)
 ```
 
 오류응답 (code: 500)
@@ -503,51 +503,26 @@ body: {
 오류응답 (code: 500)
 - `{err: "empty"}`: 해당 목표가 존재하지않음
 
-#### [/getdatemark/[스킬명]](http://dmumars.kro.kr/api/getdatemark/html): 해당 스킬에 대한 모든 일간목표 리턴
-정상응답 (code: 200)
-```javascript
-{
-    results: [  //스킬명 = html
-        {
-            mark_id: 1, //일간목표 id
-            mark_list: "일간목표1" //목표 주제
-        },
-        {
-            mark_id: 2,
-            mark_list: "일간목표2"
-        },
-    ]
-
-    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
-}
-```
-오류응답 (code: 500)
-- `{err: "empty"}`: 해당 스킬명에 대한 일간목표가 존재하지 않음
-
 #### [/getuserdatemark/[닉네임]](http://dmumars.kro.kr/api/getuserdatemark/관리자1): 해당 유저에 대한 일간목표 클리어 여부 리턴
 정상응답 (code: 200)
 ```javascript
 {
-    results: [  //닉네임 = 관리자1
+    "results": [    //닉네임 = 관리자1
         {
-            mark_id: 1, //목표 아이디
-            skill_field: "html", //스킬명
-            mark_list: "일간목표1", //목표 주제
-            is_clear: true //클리어 여부
+            mark_id: 1, //목표id
+            mark_list: "사용자목표1",   //목표 목록
+            is_clear: true  //클리어여부
         },
         {
             mark_id: 2,
-            skill_field: "html",
-            mark_list: "일간목표2",
+            mark_list: "사용자목표2",
             is_clear: false
         }
     ]
-
-    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
 }
 ```
 오류응답 (code: 500)
-- `{err: "empty"}`: 해당 유저가 아무런 일간목표를 선택하지 않거나 닉네임이 DB에 없음
+- `{err: "empty"}`: 해당 유저가 아무런 일간목표를 추가하지 않거나 닉네임이 DB에 없음
 </details>
 </dd>
 
@@ -598,13 +573,52 @@ body: {
 -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
 -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 목표아이디가 DB에 존재하지 않음
 
-#### [/setuserdatemark](http://dmumars.kro.kr/api/setuserdatemark): 사용자 일간목표 달성 여부 설정
+#### [/setuserdatemark](http://dmumars.kro.kr/api/setuserdatemark): 사용자 일간목표 추가
 요청
 ```javascript
 {
-    user_name: "관리자1", //닉네임
-    mark_id: 1, //일간목표 id
-    is_clear: true 또는 false,  //사용자 클리어 여부
+    user_name: "관리자1",   //닉네임
+    mark_list: "추가하고 싶은 일간목표",    //추가할 목표
+
+    /* 추가시 클리어 여부는 무조건 false */
+}
+```
+
+정상응답 (code: 200)
+```javascript
+{ mark_id: 5 }  //추가된 일간목표에 목표id
+```
+
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임이 DB에 존재하지 않음
+
+#### [/upuserdatemark](http://dmumars.kro.kr/api/upuserdatemark): 사용자 일간목표 달성 여부 및 목표 수정
+요청
+```javascript
+{
+    user_name: "관리자1",   //닉네임
+    mark_id: 1, //일간목표id
+    mark_list: "바꾸고 싶은 목표",  //수정할 목표
+    is_clear: true 또는 false   //클리어여부
+}
+```
+
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
+
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+
+#### [/deluserdatemark](http://dmumars.kro.kr/api/deluserdatemark): 사용자 일간목표 삭제
+요청
+```javascript
+{
+    user_name: "관리자1",   //닉네임
+    mark_id: 1, //일간목표id
 }
 ```
 
@@ -616,7 +630,6 @@ body: {
 
 오류응답 (code: 500)  
 -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
--   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 목표아이디가 DB에 존재하지 않음
 </details>
 </dd>
 

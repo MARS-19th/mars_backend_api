@@ -163,36 +163,9 @@ mark.get("/getmoredata/:mark_id", (req, res) => {
     dbconect.end();
 });
 
-// 해당 스킬에 대한 모든 일간목표 리턴 (스킬명): [{id, 목표들, day or week}] or err
-mark.get("/getdatemark/:skill_field", (req, res) => {
-    const query = `select mark_id, mark_list from Date_mark
-    where skill_field = "${req.params.skill_field}";`;
-
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
-
-    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
-        if (err) {
-            console.error(err);
-            res.status(500).json({ err: err.code });
-        } else {
-            if (!results?.length) {
-                console.error("항목없음");
-                res.status(500).json({ err: "empty" });
-            } else {
-                res.json({ results });
-            }
-        }
-    });
-
-    dbconect.end();
-});
-
-// 해당 유저에 대한 일간목표 클리어 여부 리턴 (이름): [{id, 스킬명, 목표들, 클리어 여부}] or err
+// 해당 유저에 대한 일간목표 클리어 여부 리턴 (이름): [{목표id, 목표들, 클리어 여부}] or err
 mark.get("/getuserdatemark/:name", (req, res) => {
-    const query = `select User_date_mark.mark_id, Date_mark.skill_field, Date_mark.mark_list, User_date_mark.is_clear
-    from User_date_mark join Date_mark on Date_mark.mark_id = User_date_mark.mark_id
-    where User_date_mark.user_name = "${req.params.name}";`;
+    const query = `select mark_id, mark_list, is_clear from User_date_mark where user_name="${req.params.name}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -295,16 +268,14 @@ mark.post("/setuserdetailskill", (req: TypedRequestBody<setuserdetailskill>, res
     dbconect.end();
 });
 
-// 사용자 일간목표 달성 여부 설정
+// 사용자 일간목표 추가 (닉네임, 목표목록, 클리어 여부): mark_id or err
 type setuserdatemark = {
     user_name: string; // 닉네임
-    mark_id: number; // 일간목표 id
-    is_clear: boolean; // 클리어 여부 1=클리어 0=아님
+    mark_list: string; // 목표 목록
 };
 const setuserdatemark = {
     user_name: "string",
-    mark_id: "int",
-    is_clear: "boolean",
+    mark_list: "string",
 };
 mark.post("/setuserdatemark", (req: TypedRequestBody<setuserdatemark>, res) => {
     if (!sameobj(setuserdatemark, req.body)) {
@@ -312,10 +283,85 @@ mark.post("/setuserdatemark", (req: TypedRequestBody<setuserdatemark>, res) => {
         res.status(500).json({ err: "type_err", type: setuserdatemark });
         return;
     }
-    const query = `insert into User_date_mark values ("${req.body.user_name}", ${req.body.mark_id}, ${req.body.is_clear}) on duplicate key update
-    user_name = "${req.body.user_name}",
-    mark_id = ${req.body.mark_id}, 
-    is_clear =  ${req.body.is_clear};`;
+    const query = `insert into User_date_mark (user_name, mark_list)
+    values ("${req.body.user_name}", "${req.body.mark_list}");
+    select mark_id from User_date_mark where user_name="${req.body.user_name}" && mark_list="${req.body.mark_list}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[][]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length || !results[1].length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                res.json(results[1][0]);
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
+// 사용자 일간목표 달성 여부 및 목표 수정 (닉네임, 일간목표id, 목표목록 클리어 여부): err or ok
+type upuserdatemark = {
+    user_name: string; // 닉네임
+    mark_id: number; // 일간목표id
+    mark_list: string; // 목표 목록
+    is_clear: boolean; // 클리어 여부 1=클리어 0=아님
+};
+const upuserdatemark = {
+    user_name: "string",
+    mark_id: "int",
+    mark_list: "string",
+    is_clear: "boolean"
+};
+mark.post("/upuserdatemark", (req: TypedRequestBody<upuserdatemark>, res) => {
+    if (!sameobj(upuserdatemark, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: upuserdatemark });
+        return;
+    }
+    const query = `update User_date_mark
+    set mark_list = "${req.body.mark_list}", is_clear = ${req.body.is_clear}
+    where user_name="${req.body.user_name}" && mark_id=${req.body.mark_id};`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            res.json({ results: true });
+        }
+    });
+
+    dbconect.end();
+});
+
+// 사용자 일간목표 삭제 (닉네임, 일간목표id, 목표목록 클리어 여부): err or ok
+type deluserdatemark = {
+    user_name: string; // 닉네임
+    mark_id: number; // 일간목표id
+};
+const deluserdatemark = {
+    user_name: "string",
+    mark_id: "int",
+};
+mark.post("/deluserdatemark", (req: TypedRequestBody<deluserdatemark>, res) => {
+    if (!sameobj(deluserdatemark, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: deluserdatemark });
+        return;
+    }
+    const query = `delete from User_date_mark where
+    user_name = "${req.body.user_name}" && mark_id = ${req.body.mark_id};`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();

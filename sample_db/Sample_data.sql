@@ -41,18 +41,6 @@ insert into More_data values ("https://www.youtube.com/watch?v=pkr48S22zH0", 1, 
 
 select *from More_data;
 
-insert into Date_mark(target_mark, skill_field, mark_list) values
-("프로그래밍", "html", "일간목표1"),
-("프로그래밍", "html", "일간목표2"),
-("프로그래밍", "css", "일간목표1"),
-("프로그래밍", "css", "일간목표2"),
-("프로그래밍", "java", "일간목표1"),
-("프로그래밍", "java", "일간목표2"),
-("프로그래밍", "python", "일간목표1"),
-("프로그래밍", "python", "일간목표2");
-
-select *from Date_mark;
-
 insert into Shop_item (type, item_name, local, price) values
 ("shop", "1번템", "object.png", 1000),
 ("shop", "2번템", "object.png", 1000),
@@ -145,11 +133,11 @@ INSERT into User_mark VALUES
 
 SELECT *from User_mark;
 
-insert into User_date_mark values
-("관리자1", 1, true),
-("관리자1", 2, false),
-("관리자2", 3, true),
-("관리자2", 4, false);
+insert into User_date_mark (user_name, mark_list, is_clear) values
+("관리자1", "사용자목표1", true),
+("관리자1", "사용자목표2", false),
+("관리자2", "사용자목표3", true),
+("관리자2", "사용자목표4", false);
 
 select  *from User_date_mark;
 
