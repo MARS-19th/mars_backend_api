@@ -125,7 +125,8 @@ CREATE TABLE `User_date_mark` (
     `mark_id`	int	NOT NULL	COMMENT '순차부여',
     `user_name`	varchar(100)	NOT NULL,
     `mark_list`	varchar(100)	NOT NULL	COMMENT '목표 주제',
-    `is_clear`	tinyint(1)	NOT NULL	COMMENT 'true, false'
+    `is_clear`	tinyint(1)	NOT NULL	COMMENT 'true, false',
+    `add_time`  datetime    NOT NULL
 );
 
 ALTER TABLE `User` ADD CONSTRAINT `PK_USER` PRIMARY KEY (
@@ -221,6 +222,7 @@ alter table User_data alter column level set default 1;
 
 alter table User_mark alter column progress set default 0;
 alter table User_mark alter column date set default (current_date);
+
 alter table User_skill alter column clear_time set default (now());
 
 alter table User_avatar alter column shop_cap set default NULL;
@@ -231,6 +233,8 @@ alter table User_avatar alter column shop_glass set default NULL;
 alter table VR_exam alter column rate set default 0;
 
 alter table User_date_mark alter column is_clear set default false;
+
+alter table User_date_mark alter column add_time set default (now());
 
 alter table Shop_item modify object_id INT NOT NULL AUTO_INCREMENT;
 

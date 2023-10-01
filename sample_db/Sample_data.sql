@@ -42,10 +42,14 @@ insert into More_data values ("https://www.youtube.com/watch?v=pkr48S22zH0", 1, 
 select *from More_data;
 
 insert into Shop_item (type, item_name, local, price) values
-("shop", "1번템", "object.png", 1000),
-("shop", "2번템", "object.png", 1000),
-("shop", "3번템", "object.png", 1000),
-("shop", "4번템", "object.png", 1000);
+("cap", "모자1", "object.png", 1000),
+("cap", "모자2", "object.png", 2000),
+("top", "상의1", "object.png", 3000),
+("top", "상의2", "object.png", 4000),
+("bottom", "하의1", "object.png", 5000),
+("bottom", "하의2", "object.png", 6000),
+("glass", "안경1", "object.png", 7000),
+("glass", "안경2", "object.png", 8000);
 
 select *from Shop_item;
 
@@ -147,9 +151,9 @@ INSERT into User_bluetooth_UUID VALUES
 
 SELECT *from User_bluetooth_UUID;
 
-insert into User_avatar (user_name, type, look, color) values
-("관리자1", "cat", "식별하는무언가1", "식별하는무언가2"),
-("관리자2", "monkey", "식별하는무언가3", "식별하는무언가4");
+insert into User_avatar values
+("관리자1", "cat", "식별하는무언가1", "식별하는무언가2", 1, 3, 5, 7),
+("관리자2", "monkey", "식별하는무언가3", "식별하는무언가4", 2, 4, 6, 8);
 
 select *from User_avatar;
 

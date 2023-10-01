@@ -163,9 +163,44 @@ mark.get("/getmoredata/:mark_id", (req, res) => {
     dbconect.end();
 });
 
-// 해당 유저에 대한 일간목표 클리어 여부 리턴 (이름): [{목표id, 목표들, 클리어 여부}] or err
+// 해당 유저가 추가한 모든 일간목표 클리어 여부 리턴 (이름): [{목표id, 목표들, 클리어 여부, 추가시간}] or err
 mark.get("/getuserdatemark/:name", (req, res) => {
-    const query = `select mark_id, mark_list, is_clear from User_date_mark where user_name="${req.params.name}";`;
+    const query = `select mark_id, mark_list, is_clear, add_time from User_date_mark where user_name="${req.params.name}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                results.map((line) => {
+                    if (line.is_clear === 0) {
+                        line.is_clear = false;
+                        return line;
+                    } else {
+                        line.is_clear = true;
+                        return line;
+                    }
+                });
+
+                res.json({ results });
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
+// 해당 유저가 추가한 24시간 이내의 일간목표 클리어 여부 리턴 (이름): [{목표id, 목표들, 클리어 여부, 추가시간}] or err0
+mark.get("/getuserdatemark/:name/day", (req, res) => {
+    const query = `select mark_id, mark_list, is_clear, add_time, 86400-timestampdiff(second, add_time, now()) as remaining 
+    from User_date_mark where user_name = "${req.params.name}" && timestampdiff(second, add_time, now()) < 86400;`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();

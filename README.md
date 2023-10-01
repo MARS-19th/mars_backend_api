@@ -503,26 +503,55 @@ body: {
 오류응답 (code: 500)
 - `{err: "empty"}`: 해당 목표가 존재하지않음
 
-#### [/getuserdatemark/[닉네임]](http://dmumars.kro.kr/api/getuserdatemark/관리자1): 해당 유저에 대한 일간목표 클리어 여부 리턴
+#### [/getuserdatemark/[닉네임]](http://dmumars.kro.kr/api/getuserdatemark/관리자1): 해당 유저가 추가한 모든 일간목표 클리어 여부 리턴
 정상응답 (code: 200)
 ```javascript
 {
-    "results": [    //닉네임 = 관리자1
+    results: [
         {
-            mark_id: 1, //목표id
-            mark_list: "사용자목표1",   //목표 목록
-            is_clear: true  //클리어여부
+            mark_id: 1, //일간목표id
+            mark_list: "사용자목표1", //목표목록
+            is_clear: true, //클리어여부
+            add_time: "2023-10-01T10:57:26.000Z"    //추가한 시간
         },
         {
             mark_id: 2,
             mark_list: "사용자목표2",
-            is_clear: false
+            is_clear: false,
+            add_time: "2023-10-01T10:57:26.000Z"
         }
     ]
 }
 ```
 오류응답 (code: 500)
 - `{err: "empty"}`: 해당 유저가 아무런 일간목표를 추가하지 않거나 닉네임이 DB에 없음
+
+#### [/getuserdatemark/[닉네임]/day](http://dmumars.kro.kr/api/getuserdatemark/관리자1/day): 해당 유저가 24시간 이내의 추가한 일간목표 클리어 여부 리턴
+정상응답 (code: 200)
+```javascript
+{
+    "results": [
+        {
+            mark_id: 1, //일간목표id
+            mark_list: "사용자목표1",   //목표목록
+            is_clear: true, //클리어여부
+            add_time: "2023-10-01T10:57:26.000Z",   //추가한 시간
+            remaining: 84240    //남은시간
+        },
+        {
+            mark_id: 2,
+            mark_list: "사용자목표2",
+            is_clear: false,
+            add_time: "2023-10-01T10:57:26.000Z",
+            remaining: 84240
+        }
+    ]
+
+    /* 24시간이 지난 일간목표는 표시되지 않음 */
+}
+```
+오류응답 (code: 500)
+- `{err: "empty"}`: 해당 유저가 아무런 일간목표를 추가하지 않거나 모든 목표가 만료됨 또는 닉네임이 DB에 없음
 </details>
 </dd>
 
