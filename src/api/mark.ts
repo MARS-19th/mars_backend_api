@@ -299,7 +299,7 @@ mark.post("/setuserdatemark", (req: TypedRequestBody<setuserdatemark>, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.json(results[1][0]);
+                res.json({results: results[1][0].mark_id});
             }
         }
     });

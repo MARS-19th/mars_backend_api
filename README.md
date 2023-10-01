@@ -586,7 +586,7 @@ body: {
 
 정상응답 (code: 200)
 ```javascript
-{ mark_id: 5 }  //추가된 일간목표에 목표id
+{ results: 5 }  //추가된 일간목표에 목표id
 ```
 
 오류응답 (code: 500)  
