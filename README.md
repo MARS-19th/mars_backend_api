@@ -536,7 +536,7 @@ body: {
             mark_list: "사용자목표1",   //목표목록
             is_clear: true, //클리어여부
             add_time: "2023-10-01T10:57:26.000Z",   //추가한 시간
-            remaining: 84240    //남은시간
+            remaining: 84240    //남은시간(초)
         },
         {
             mark_id: 2,
