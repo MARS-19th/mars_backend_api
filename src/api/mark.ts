@@ -276,7 +276,7 @@ const setuserdetailskill = {
     progress: "int",
 };
 mark.post("/setuserdetailskill", (req: TypedRequestBody<setuserdetailskill>, res) => {
-    if (!sameobj(setuserskill, req.body)) {
+    if (!sameobj(setuserdetailskill, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setuserdetailskill });
         return;
