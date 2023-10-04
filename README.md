@@ -774,7 +774,7 @@ body: {
 {
     cap: 1, //모자
     top: 3, //상의
-    bottom:5,   //바지
+    bottom: 5,   //바지
     glass: 7    //안경
 
     // 장착한게 없는 요소는 null로 나옴
