@@ -1,6 +1,6 @@
 INSERT into User_Title VALUES
-("관리자"), 
-("새싹");
+("관리자", "all", 1), 
+("새싹", "all", 0);
 
 INSERT into Mark_list VALUES
 ("프로그래밍", "공부"), 

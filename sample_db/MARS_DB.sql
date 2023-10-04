@@ -20,6 +20,8 @@ CREATE TABLE `User_data` (
 
 CREATE TABLE `User_Title` (
 	`user_title`	varchar(100)	NOT NULL
+	`class`	varchar(100)	NOT NULL	COMMENT 'front, back, all',
+	`level`	int	NOT NULL	COMMENT '달성레밸'
 );
 
 CREATE TABLE `Mark_list` (

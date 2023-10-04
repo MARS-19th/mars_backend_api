@@ -144,6 +144,41 @@ body: {
 오류응답 (code: 500)  
 -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
 
+#### [/usertitle](http://dmumars.kro.kr/api/usertitle): 모든 칭호들 리턴
+정상응답 (code: 200)
+```javascript
+{
+    results: [
+        {
+            user_title: "새싹", //칭호 제목
+            class: "all",   //프론트 = front, 백 = back, 전체 = all
+            level: 0    //달성레벨
+        },
+        {
+            user_title: "관리자",
+            class: "admin",
+            level: 1
+        },
+        {
+            user_title: "초보 백엔드 냥이",
+            class: "back",
+            level: 1
+        },
+        {
+            user_title: "초보 프냥이",
+            class: "front",
+            level: 1
+        },
+        /* 이하 생략 */
+    ]
+    
+    /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의 */
+}
+```
+
+오류응답 (code: 500)
+-   없음
+
 #### [/usergettitle/[유저이름]](http://dmumars.kro.kr/api/usergettitle/관리자1): 해당 유저가 획득한 칭호들 리턴
 정상응답 (code: 200)
 ```javascript
