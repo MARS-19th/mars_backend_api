@@ -877,7 +877,7 @@ VR 문제 부분
 ## 예제코드
 ### `Kotlin` 
 
-<b>[해당 텍스트](https://github.com/MARS-19th/mars_backend_api/blob/4caa411ed6924eb19c192091e57712a6ea115545/example/src/main/java/seok/Request.kt) 를 눌러 전체 소스코드를 다운받아 안드로이드 프로젝트에서 바로 쓸 수 있습니다.</b>
+<b>[해당 텍스트](https://github.com/MARS-19th/mars_backend_api/blob/main/example/src/main/java/seok/Request.kt) 를 눌러 전체 소스코드를 다운받아 안드로이드 프로젝트에서 바로 쓸 수 있습니다.</b>
 
 -    #### GET 요청
 https://github.com/MARS-19th/mars_backend_api/blob/5f12fcdafcad3af66ebddfa39015c13deabed876/example/src/main/java/seok/Request.kt#L16-L34
@@ -958,24 +958,29 @@ class MainActivity : AppCompatActivity() {
     val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == RESULT_OK) {
             Thread {
-                // 파일 경로 얻기
-                val data = it.data?.data
-                val file = absolutelyPath(data!!, this)
+                // 파일 uri 값 얻기
+                val data = it.data?.data!!
 
+                // 파일 이름 얻기
+                val filename =  getFilename(data, activity?.applicationContext!!)
+
+                // 가져온 파일을 inputStream으로 리턴
+                val fileInputStream = activity?.contentResolver?.openInputStream(data)!!
+
+                // json 생성
                 val json =  JSONObject()
-                json.put("user_name", "관리자1")
+                json.put("user_name", "관리자1")    
 
                 // 파일 보내기
-                Request().fileupload("http://dmumars.kro.kr/api/uploadprofile", json, File(file))
+                Request().fileupload("http://dmumars.kro.kr/api/uploadprofile", json, filename, fileInputStream)
             }.start()
         }
     }
 
-    // 절대경로로 파일 반환 함수
+    // 파일 이름 얻기
     private fun absolutelyPath(path: Uri?, context : Context): String {
-        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        val c = context.contentResolver.query(path!!, proj, null, null, null)
-        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        val c = context.contentResolver.query(path!!, null, null, null, null)
+        val index = c?.getColumnIndexOrThrow(OpenableColumns.DISPLAY_NAME)
         c?.moveToFirst()
         val result = c?.getString(index!!)
         c?.close()
