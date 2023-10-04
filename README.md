@@ -879,8 +879,8 @@ body: {
 
 오류응답 (code: 500)  
 -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
--   `{err: "ER_DUP_ENTRY"}`: 이미 구매한 아이템임<br>
--   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 아이템id 가 존재하지 않음
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 아이템id 가 존재하지 않음<br>
+-   `{err: "ER_DUP_ENTRY"}`: 이미 구매한 아이템임
 </details>
 </dd>
 
