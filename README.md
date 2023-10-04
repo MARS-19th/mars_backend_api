@@ -888,7 +888,7 @@ body: {
 <details>
 <summary>리소스 업/다운로드</summary>
 
-#### [/getshopitemimg/[아이템id]](http://dmumars.kro.kr/api/getshopitemimg/관리자1): 해당 상점 아이템 미리보기 이미지 불러오기 (GET)
+#### [/getshopitemimg/[아이템id]](http://dmumars.kro.kr/api/getshopitemimg/1): 해당 상점 아이템 미리보기 이미지 불러오기 (GET)
 > 리소스 불러오는 부분은 MainMypageFragment의 96라인 참고
 
 정상응답 (code: 200)
@@ -900,7 +900,7 @@ body: {
 오류응답 (code: 500)
 - `{err: "empty"}`: 해당 아이템id 가 DB에 존재하지 않음
 
-#### [/getshopitemasset/[아이템id]](http://dmumars.kro.kr/api/getshopitemasset/관리자1): 해당 상점 아이템 에셋파일 불러오기 (GET)
+#### [/getshopitemasset/[아이템id]](http://dmumars.kro.kr/api/getshopitemasset/1): 해당 상점 아이템 에셋파일 불러오기 (GET)
 > 유니티 에셋을 불러올 수 있어야함
 
 정상응답 (code: 200)
@@ -963,7 +963,7 @@ VR 문제 부분
 오류응답 (code: 500)
 - `{ err: "empty" }`: 해당 목표 또는 스킬이 DB에 존재하지 않음
 
-#### [/vr/userexam/[닉네임]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html): 사용자가 푼 문제 리턴
+#### [/vr/userexam/[닉네임]](http://dmumars.kro.kr/api/vr/userexam/관리자1): 사용자가 푼 문제 리턴
 정상응답 (code: 200)
 ```javascript
 {
