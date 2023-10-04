@@ -937,7 +937,7 @@ fun main(args: Array<String>) {
 ```
 
 -    #### 파일 업로드
-https://github.com/MARS-19th/mars_backend_api/blob/e4b6ce8b725c6a6961d417486fe9378a563b68cf/example/src/main/java/seok/Request.kt#L74-L135
+https://github.com/MARS-19th/mars_backend_api/blob/a7708ee3bb102bf59214e6d17412f5f14ebef709/example/src/main/java/seok/Request.kt#L75-L134C6
 
 안드로이드 이미지 파일 업로드 예제
 
