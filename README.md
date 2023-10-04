@@ -413,6 +413,7 @@ body: {
 ```
 
 오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
 -   `{err: "file_upload_err"}`: 파일 업로드 과정에서 오류가 생김
 
 #### [/getprofile/[닉네임]](http://dmumars.kro.kr/api/getprofile/관리자1): 유저 프로필 사진 불러오기 (GET)
