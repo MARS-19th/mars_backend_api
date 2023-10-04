@@ -740,7 +740,7 @@ body: {
 오류응답 (code: 500)
 - `{ err: "empty" }`: 해당 유저가 DB 에 존재하지 않음
 
-#### [/getshopitemid/[아이템타입]](http://dmumars.kro.kr/api/getshopitemid/cap): 상점의 아이템 아이디 불러오기
+#### [/getshopitemid/[아이템타입]](http://dmumars.kro.kr/api/getshopitemid/cap): 상점의 아이템 정보 불러오기
 >  아이템 타입: cap = 모자, top = 상의, bottom = 하의, glass = 안경 
 
 정상응답 (code: 200)
