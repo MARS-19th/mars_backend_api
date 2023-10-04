@@ -19,9 +19,9 @@ CREATE TABLE `User_data` (
 );
 
 CREATE TABLE `User_Title` (
-	`user_title`	varchar(100)	NOT NULL
+	`user_title`	varchar(100)	NOT NULL,
 	`class`	varchar(100)	NOT NULL	COMMENT 'front, back, all',
-	`level`	int	NOT NULL	COMMENT '달성레밸'
+    `level` int NOT NULL    COMMENT '달성레밸'
 );
 
 CREATE TABLE `Mark_list` (
@@ -38,12 +38,12 @@ CREATE TABLE `User_skill` (
 CREATE TABLE `User_avatar` (
     `user_name`	varchar(100)	NOT NULL,
     `type`	varchar(100)	NOT NULL	COMMENT '고양이, 원숭이',
-    `look`	varchar(100)	NOT NULL,
-    `color`	varchar(100)	NOT NULL,
-    `shop_cap`	int	NULL,
-    `shop_top`	int	NULL,
-    `shop_bottom`	int	NULL,
-    `shop_glass`	int	NULL
+    `look`	varchar(100)	NOT NULL	COMMENT '프론트 식별',
+    `color`	varchar(100)	NOT NULL	COMMENT '프론트 식별',
+    `cap`	int	NULL,
+    `top`	int	NULL,
+    `bottom`	int	NULL,
+    `glass`	int	NULL
 );
 
 CREATE TABLE `User_friend` (
@@ -57,6 +57,12 @@ CREATE TABLE `Shop_item` (
 	`item_name`	varchar(100)	NOT NULL,
 	`local`	varchar(100)	NOT NULL	COMMENT '모델 경로',
 	`price`	int	NOT NULL
+);
+
+CREATE TABLE `User_inventory` (
+    `user_name`	varchar(100)	NOT NULL,
+    `object_id`	int	NOT NULL,
+    `type`	varchar(100)	NOT NULL
 );
 
 CREATE TABLE `Skill_Mark` (
@@ -165,6 +171,11 @@ ALTER TABLE `Shop_item` ADD CONSTRAINT `PK_SHOP_ITEM` PRIMARY KEY (
 	`object_id`
 );
 
+ALTER TABLE `User_inventory` ADD CONSTRAINT `PK_USER_INVENTORY` PRIMARY KEY (
+    `user_name`,
+    `object_id`
+);
+
 ALTER TABLE `Skill_Mark` ADD CONSTRAINT `PK_SKILL_MARK` PRIMARY KEY (
 	`skill_field`,
 	`target_mark`
@@ -227,10 +238,10 @@ alter table User_mark alter column date set default (current_date);
 
 alter table User_skill alter column clear_time set default (now());
 
-alter table User_avatar alter column shop_cap set default NULL;
-alter table User_avatar alter column shop_top set default NULL;
-alter table User_avatar alter column shop_bottom set default NULL;
-alter table User_avatar alter column shop_glass set default NULL;
+alter table User_avatar alter column cap set default NULL;
+alter table User_avatar alter column top set default NULL;
+alter table User_avatar alter column bottom set default NULL;
+alter table User_avatar alter column glass set default NULL;
 
 alter table VR_exam alter column rate set default 0;
 
@@ -289,28 +300,28 @@ REFERENCES `User_data` (
 ) on UPDATE CASCADE on DELETE CASCADE;
 
 ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_1` FOREIGN KEY (
-	`shop_cap`
+	`cap`
 )
 REFERENCES `Shop_item` (
 	`object_id`
 ) on UPDATE CASCADE on DELETE SET NULL;
 
 ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_2` FOREIGN KEY (
-	`shop_top`
+	`top`
 )
 REFERENCES `Shop_item` (
 	`object_id`
 ) on UPDATE  CASCADE  on DELETE SET NULL;
 
 ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_3` FOREIGN KEY (
-	`shop_bottom`
+	`bottom`
 )
 REFERENCES `Shop_item` (
 	`object_id`
 ) on UPDATE  CASCADE  on DELETE SET NULL;
 
 ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_4` FOREIGN KEY (
-	`shop_glass`
+	`glass`
 )
 REFERENCES `Shop_item` (
 	`object_id`
@@ -328,6 +339,20 @@ ALTER TABLE `User_friend` ADD CONSTRAINT `FK_User_data_TO_User_friend_2` FOREIGN
 )
 REFERENCES `User_data` (
 	`user_name`
+) on UPDATE CASCADE on DELETE CASCADE;
+
+ALTER TABLE `User_inventory` ADD CONSTRAINT `FK_User_data_TO_User_inventory_1` FOREIGN KEY (
+    `user_name`
+)
+REFERENCES `User_data` (
+    `user_name`
+) on UPDATE CASCADE on DELETE CASCADE;
+
+ALTER TABLE `User_inventory` ADD CONSTRAINT `FK_Shop_item_TO_User_inventory_1` FOREIGN KEY (
+    `object_id`
+)
+REFERENCES `Shop_item` (
+    `object_id`
 ) on UPDATE CASCADE on DELETE CASCADE;
 
 ALTER TABLE `Skill_Mark` ADD CONSTRAINT `FK_Mark_list_TO_Skill_Mark_1` FOREIGN KEY (
