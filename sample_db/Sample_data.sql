@@ -157,6 +157,18 @@ insert into User_avatar values
 
 select *from User_avatar;
 
+insert into User_inventory values
+("관리자1", 1),
+("관리자1", 3),
+("관리자1", 5),
+("관리자1", 7),
+("관리자2", 2),
+("관리자2", 4),
+("관리자2", 6),
+("관리자2", 8);
+
+select *from User_inventory;
+
 insert into User_space values
 ("관리자1", 2, 3), 
 ("관리자2", 3, 4);

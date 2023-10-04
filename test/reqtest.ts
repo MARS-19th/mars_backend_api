@@ -11,7 +11,7 @@ async function gettest(url: string) {
 async function settest(url: string) {
     const body = {
         user_name: "관리자1",
-        mark_list: "아 모르겠디"
+        object_id: 8
     };
 
     const response = await fetch(`http://korseok.kro.kr/api/${url}`, {
@@ -26,4 +26,4 @@ async function settest(url: string) {
     console.log(res);
 }
 
-settest("setuserdatemark");
+settest("setuserinventory");

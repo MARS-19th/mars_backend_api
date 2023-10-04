@@ -389,15 +389,20 @@ body: {
 오류응답 (code: 500)
 -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 해당 닉네임이 DB에 존재하지 않음
+</details>
+</dd>
 
-#### [/uploadprofile](http://dmumars.kro.kr/api/uploadprofile): 프로필 사진 업로드
+<dd>
+<details>
+<summary>리소스 업/다운로드</summary>
+
+#### [/uploadprofile](http://dmumars.kro.kr/api/uploadprofile): 프로필 사진 업로드 (POST)
 > 파일 업로드 부분은 예제코드 참고, 파일은 [jpg, jpeg, png] 만 업로드 가능
 
 요청
 ```javascript
 { 
     user_name: "관리자1",   // 닉네임
-    file: "파일경로"    // 파일경로
 }
 ```
 
@@ -408,7 +413,19 @@ body: {
 ```
 
 오류응답 (code: 500)
--   `{err: "file_upload_err"}`: 파일 업로드 과정에서 오류가 생김<br><br>
+-   `{err: "file_upload_err"}`: 파일 업로드 과정에서 오류가 생김
+
+#### [/getprofile/[닉네임]](http://dmumars.kro.kr/api/getprofile/관리자1): 유저 프로필 사진 불러오기 (GET)
+> 리소스 불러오는 부분은 MainMypageFragment의 96라인 참고
+
+정상응답 (code: 200)
+``` 
+유저 프로필 사진 이미지
+```
+
+오류응답 (code: 500)
+- `{err: "empty"}`: 닉네임이 DB에 존재하지 않음
+
 </details>
 </dd>
 
@@ -703,24 +720,99 @@ body: {
 <details>
 <summary>GET 요청</summary>
 
-#### [/getuseravatar/[유저이름]](http://dmumars.kro.kr/api/getuseravatar/관리자1): 유저의 아바타 파일들 불러오기
+#### [/getuseravatar/[유저이름]](http://dmumars.kro.kr/api/getuseravatar/관리자1): 유저의 아바타 불러오기
 정상응답 (code: 200)
 ```javascript
 {
-    type: "cat" //아바타 타입(cat, monkey)
-    look: "식별하는무언가1",   //표정
-    color: "식별하는무언가2"   //색상
+    type: "cat", //아바타 타입(cat)
+    look: "식별하는무언가1",    //표정
+    color: "식별하는무언가2",   //색상
+    cap: 1, //장착한 상점 모자id
+    top: 3, //장착한 상점 상의id 
+    bottom: 5,  //장착한 상점 하의id
+    glass: 7    //장착한 상점 안경id
+
+    // 장착한 요소들은 없으면 null임
 }
 ```
 
 오류응답 (code: 500)
 - `{ err: "empty" }`: 해당 유저가 DB 에 존재하지 않음
+
+#### [/getshopitemid/[아이템타입]](http://dmumars.kro.kr/api/getshopitemid/cap): 상점의 아이템 아이디 불러오기
+>  아이템 타입: cap = 모자, top = 상의, bottom = 하의, glass = 안경 
+
+정상응답 (code: 200)
+```javascript
+{
+    results: [  //아이템타입 = cap
+        {
+            object_id: 1,   //아이템id
+            item_name: "모자1", //아이템 이름
+            price: 1000 //가격
+        },
+        {
+            object_id: 2,
+            item_name: "모자2",
+            price: 2000
+        }
+    ]
+
+    /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+    추후 아이템 타입 변경시 연락바람 */
+    
+}
+```
+
+오류응답 (code: 500)
+- `{ err: "empty" }`: 해당 유저가 아이템타입이 DB에 존재하지 않음
+
+#### [/getuserfititem/[닉네임]](http://dmumars.kro.kr/api/getuserfititem/관리자1): 해당 유저가 장착한 상점 아이템 아이디 불러오기
+정상응답 (code: 200)
+```javascript
+{
+    cap: 1, //모자
+    top: 3, //상의
+    bottom:5,   //바지
+    glass: 7    //안경
+
+    // 장착한게 없는 요소는 null로 나옴
+}
+```
+
+오류응답 (code: 500)
+- `{ err: "empty" }`: 해당 유저가 아이템타입이 DB에 존재하지 않음
+
+#### [/getuserinventory/[닉네임]](http://dmumars.kro.kr/api/getuserinventory/관리자1): 해당 유저의 인벤토리 블러오기
+>  아이템 타입: cap = 모자, top = 상의, bottom = 하의, glass = 안경 
+
+정상응답 (code: 200)
+```javascript
+{
+    results: [
+        {
+            object_id: 1,   // 아이템id
+            item_name: "모자1", //  아이템이름
+            type: "cap" //  아이템 타입
+        },
+        {
+            object_id: 3,
+            item_name: "상의1",
+            type: "top"
+        },
+        /* 이하생략 */
+    ]
+}
+```
+
+오류응답 (code: 500)
+- `{ err: "empty" }`: 해당 유저가 얻은 아이템이 없거나 닉네임이 DB에 존재하지 않음
 </details>
 
 <details>
 <summary>POST 요청</summary>
 
-#### [/setuseravatar](http://dmumars.kro.kr/api/setuseravatar): 유저 아바타 파일 저장
+#### [/setuseravatar](http://dmumars.kro.kr/api/setuseravatar): 유저 아바타 생성
 요청
 ```javascript
 {
@@ -742,6 +834,71 @@ body: {
 오류응답 (code: 500)  
 -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
 -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임이 DB에 존재하지 않음
+
+#### [/setuserfititem](http://dmumars.kro.kr/api/setuserfititem): 유저 장착한 아이템 변경
+요청
+```javascript
+{
+    user_name: "관리자1",   //닉네임
+    cap: 1 또는 null,   //모자id
+    top: 3 또는 null,   //상의id
+    bottom: 5 또는 null,    //하의id
+    glass: 7 또는 null, //안경id
+
+    /* 장착을 취소한 경우엔 null로 */
+}
+```
+
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
+
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 아이템id 가 존재하지 않음
+
+#### [/setuserinventory](http://dmumars.kro.kr/api/setuserinventory): 유저 인벤토리 아이템 추가
+> 유저가 아이템을 구매한 경우 사용
+
+요청
+```javascript
+{
+    user_name: "관리자1",   //닉네임
+    object_id: 1    // 아이템id
+}
+```
+
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
+
+오류응답 (code: 500)  
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제<br>
+-   `{err: "ER_DUP_ENTRY"}`: 이미 구매한 아이템임<br>
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 닉네임 또는 아이템id 가 존재하지 않음
+</details>
+</dd>
+
+<dd>
+<details>
+<summary>리소스 업/다운로드</summary>
+
+#### [/getshopitemres/[아이템id]](http://dmumars.kro.kr/api/getprofile/관리자1): 상점 아이템 이미지 불러오기 (GET)
+> 리소스 불러오는 부분은 MainMypageFragment의 96라인 참고
+
+정상응답 (code: 200)
+``` 
+해당 아이템id에 이미지
+아이템id 얻는건 /getshopitemid 으로
+```
+
+오류응답 (code: 500)
+- `{err: "empty"}`: 해당 아이템id 가 DB에 존재하지 않음
+
 </details>
 </dd>
 

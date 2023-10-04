@@ -61,8 +61,7 @@ CREATE TABLE `Shop_item` (
 
 CREATE TABLE `User_inventory` (
     `user_name`	varchar(100)	NOT NULL,
-    `object_id`	int	NOT NULL,
-    `type`	varchar(100)	NOT NULL
+    `object_id`	int	NOT NULL
 );
 
 CREATE TABLE `Skill_Mark` (

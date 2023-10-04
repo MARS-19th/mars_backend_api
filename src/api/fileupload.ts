@@ -33,6 +33,68 @@ const uploadMiddleware = multter({
     },
 }).single("file");
 
+// 유저 프로필 사진 리턴 (닉네임): err or file
+// 안드로이드에서 url 리소스 불러올수 있게
+fileupload.get("/getprofile/:name", (req, res) => {
+    const query = `select profile_local from User_data where user_name = "${req.params.name}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                const local = path.join(savepath, results[0].profile_local);
+                if (fs.existsSync(local)) {
+                    res.sendFile(local);
+                } else {
+                    res.sendFile(path.join(savepath, "default_profile.png"));
+                }
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
+// 상점 아이템 이미지 리턴 (아이템id): err or file
+// 안드로이드에서 url 리소스 불러올수 있게
+fileupload.get("/getshopitemres/:id", (req, res) => {
+    const query = `select local from Shop_item where object_id = ${req.params.id};`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                const local = path.join(savepath, "/shop", results[0].local);
+                if (fs.existsSync(local)) {
+                    console.log("있음");
+                    res.sendFile(local);
+                } else {
+                    console.log("없음");
+                    res.sendFile(path.join(savepath, "/shop", "default_profile.png"));
+                }
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
 // 프로필 사진 업로드 (닉네임): err or results
 type uploadprofile = {
     user_name: string;
@@ -65,36 +127,6 @@ fileupload.post("/uploadprofile", uploadMiddleware, (req, res) => {
             res.status(500).json({ err: err.code });
         } else {
             res.json({ results: true });
-        }
-    });
-
-    dbconect.end();
-});
-
-// 유저 프로필 사진 리턴 (닉네임): err or file
-// 안드로이드에서 네트워크로 리소스 불러올수 있게
-fileupload.get("/getprofile/:name", (req, res) => {
-    const query = `select profile_local from User_data where user_name = "${req.params.name}";`;
-
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
-
-    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
-        if (err) {
-            console.error(err);
-            res.status(500).json({ err: err.code });
-        } else {
-            if (!results?.length) {
-                console.error("항목없음");
-                res.status(500).json({ err: "empty" });
-            } else {
-                const local = path.join(savepath, results[0].profile_local);
-                if (fs.existsSync(local)) {
-                    res.sendFile(local);
-                } else {
-                    res.sendFile(path.join(savepath, "default_profile.png"));
-                }
-            }
         }
     });
 
