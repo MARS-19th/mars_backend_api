@@ -52,11 +52,12 @@ CREATE TABLE `User_friend` (
 );
 
 CREATE TABLE `Shop_item` (
-	`object_id`	int	NOT NULL	COMMENT '순차부여',
-	`type`	varchar(100)	NOT NULL	COMMENT '아이템 타입',
-	`item_name`	varchar(100)	NOT NULL,
-	`local`	varchar(100)	NOT NULL	COMMENT '모델 경로',
-	`price`	int	NOT NULL
+    `object_id`	int	NOT NULL	COMMENT '순차부여',
+    `type`	varchar(100)	NOT NULL	COMMENT '아이템 타입',
+    `item_name`	varchar(100)	NOT NULL,
+    `image_local`	varchar(100)	NOT NULL,
+    `asset_local`	VARCHAR(255)	NOT NULL,
+    `price`	int	NOT NULL
 );
 
 CREATE TABLE `User_inventory` (

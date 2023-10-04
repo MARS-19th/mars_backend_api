@@ -41,15 +41,15 @@ insert into More_data values ("https://www.youtube.com/watch?v=pkr48S22zH0", 1, 
 
 select *from More_data;
 
-insert into Shop_item (type, item_name, local, price) values
-("cap", "모자1", "object.png", 1000),
-("cap", "모자2", "object.png", 2000),
-("top", "상의1", "object.png", 3000),
-("top", "상의2", "object.png", 4000),
-("bottom", "하의1", "object.png", 5000),
-("bottom", "하의2", "object.png", 6000),
-("glass", "안경1", "object.png", 7000),
-("glass", "안경2", "object.png", 8000);
+insert into Shop_item (type, item_name, image_local, asset_local, price) values
+("cap", "모자1", "object.png", "object.png", 1000),
+("cap", "모자2", "object.png", "object.png", 2000),
+("top", "상의1", "object.png", "object.png", 3000),
+("top", "상의2", "object.png", "object.png", 4000),
+("bottom", "하의1", "object.png", "object.png", 5000),
+("bottom", "하의2", "object.png", "object.png", 6000),
+("glass", "안경1", "object.png", "object.png", 7000),
+("glass", "안경2", "object.png", "object.png", 8000);
 
 select *from Shop_item;
 
