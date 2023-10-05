@@ -96,7 +96,36 @@ user.get("/getfriend/:name", (req, res) => {
                 results = results.map((line) => {
                     return line.friend;
                 });
-                res.json({results});
+                res.json({ results });
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
+// 친구 요청자 목록 (닉네임): err or results: [...친구요청자 닉네임]
+user.get("/getreqfriend/:name", (req, res) => {
+    const query = `select user_name from User_friend 
+    where friend ="${req.params.name}" && user_name not in 
+    (select friend from User_friend where user_name="${req.params.name}");`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                results = results.map((line) => {
+                    return line.user_name;
+                });
+                res.json({ results });
             }
         }
     });

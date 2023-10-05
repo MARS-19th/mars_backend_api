@@ -144,6 +144,17 @@ body: {
 오류응답 (code: 500)  
 -   `{err: "empty"}`: 해당 유저를 찾을 수 없음
 
+#### [/getreqfriend/[유저이름]](http://dmumars.kro.kr/api/getreqfriend/관리자1): 해당 유저의 친구 요청자 목록 리턴
+정상응답 (code: 200)
+```javascript
+{ results:["yoona", "석씨s"] } //유저이름은 관리자1
+// jsonarray 타입임
+// 친구 요청자 목록은 한쪽에서만 친구가 추가된 상태인 경우 리턴됨
+```
+
+오류응답 (code: 500)  
+-   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+
 #### [/usertitle](http://dmumars.kro.kr/api/usertitle): 모든 칭호들 리턴
 정상응답 (code: 200)
 ```javascript
