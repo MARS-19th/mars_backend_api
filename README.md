@@ -153,7 +153,7 @@ body: {
 ```
 
 오류응답 (code: 500)  
--   `{err: "empty"}`: 해당 유저를 찾을 수 없음
+-   `{err: "empty"}`: 해당 유저를 찾을 수 없거나 친구 요청자가 없음
 
 #### [/usertitle](http://dmumars.kro.kr/api/usertitle): 모든 칭호들 리턴
 정상응답 (code: 200)
