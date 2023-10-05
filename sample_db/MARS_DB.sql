@@ -514,7 +514,8 @@ CREATE TRIGGER User_get_title_insert
 	ON User_data
     FOR EACH ROW
 BEGIN
-	insert into User_get_title values (new.user_name, new.user_title);
+	insert into User_get_title values (new.user_name, new.user_title)
+	on duplicate key update user_name = new.user_name, user_title = new.user_title;
 END; //
 DELIMITER ;
 
@@ -526,7 +527,8 @@ CREATE TRIGGER User_get_title_update
     FOR EACH ROW
 BEGIN
 	if old.user_title != new.user_title then
-		insert into User_get_title values (new.user_name, new.user_title);
+        insert into User_get_title values (new.user_name, new.user_title)
+        on duplicate key update user_name = new.user_name, user_title = new.user_title;
 	end if;
 END; //
 DELIMITER ;
