@@ -137,8 +137,20 @@ body: {
 #### [/getfriend/[유저이름]](http://dmumars.kro.kr/api/getfriend/관리자1): 해당 유저의 친구 목록 리턴
 정상응답 (code: 200)   
 ```javascript
-{ results: ["관리자2"] } //유저이름은 관리자1
-// jsonarray 타입임
+{
+    results: [  //유저이름은 관리자1
+        {
+            friend: "관리자2",  //친구 닉네임
+            isaccept: true  //해당 친구의 친추수락 여부
+        },
+        {
+            friend: "석씨s",
+            isaccept: false
+        }
+    ]
+
+    /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의 */
+}
 ```
 
 오류응답 (code: 500)  

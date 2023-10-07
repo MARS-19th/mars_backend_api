@@ -69,7 +69,7 @@ user.get("/getbtuserdata/:uuid", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.json(results[0]);
+                res.json({results: results[0]});
             }
         }
     });
@@ -77,26 +77,38 @@ user.get("/getbtuserdata/:uuid", (req, res) => {
     dbconect.end();
 });
 
-// 친구 목록 (닉네임): err or results: [...친구들]
+// 친구 목록 (닉네임): err or results: [{친구 닉네임, 수락여부}]
 user.get("/getfriend/:name", (req, res) => {
-    const query = `select friend from User_friend where user_name = "${req.params.name}";`;
+    const query = `select friend from User_friend where user_name = "${req.params.name}";
+    select user_name from User_friend where friend = "${req.params.name}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
 
-    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
-        if (err) {
-            console.error(err);
-            res.status(500).json({ err: err.code });
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[][]) => {
+        if (!results?.length || !results[0].length) {
+            console.error("항목없음");
+            res.status(500).json({ err: "empty" });
         } else {
             if (!results?.length) {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                results = results.map((line) => {
-                    return line.friend;
+                // 두번째 쿼리 결과값에 이름 값만 추출해서 다시 저장
+                results[1] = results[1].map((line) => {
+                    return line.user_name;
                 });
-                res.json({ results });
+
+                // 해당 사용자의 친구가 요청을 받아서 양쪽으로 친추가 됬는지 확인
+                results[0] = results[0].map((line) => {
+                    if (results[1].includes(line.friend)) {
+                        return { ...line, isaccept: true };
+                    } else {
+                        return { ...line, isaccept: false };
+                    }
+                });
+
+                res.json({ results: results[0] });
             }
         }
     });
@@ -149,7 +161,7 @@ user.get("/usertitle", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.json({results});
+                res.json({ results });
             }
         }
     });
@@ -158,7 +170,7 @@ user.get("/usertitle", (req, res) => {
 });
 
 // 사용자가 획득한 칭호들 리턴 (닉네임): err or results: [...칭호들]
-user.get("/usergettitle/:name", (req, res) => {    
+user.get("/usergettitle/:name", (req, res) => {
     const query = `select user_title from User_get_title where user_name = "${req.params.name}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
@@ -176,7 +188,7 @@ user.get("/usergettitle/:name", (req, res) => {
                 results = results.map((line) => {
                     return line.user_title;
                 });
-                res.json({results});
+                res.json({ results });
             }
         }
     });
@@ -189,7 +201,7 @@ type setuser = {
     user_name: string;
     user_id: string;
     choice_mark: string;
-    profile_local: string | null;   // profile_local 은 있거나 없거나
+    profile_local: string | null; // profile_local 은 있거나 없거나
 };
 const setuser = {
     user_name: "string",
@@ -203,9 +215,9 @@ user.post("/setuser", (req: TypedRequestBody<setuser>, res) => {
         res.status(500).json({ err: "type_err", type: setuser });
         return;
     }
-    
+
     if (!req.body.profile_local) {
-        req.body.profile_local = "default_profile.png"  //기본 이미지
+        req.body.profile_local = "default_profile.png"; //기본 이미지
     }
 
     const query = `insert into User_data(user_name, user_id, choice_mark, profile_local) values 
