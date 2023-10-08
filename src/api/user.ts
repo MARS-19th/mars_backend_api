@@ -69,7 +69,7 @@ user.get("/getbtuserdata/:uuid", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.json({results: results[0]});
+                res.json(results[0]);
             }
         }
     });
