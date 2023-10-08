@@ -460,9 +460,7 @@ user.post("/setfriend", (req: TypedRequestBody<setfriend>, res) => {
         return;
     }
 
-    const query = `insert into User_friend values 
-    ("${req.body.user_name}", "${req.body.friend}"), 
-    ("${req.body.friend}", "${req.body.user_name}");`;
+    const query = `insert into User_friend values ("${req.body.user_name}", "${req.body.friend}");`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
