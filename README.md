@@ -763,28 +763,51 @@ body: {
 오류응답 (code: 500)
 - `{ err: "empty" }`: 해당 유저가 DB 에 존재하지 않음
 
-#### [/getshopitemid/[아이템타입]](http://dmumars.kro.kr/api/getshopitemid/cap): 상점의 아이템 정보 불러오기
->  아이템 타입: cap = 모자, top = 상의, bottom = 하의, glass = 안경 
+#### [/getshopitemid/](http://dmumars.kro.kr/api/getshopitemid): 상점 전체 아이템 정보 불러오기
+>  아이템 타입: bag, fish, cap, glasses, meat, wind, fork
+
+정상응답 (code: 200)
+```javascript
+{
+    results: [
+        {
+            object_id: 1,   //아이템id
+            item_name: "가방",  //아이템 이름
+            type: "bag",    //아이템 타입
+            price: 2400 //가격
+        },
+        {
+            object_id: 2,
+            item_name: "생선",
+            type: "fish",
+            price: 500
+        },
+        /* 이하생략 */
+    ]
+
+    // results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
+}
+```
+
+오류응답 (code: 500)
+- 없음
+
+#### [/getshopitemid/[아이템타입]](http://dmumars.kro.kr/api/getshopitemid/cap): 해당 아이템 타입에 상점 아이템 정보 불러오기
+>  아이템 타입: bag, fish, cap, glasses, meat, wind, fork
 
 정상응답 (code: 200)
 ```javascript
 {
     results: [  //아이템타입 = cap
         {
-            object_id: 1,   //아이템id
-            item_name: "모자1", //아이템 이름
-            price: 1000 //가격
-        },
-        {
-            object_id: 2,
-            item_name: "모자2",
-            price: 2000
+            object_id: 3,   //아이템id
+            item_name: "모자", //아이템 이름
+            price: 1200 //가격
         }
     ]
 
     /* results에 jsonarray가 있고 그 안에 jsonobject가 들어가있는 형태임 파싱시 주의
     추후 아이템 타입 변경시 연락바람 */
-    
 }
 ```
 
@@ -808,7 +831,7 @@ body: {
 - `{ err: "empty" }`: 해당 유저가 아이템타입이 DB에 존재하지 않음
 
 #### [/getuserinventory/[닉네임]](http://dmumars.kro.kr/api/getuserinventory/관리자1): 해당 유저의 인벤토리 블러오기
->  아이템 타입: cap = 모자, top = 상의, bottom = 하의, glass = 안경 
+>  아이템 타입: bag, fish, cap, glasses, meat, wind, fork
 
 정상응답 (code: 200)
 ```javascript

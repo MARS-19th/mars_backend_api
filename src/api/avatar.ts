@@ -28,6 +28,31 @@ avatar.get("/getuseravatar/:name", (req, res) => {
     dbconect.end();
 });
 
+// 상점 전체 아이템 아이디 불러오기: [{아이디, 이름, 가격}] or err
+avatar.get("/getshopitemid", (req, res) => {
+    const query = `select object_id, item_name, type, price from Shop_item;`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "empty" });
+            } else {
+                res.json({ results });
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
+
 // 상점 아이템 아이디 불러오기 (타입): [{아이디, 이름, 가격}] or err
 avatar.get("/getshopitemid/:type", (req, res) => {
     const query = `select object_id, item_name, price from Shop_item where type ="${req.params.type}";`;
