@@ -763,7 +763,7 @@ body: {
 오류응답 (code: 500)
 - `{ err: "empty" }`: 해당 유저가 DB 에 존재하지 않음
 
-#### [/getshopitemid/](http://dmumars.kro.kr/api/getshopitemid): 상점 전체 아이템 정보 불러오기
+#### [/getshopitemid](http://dmumars.kro.kr/api/getshopitemid): 상점 전체 아이템 정보 불러오기
 >  아이템 타입: bag, fish, cap, glasses, meat, wind, fork
 
 정상응답 (code: 200)
