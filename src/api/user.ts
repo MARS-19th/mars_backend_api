@@ -30,7 +30,8 @@ user.get("/getuserdata/:name", (req, res) => {
 
 // 회원 블루투스 uuid 리턴 (유저이름): err or bt_mac
 user.get("/getuserbtuuid/:name", (req, res) => {
-    const query = `select bt_uuid from User_bluetooth_UUID where user_name = "${req.params.name}";`;
+    const query = `select identifier_code from User_identifier_code where 
+    type = "bt_uuid" && user_name = "${req.params.name}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -54,8 +55,9 @@ user.get("/getuserbtuuid/:name", (req, res) => {
 
 // 회원 블루투스 uuid 로 사용자 정보들 리턴 err or 모든 유저 정보
 user.get("/getbtuserdata/:uuid", (req, res) => {
-    const query = `select *from User_data where user_name = 
-    (select user_name from User_bluetooth_UUID where bt_uuid = "${req.params.uuid}")`;
+    const query = `select *from User_data where user_name =
+    (select user_name from User_identifier_code where 
+    type = "bt_uuid" && identifier_code = "${req.params.uuid}");`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -238,7 +240,7 @@ user.post("/setuser", (req: TypedRequestBody<setuser>, res) => {
     dbconect.end();
 });
 
-//유저 블루투스 uuid 설정 (닉네임, mac 주소): err or ok
+//유저 블루투스 uuid 설정 (닉네임, 블루투스 uuid): err or ok
 type setuserbtuuid = {
     user_name: string;
     bt_uuid: string;
@@ -254,8 +256,42 @@ user.post("/setuserbtuuid", (req: TypedRequestBody<setuserbtuuid>, res) => {
         return;
     }
 
-    const query = `insert into User_bluetooth_UUID values ("${req.body.user_name}", "${req.body.bt_uuid}") 
-    on duplicate key update bt_uuid = "${req.body.bt_uuid}";`;
+    const query = `insert into User_identifier_code values ("bt_uuid", "${req.body.user_name}", "${req.body.bt_uuid}") 
+    on duplicate key update identifier_code = "${req.body.bt_uuid}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            res.json({ results: true });
+        }
+    });
+
+    dbconect.end();
+});
+
+//유저 fcm 토큰키 설정 (닉네임, fcm 토큰키): err or ok
+type setuserfcmtoken = {
+    user_name: string;
+    fcm_token: string;
+};
+const setuserfcmtoken = {
+    user_name: "string",
+    fcm_token: "string",
+};
+user.post("/setuserfcmtoken", (req: TypedRequestBody<setuserfcmtoken>, res) => {
+    if (!sameobj(setuserfcmtoken, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: setuserfcmtoken });
+        return;
+    }
+
+    const query = `insert into User_identifier_code values ("fcm_token", "${req.body.user_name}", "${req.body.fcm_token}") 
+    on duplicate key update identifier_code = "${req.body.fcm_token}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();

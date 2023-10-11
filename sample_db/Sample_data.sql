@@ -145,11 +145,11 @@ insert into User_date_mark (user_name, mark_list, is_clear) values
 
 select  *from User_date_mark;
 
-INSERT into User_bluetooth_UUID VALUES
-("관리자1", "c4ab6dc8-e2ce-4fa4-a6b6-76f49309ae14"),
-("관리자2", "2e6ea08d-5c69-430f-891a-ce1359065a99");
+INSERT into User_identifier_code VALUES
+("bt_uuid",  "관리자1", "c4ab6dc8-e2ce-4fa4-a6b6-76f49309ae14"),
+("bt_uuid", "관리자2", "2e6ea08d-5c69-430f-891a-ce1359065a99");
 
-SELECT *from User_bluetooth_UUID;
+SELECT *from User_identifier_code;
 
 insert into User_avatar values
 ("관리자1", "cat", "식별하는무언가1", "식별하는무언가2", 1),

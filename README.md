@@ -215,7 +215,7 @@ body: {
 #### [/getuserbtuuid/[유저이름]](http://dmumars.kro.kr/api/getuserbtuuid/관리자1): 해당 유저의 블루투스 uuid 주소 리턴
 정상응답 (code: 200)
 ```javascript
-{ bt_uuid: "e02a6f45-b516-4bc8-8e9f-9835fe0be8a0" }  //유저이름은 관리자1
+{ identifier_code: "1c99ad9c-8767-40d9-83f2-3d64e3e95d32" }  //유저이름은 관리자1
 ```
 
 오류응답 (code: 500)  
@@ -400,6 +400,27 @@ body: {
 {
     user_name: "관리자1",   //닉네임
     bt_uuid: "블루투스 mac 주소" //블루투스 mac주소
+}
+```
+
+정상응답 (code: 200)
+```javascript
+{ results: true }
+// 정상응답 이라는 것을 나타내므로 http응답 코드로도 처리 할 수 있기에 따로 처리할 필요는 없음
+```
+
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+-   `{err: "ER_NO_REFERENCED_ROW_2"}`: 해당 닉네임이 DB에 존재하지 않음
+
+#### [/setuserfcmtoken](http://dmumars.kro.kr/api/setuserfcmtoken): 사용자 fcm 토큰키 설정
+> fcm 토큰키는 firebase 클라우드 메시징에 사용됨
+
+요청
+```javascript
+{
+    user_name: "관리자1",   //닉네임
+    fcm_token: "fcm토큰키" //fcm토큰키
 }
 ```
 
@@ -814,7 +835,7 @@ body: {
 #### [/getuserfititem/[닉네임]](http://dmumars.kro.kr/api/getuserfititem/관리자1): 해당 유저가 장착한 상점 아이템 아이디 불러오기
 정상응답 (code: 200)
 ```javascript
-{ results: 1 }  //장착한 상점 아이템id
+{ moun_shop: 1 }  //장착한 상점 아이템id
 ```
 
 오류응답 (code: 500)

@@ -89,9 +89,10 @@ CREATE TABLE `User_space` (
 	`element2`	int	NULL
 );
 
-CREATE TABLE `User_bluetooth_UUID` (
+CREATE TABLE `User_identifier_code` (
+    `type`	varchar(100)	NOT NULL	COMMENT 'bt_uuid, fcm_token',
     `user_name`	varchar(100)	NOT NULL,
-    `bt_uuid`	varchar(100)	NOT NULL
+    `identifier_code`	varchar(100)	NOT NULL	COMMENT '블루투스 uuid,  fcm 토큰키'
 );
 
 CREATE TABLE `More_data` (
@@ -191,7 +192,8 @@ ALTER TABLE `User_space` ADD CONSTRAINT `PK_USER_SPACE` PRIMARY KEY (
 	`user_name`
 );
 
-ALTER TABLE `User_bluetooth_UUID` ADD CONSTRAINT `PK_USER_BLUETOOTH_UUID` PRIMARY KEY (
+ALTER TABLE `User_identifier_code` ADD CONSTRAINT `PK_USER_IDENTIFIER_CODE` PRIMARY KEY (
+    `type`,
     `user_name`
 );
 
@@ -384,7 +386,7 @@ REFERENCES `Shop_item` (
 	`object_id`
 ) on UPDATE CASCADE on DELETE set NULL;
 
-ALTER TABLE `User_bluetooth_UUID` ADD CONSTRAINT `FK_User_data_TO_User_bluetooth_UUID_1` FOREIGN KEY (
+ALTER TABLE `User_identifier_code` ADD CONSTRAINT `FK_User_data_TO_User_identifier_code_1` FOREIGN KEY (
     `user_name`
 )
 REFERENCES `User_data` (
