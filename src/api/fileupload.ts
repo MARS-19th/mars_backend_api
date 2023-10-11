@@ -84,7 +84,7 @@ fileupload.get("/getshopitemimg/:id", (req, res) => {
                 if (fs.existsSync(local)) {
                     res.sendFile(local);
                 } else {
-                    res.sendFile(path.join(savepath, "/shop", "default_profile.png"));
+                    res.sendFile(path.join(savepath, "/shop", "object.png"));
                 }
             }
         }
