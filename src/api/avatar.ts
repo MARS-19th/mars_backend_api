@@ -6,7 +6,7 @@ const avatar = express.Router();
 
 // 유저의 아바타 불러오기 (이름): err or {look, color}
 avatar.get("/getuseravatar/:name", (req, res) => {
-    const query = `select type, look, color, cap, top, bottom, glass from User_avatar where user_name = "${req.params.name}";`;
+    const query = `select type, look, color, moun_shop from User_avatar where user_name = "${req.params.name}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -77,9 +77,9 @@ avatar.get("/getshopitemid/:type", (req, res) => {
     dbconect.end();
 });
 
-// 해당 유저가 장착 상점 아이템 불러오기 (닉네임): [{모자id, 상의id, 하의id, 안경id}] or err
+// 해당 유저가 장착 상점 아이템 불러오기 (닉네임): {장착한 상점 아이템 id} or err
 avatar.get("/getuserfititem/:name", (req, res) => {
-    const query = `select cap, top, bottom, glass from User_avatar where user_name="${req.params.name}"`;
+    const query = `select moun_shop from User_avatar where user_name="${req.params.name}"`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();
@@ -93,7 +93,7 @@ avatar.get("/getuserfititem/:name", (req, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.json(results[0]);
+                res.json({results: results[0].moun_shop});
             }
         }
     });
@@ -170,17 +170,11 @@ avatar.post("/setuseravatar", (req: TypedRequestBody<setuseravatar>, res) => {
 // 유저의 장착한 아이템 변경 (닉네임, 모자id, 상의id, 바지id, 안경id): ok or err
 type setuserfititem = {
     user_name: string;
-    cap: number | null;
-    top: number | null;
-    bottom: number | null;
-    glass: number | null;
+    moun_shop: number | null;
 };
 const setuserfititem = {
     user_name: "string",
-    cap: "int 또는 null",
-    top: "int 또는 null",
-    bottom: "int 또는 null",
-    glass: "int 또는 null",
+    moun_shop: "int 또는 null",
 };
 avatar.post("/setuserfititem", (req: TypedRequestBody<setuserfititem>, res) => {
     if (!sameobj(setuserfititem, req.body)) {
@@ -188,9 +182,7 @@ avatar.post("/setuserfititem", (req: TypedRequestBody<setuserfititem>, res) => {
         res.status(500).json({ err: "type_err", type: setuserfititem });
         return;
     }
-    const query = `update User_avatar set cap=${req.body.cap}, top=${req.body.top}, 
-    bottom=${req.body.bottom}, glass=${req.body.glass} 
-    where user_name = "${req.body.user_name}";`;
+    const query = `update User_avatar set moun_shop = ${req.body.moun_shop} where user_name = "${req.body.user_name}";`;
 
     const dbconect = mysql.createConnection(serverset.setdb);
     dbconect.connect();

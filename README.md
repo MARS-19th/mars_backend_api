@@ -751,12 +751,9 @@ body: {
     type: "cat", //아바타 타입(cat)
     look: "식별하는무언가1",    //표정
     color: "식별하는무언가2",   //색상
-    cap: 1, //장착한 상점 모자id
-    top: 3, //장착한 상점 상의id 
-    bottom: 5,  //장착한 상점 하의id
-    glass: 7    //장착한 상점 안경id
+    moun_shop: 1, //장착한 상점 아이템id
 
-    // 장착한 요소들은 없으면 null임
+    // moun_shop 은 장착한 아이템이 없으면 null
 }
 ```
 
@@ -817,14 +814,7 @@ body: {
 #### [/getuserfititem/[닉네임]](http://dmumars.kro.kr/api/getuserfititem/관리자1): 해당 유저가 장착한 상점 아이템 아이디 불러오기
 정상응답 (code: 200)
 ```javascript
-{
-    cap: 1, //모자
-    top: 3, //상의
-    bottom: 5,   //바지
-    glass: 7    //안경
-
-    // 장착한게 없는 요소는 null로 나옴
-}
+{ results: 1 }  //장착한 상점 아이템id
 ```
 
 오류응답 (code: 500)
@@ -887,10 +877,7 @@ body: {
 ```javascript
 {
     user_name: "관리자1",   //닉네임
-    cap: 1 또는 null,   //모자id
-    top: 3 또는 null,   //상의id
-    bottom: 5 또는 null,    //하의id
-    glass: 7 또는 null, //안경id
+    moun_shop: 1 또는 null,   //장착한 상점 아이템id
 
     /* 장착을 취소한 경우엔 null로 */
 }

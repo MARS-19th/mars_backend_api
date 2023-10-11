@@ -152,8 +152,8 @@ INSERT into User_bluetooth_UUID VALUES
 SELECT *from User_bluetooth_UUID;
 
 insert into User_avatar values
-("관리자1", "cat", "식별하는무언가1", "식별하는무언가2", 1, 3, 5, 7),
-("관리자2", "monkey", "식별하는무언가3", "식별하는무언가4", 2, 4, 6, 8);
+("관리자1", "cat", "식별하는무언가1", "식별하는무언가2", 1),
+("관리자2", "monkey", "식별하는무언가3", "식별하는무언가4", 2);
 
 select *from User_avatar;
 

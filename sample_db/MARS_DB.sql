@@ -40,10 +40,7 @@ CREATE TABLE `User_avatar` (
     `type`	varchar(100)	NOT NULL	COMMENT '고양이, 원숭이',
     `look`	varchar(100)	NOT NULL	COMMENT '프론트 식별',
     `color`	varchar(100)	NOT NULL	COMMENT '프론트 식별',
-    `cap`	int	NULL,
-    `top`	int	NULL,
-    `bottom`	int	NULL,
-    `glass`	int	NULL
+    `moun_shop`     int     NULL
 );
 
 CREATE TABLE `User_friend` (
@@ -238,10 +235,7 @@ alter table User_mark alter column date set default (current_date);
 
 alter table User_skill alter column clear_time set default (now());
 
-alter table User_avatar alter column cap set default NULL;
-alter table User_avatar alter column top set default NULL;
-alter table User_avatar alter column bottom set default NULL;
-alter table User_avatar alter column glass set default NULL;
+alter table User_avatar alter column moun_shop set default NULL;
 
 alter table VR_exam alter column rate set default 0;
 
@@ -300,32 +294,11 @@ REFERENCES `User_data` (
 ) on UPDATE CASCADE on DELETE CASCADE;
 
 ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_1` FOREIGN KEY (
-	`cap`
+	`moun_shop`
 )
 REFERENCES `Shop_item` (
 	`object_id`
 ) on UPDATE CASCADE on DELETE SET NULL;
-
-ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_2` FOREIGN KEY (
-	`top`
-)
-REFERENCES `Shop_item` (
-	`object_id`
-) on UPDATE  CASCADE  on DELETE SET NULL;
-
-ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_3` FOREIGN KEY (
-	`bottom`
-)
-REFERENCES `Shop_item` (
-	`object_id`
-) on UPDATE  CASCADE  on DELETE SET NULL;
-
-ALTER TABLE `User_avatar` ADD CONSTRAINT `FK_Shop_item_TO_User_avatar_4` FOREIGN KEY (
-	`glass`
-)
-REFERENCES `Shop_item` (
-	`object_id`
-) on UPDATE  CASCADE  on DELETE SET NULL;
 
 ALTER TABLE `User_friend` ADD CONSTRAINT `FK_User_data_TO_User_friend_1` FOREIGN KEY (
 	`user_name`
