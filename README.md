@@ -998,12 +998,12 @@ VR 문제 부분
 오류응답 (code: 500)
 - `{ err: "empty" }`: 해당 목표가 DB에 존재하지 않음
 
-#### [/vr/getallexam/[목표명]/[스킬명]/[문제타입]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html/stand): 해당 목표와 스킬, 문제타입에 대한 랜덤 문제 리턴
+#### [/vr/getallexam/[목표명]/[문제타입]](http://dmumars.kro.kr/api/vr/getallexam/프로그래밍/html/stand): 해당 목표와 문제타입에 대한 랜덤 문제 리턴
 > 문제타입: 4지선다="stand" ox문제="ox"로 표기
 
 정상응답 (code: 200)
 ```javascript
-// 목표 = 프로그래밍, 스킬 = html, 문제타입 = stand
+// 목표 = 프로그래밍, 문제타입 = stand
 {   
     exam_id: 2, //문재 id
     exam: "문제2",  //문제명
