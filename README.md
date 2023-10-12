@@ -1005,12 +1005,12 @@ VR 문제 부분
 ```javascript
 // 목표 = 프로그래밍, 문제타입 = stand
 {   
-    exam_id: 2, //문재 id
-    skill_field: "js"   //스킬명
-    exam: "문제2",  //문제명
-    correct: "답3", //정답
+    exam_id: 17, //문재 id
+    skill_field: "js",  //스킬명
+    exam: "JavaScript에서 함수를 정의하는 키워드는 무엇인가요?",  //문제명
+    correct: "function", //정답
     rate: 0,    //정답룰
-    exam_option: ["답1","답2","답3","답4"]  //문제 선지들
+    exam_option: ["define","func","function","method"]  //문제 선지들
 }
 //요청할때 마다 문제가 바뀜
 ```
