@@ -433,6 +433,31 @@ body: {
 오류응답 (code: 500)
 -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
 -   `{err: "ER_NO_REFERENCED_ROW_2"}`: 해당 닉네임이 DB에 존재하지 않음
+
+#### [/pushuserchat](http://dmumars.kro.kr/api/pushuserchat): 유저 채팅 fcm 서버에 전송
+> 전송된 메시지는 받는 유저의 onMessageReceived() 메소드에서 받아볼 수 있음
+
+요청
+```javascript
+{
+    user_name: "관리자1",   //보내는 유저 닉네임
+    from_user: "관리자2",   //받는 유저 닉네임
+    messge: "테스트",   //보낼 메시지
+}
+```
+
+정상응답 (code: 200)
+```javascript
+{
+  results: 'success_send',  // 정상적으로 전송됬다는 의미
+  notification: { title: '관리자1', body: '메시지' }   //전송된 데이터 원형
+}
+```
+
+오류응답 (code: 500)
+-   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
+-   `{err: "unfound_fcm_token"}`: 보내는 유저의 fcm_token 값이 존재하지 않음
+-   `{err: "send_err"}`: 메시지를 전송하는 과정에서 알 수 없는 오류가 발생함
 </details>
 </dd>
 

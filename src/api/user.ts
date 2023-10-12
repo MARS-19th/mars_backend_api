@@ -1,7 +1,7 @@
 /* 회원 가입/탈퇴/로그인 */
 import express = require("express");
 import mysql = require("mysql");
-import { TypedRequestBody, sameobj, serverset } from "../server";
+import { TypedRequestBody, fcm, sameobj, serverset } from "../server";
 const user = express.Router();
 
 // 회원 모든 정보 조회 (유저이름): err or 모든 유저 정보
@@ -577,6 +577,77 @@ user.post("/checkname", (req: TypedRequestBody<chname>, res) => {
                 res.json({ results: false });
             } else {
                 res.json({ results: true });
+            }
+        }
+    });
+
+    dbconect.end();
+});
+
+// 유저 메시지 fcm 서버로 push (보낸이, 받는이, 메시지): success_send or err
+type pushuserchat = {
+    user_name: string;
+    from_user: string;
+    messge: string;
+};
+const pushuserchat = {
+    user_name: "string",
+    from_user: "string",
+    messge: "string",
+};
+user.post("/pushuserchat", (req: TypedRequestBody<pushuserchat>, res) => {
+    if (!sameobj(pushuserchat, req.body)) {
+        console.error("값이 잘못넘어옴");
+        res.status(500).json({ err: "type_err", type: pushuserchat });
+        return;
+    }
+
+    const query = `select identifier_code from User_identifier_code 
+    where type="fcm_token" && user_name="${req.body.from_user}";`;
+
+    const dbconect = mysql.createConnection(serverset.setdb);
+    dbconect.connect();
+
+    dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ err: err.code });
+        } else {
+            if (!results?.length) {
+                console.error("항목없음");
+                res.status(500).json({ err: "unfound_fcm_token" });
+            } else {
+                const fcm_token = results[0].identifier_code;
+                console.log(`${req.body.from_user}의 fcm_token: ${fcm_token}`);
+
+                // 보낼 메시지
+                const message = {
+                    notification: {
+                        title: req.body.user_name,
+                        body: req.body.messge,
+                    },
+                    token: fcm_token,
+                };
+
+                // fcm 에 메시지 전송
+                fcm.messaging()
+                    .send(message)
+                    .then(() => {
+                        console.log(
+                            `성공적으로 메시지 전송\n보낸이: ${req.body.user_name}, 받는이: ${req.body.from_user}, 메시지: ${req.body.messge}`
+                        );
+                        res.json({
+                            results: "success_send",
+                            notification: {
+                                title: req.body.user_name,
+                                body: req.body.messge,
+                            },
+                        });
+                    })
+                    .catch((err) => {
+                        console.log(`메시지 전송 오류: ${err}`);
+                        res.json({ results: "send_err" });
+                    });
             }
         }
     });

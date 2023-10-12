@@ -1,5 +1,6 @@
 import express = require("express");
 import fs = require("fs");
+import fcm = require("firebase-admin");
 import adminrouter from "./admin/adminrouter";
 import person from "./api/person";
 import user from "./api/user";
@@ -22,12 +23,16 @@ server.use("/api", vr_info); // vr에 필요한 데이터
 //실행시 프로젝트 파일에서 실행함으로 상대경로 적용
 const serverset = JSON.parse(fs.readFileSync("bin/server.json", "utf-8"));
 
+//fcm 구성 설정 불러오기
+fcm.initializeApp({ credential: fcm.credential.cert(serverset.fcmkey) });
+
 server.get("/", (req, res) => {
     res.send("서버가 작동중");
 });
 
-server.get("/api", (req, res) => {  //github readme 페이지로 이동
-    res.redirect("https://github.com/MARS-19th/mars_backend_api/blob/main/README.md")
+server.get("/api", (req, res) => {
+    //github readme 페이지로 이동
+    res.redirect("https://github.com/MARS-19th/mars_backend_api/blob/main/README.md");
 });
 
 server.listen(serverset.port, () => {
@@ -46,4 +51,4 @@ interface TypedRequestBody<T> extends Express.Request {
     body: T /* body 타입 제공 */;
 }
 
-export { serverset, TypedRequestBody, sameobj };
+export { serverset, TypedRequestBody, sameobj, fcm };
