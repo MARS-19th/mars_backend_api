@@ -449,8 +449,8 @@ body: {
 정상응답 (code: 200)
 ```javascript
 {
-  results: 'success_send',  // 정상적으로 전송됬다는 의미
-  notification: { title: '관리자1', body: '메시지' }   //전송된 데이터 원형
+  results: "success_send",  // 정상적으로 전송됬다는 의미
+  notification: { title: "관리자1", body: "메시지" }   //전송된 데이터 원형
 }
 ```
 
