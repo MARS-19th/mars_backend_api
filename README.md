@@ -456,7 +456,7 @@ body: {
 
 오류응답 (code: 500)
 -   `{err: "type_err"}`: 요청하는 json 타입이 일치하지 않아서 발생하는 문제
--   `{err: "unfound_fcm_token"}`: 보내는 유저의 fcm_token 값이 존재하지 않음
+-   `{err: "unfound_fcm_token"}`: 받는 유저의 fcm_token값이 존재하지 않거나, 해당 유저가 DB에 존재하지 않음
 -   `{err: "send_err"}`: 메시지를 전송하는 과정에서 알 수 없는 오류가 발생함
 </details>
 </dd>
