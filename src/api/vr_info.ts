@@ -48,7 +48,7 @@ vr_info.get("/vr/getallexam/:mark", (req, res) => {
 // 해당 목표와 스킬에 대한 특정 랜덤 문제 리턴(목표, 문제타입): {문제id, 문제, 정답, 정답률, 선지 []}
 // 문제타입은 4지선다="stand" ox 문제="ox"
 vr_info.get("/vr/getallexam/:mark/:type", (req, res) => {
-    const query = `select exam_id, exam, correct, rate from VR_exam where 
+    const query = `select exam_id, skill_field, exam, correct, rate from VR_exam where 
     target_mark = "${req.params.mark}" && exam_type = "${req.params.type}";
     select exam_id, exam_option from VR_exam_option where exam_id in (select exam_id from VR_exam where 
     target_mark = "${req.params.mark}" && exam_type = "${req.params.type}");`;

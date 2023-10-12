@@ -1006,6 +1006,7 @@ VR 문제 부분
 // 목표 = 프로그래밍, 문제타입 = stand
 {   
     exam_id: 2, //문재 id
+    skill_field: "js"   //스킬명
     exam: "문제2",  //문제명
     correct: "답3", //정답
     rate: 0,    //정답룰
