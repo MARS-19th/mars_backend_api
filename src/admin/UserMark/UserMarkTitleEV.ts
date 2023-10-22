@@ -294,6 +294,7 @@ function UserMarkTitleEV() {
         }
     }
 
+    // 칭호 지우기
     async function del_title(user_name: string, title: string) {
         const deldb = await fetch("/admin/api/deldb", {
             method: "post",

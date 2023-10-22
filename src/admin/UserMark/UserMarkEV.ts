@@ -188,7 +188,7 @@ async function UserMarkEV() {
             },
             body: JSON.stringify({
                 table_name: "User_get_title",
-                where: `user_name = "${user_name}"`,
+                where: `user_name = "${user_name}" && user_title != "새싹"`,
             }),
         });
 
