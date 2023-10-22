@@ -1239,6 +1239,10 @@ class MainActivity : AppCompatActivity() {
 }
 ```
 
+## 관리자 페이지
+-   [`http://dmumars.kro.kr/admin`](http://dmumars.kro.kr/admin)
+> 관리자 암호는 따로 물어봐 주세요
+
 ## 빌드 및 테스트
 > DB 주소와 로그인은 따로 물어봐 주세요
 
