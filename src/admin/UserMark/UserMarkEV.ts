@@ -16,12 +16,16 @@ async function UserMarkEV() {
         }
 
         // 목표 id 얻기
-        data.forEach(async (line) => {
-            const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
-            await res.json().then((data) => {
-                insertdb(data.results, user_name, line);
-            });
-        });
+        const results = await Promise.all(
+            data.map(async (line) => {
+                const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
+                const data = await res.json();
+                return await insertdb(data.results, user_name, line);
+            })
+        );
+
+        console.log(results);
+        alert("목표 추가 완료");
     });
 
     // 백엔드 중간시험 전까지 밀기 이벤트
@@ -41,12 +45,16 @@ async function UserMarkEV() {
         }
 
         // 목표 id 얻기
-        data.forEach(async (line) => {
-            const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
-            await res.json().then((data) => {
-                insertdb(data.results, user_name, line);
-            });
-        });
+        const results = await Promise.all(
+            data.map(async (line) => {
+                const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
+                const data = await res.json();
+                return await insertdb(data.results, user_name, line);
+            })
+        );
+
+        console.log(results);
+        alert("목표 추가 완료");
     });
 
     // 프론트 중간시험 전까지 밀기 이벤트
@@ -66,12 +74,16 @@ async function UserMarkEV() {
         }
 
         // 목표 id 얻기
-        data.forEach(async (line) => {
-            const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
-            await res.json().then((data) => {
-                insertdb(data.results, user_name, line);
-            });
-        });
+        const results = await Promise.all(
+            data.map(async (line) => {
+                const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
+                const data = await res.json();
+                return await insertdb(data.results, user_name, line);
+            })
+        );
+
+        console.log(results);
+        alert("목표 추가 완료");
     });
 
     // 백엔드 올클리어 이벤트
@@ -101,12 +113,16 @@ async function UserMarkEV() {
         }
 
         // 목표 id 얻기
-        data.forEach(async (line) => {
-            const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
-            await res.json().then((data) => {
-                insertdb(data.results, user_name, line);
-            });
-        });
+        const results = await Promise.all(
+            data.map(async (line) => {
+                const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
+                const data = await res.json();
+                return await insertdb(data.results, user_name, line);
+            })
+        );
+
+        console.log(results);
+        alert("목표 추가 완료");
     });
 
     // 프론트 올클리어 이벤트
@@ -119,7 +135,7 @@ async function UserMarkEV() {
             "python",
             "css",
             "js",
-            "backend",
+            "frontend",
             "중간시험",
             "jsp",
             "react",
@@ -136,12 +152,16 @@ async function UserMarkEV() {
         }
 
         // 목표 id 얻기
-        data.forEach(async (line) => {
-            const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
-            await res.json().then((data) => {
-                insertdb(data.results, user_name, line);
-            });
-        });
+        const results = await Promise.all(
+            data.map(async (line) => {
+                const res = await fetch(`/admin/api/getdetailsmarkid/${line}`);
+                const data = await res.json();
+                return await insertdb(data.results, user_name, line);
+            })
+        );
+
+        console.log(results);
+        alert("목표 추가 완료");
     });
 
     // 목표 클리어 버튼 이벤트
@@ -217,7 +237,7 @@ async function UserMarkEV() {
         }
     });
 
-    // 얻은 id로 db에 집어 넣기
+    // Promise.all = 모든 Promise객체 동기처리
     async function insertdb(ids: [], user_name: string, skill_field: string) {
         const User_skill_insert = await fetch("/admin/api/insertdb", {
             method: "post",
@@ -244,31 +264,35 @@ async function UserMarkEV() {
             });
         }
 
-        ids.forEach(async (line) => {
-            const User_mark_insert = await fetch("/admin/api/insertdb", {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    table_name: "User_mark",
-                    insert_item: `user_name, mark_id, progress`,
-                    insert_value: `"${user_name}", ${line}, 100`,
-                }),
-            });
+        const results = await Promise.all(
+            ids.map(async (line) => {
+                const User_mark_insert = await fetch("/admin/api/insertdb", {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        table_name: "User_mark",
+                        insert_item: `user_name, mark_id, progress`,
+                        insert_value: `"${user_name}", ${line}, 100`,
+                    }),
+                });
 
-            if (User_mark_insert.ok) {
-                console.log({
-                    code: true,
-                    messge: "ok",
-                });
-            } else {
-                const resdata = await User_mark_insert.json();
-                console.log({
-                    code: false,
-                    messge: resdata,
-                });
-            }
-        });
+                if (User_mark_insert.ok) {
+                    return {
+                        code: true,
+                        messge: "ok",
+                    };
+                } else {
+                    const resdata = await User_mark_insert.json();
+                    return {
+                        code: false,
+                        messge: resdata,
+                    };
+                }
+            })
+        );
+
+        return results;
     }
 }

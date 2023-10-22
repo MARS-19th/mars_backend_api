@@ -26,7 +26,9 @@ function UserDataEV() {
             row.id = line.user_name;
 
             Object.keys(line).forEach((obj: string) => {
-                const text = document.createElement("input") as HTMLInputElement;
+                const text = document.createElement(
+                    "input"
+                ) as HTMLInputElement;
                 text.id = "tdtext";
                 text.disabled = true;
                 text.value = line[obj];
@@ -47,7 +49,9 @@ function UserDataEV() {
     });
 
     // 테이블 수정 버튼 이벤트
-    const edit_table = document.getElementById("edit_table") as HTMLInputElement;
+    const edit_table = document.getElementById(
+        "edit_table"
+    ) as HTMLInputElement;
     edit_table.addEventListener("click", (e) => {
         e.preventDefault();
 
@@ -63,8 +67,10 @@ function UserDataEV() {
     });
 
     // 수정 완료 버튼 클릭 이벤트
-    const edit_complete = document.getElementById("edit_complete") as HTMLInputElement;
-    edit_complete.addEventListener("click", (e) => {
+    const edit_complete = document.getElementById(
+        "edit_complete"
+    ) as HTMLInputElement;
+    edit_complete.addEventListener("click", async (e) => {
         e.preventDefault();
         let i = 0;
         const editarr: HTMLInputElement[] = [];
@@ -77,43 +83,70 @@ function UserDataEV() {
             i++;
         });
 
-        editarr.forEach(async (line) => {
-            const updata_value = line.value;
-            const target_column = line.parentElement?.id;
-            const user_name = line.parentElement?.parentElement?.id;
+        // Promise.all = 모든 Promise객체 동기처리
+        const results = await Promise.all(
+            editarr.map(async (line) => {
+                const updata_value = line.value;
+                const target_column = line.parentElement?.id;
+                const user_name = line.parentElement?.parentElement?.id;
 
-            const updatadb = await fetch("/admin/api/updatadb", {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    table_name: "User_data",
-                    target_column: target_column,
-                    updata_value: updata_value,
-                    where: `user_name = "${user_name}"`,
-                }),
-            });
+                const updatadb = await fetch("/admin/api/updatadb", {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        table_name: "User_data",
+                        target_column: target_column,
+                        updata_value: updata_value,
+                        where: `user_name = "${user_name}"`,
+                    }),
+                });
 
-            if (updatadb.ok) {
-                console.log({
-                    code: true,
-                    messge: "ok",
-                    updata_value: updata_value,
-                });
-            } else {
-                const resdata = await updatadb.json();
-                console.log({
-                    code: false,
-                    messge: resdata,
-                    updata_value: updata_value,
-                });
-            }
+                if (updatadb.ok) {
+                    console.log({
+                        code: true,
+                        messge: "ok",
+                        updata_value: updata_value,
+                    });
+                    return {
+                        code: true,
+                        messge: "ok",
+                        updata_value: updata_value,
+                    };
+                } else {
+                    const resdata = await updatadb.json();
+                    console.log({
+                        code: false,
+                        messge: resdata,
+                        updata_value: updata_value,
+                    });
+                    return {
+                        code: false,
+                        messge: resdata,
+                        updata_value: updata_value,
+                    };
+                }
+            })
+        );
+
+        const err_results = results.filter((item) => {
+            return item.code === false;
         });
+
+        if (err_results.length) {
+            alert(
+                `${err_results.length}개 항목을 업데이트 할수 없습니다.\n자세한 사항은 로그를 살펴보세요`
+            );
+        } else {
+            if (results.length) alert("테이블 수정 완료");
+        }
 
         // ord_table_text 초기화
         ord_table_text = [];
-        td_data = document.querySelectorAll("#tdtext") as NodeListOf<HTMLInputElement>;
+        td_data = document.querySelectorAll(
+            "#tdtext"
+        ) as NodeListOf<HTMLInputElement>;
         td_data.forEach((element) => {
             ord_table_text.push(element.value);
         });
@@ -130,7 +163,9 @@ function UserDataEV() {
     });
 
     // 취소 버튼 클릭 이벤트
-    const edit_cancel = document.getElementById("edit_cancel") as HTMLInputElement;
+    const edit_cancel = document.getElementById(
+        "edit_cancel"
+    ) as HTMLInputElement;
     edit_cancel.addEventListener("click", (e) => {
         e.preventDefault();
 

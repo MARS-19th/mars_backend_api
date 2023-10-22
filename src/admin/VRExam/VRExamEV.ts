@@ -25,7 +25,9 @@ function VRExamEV() {
             row.id = line.exam_id;
 
             Object.keys(line).forEach((obj: string) => {
-                const text = document.createElement("input") as HTMLInputElement;
+                const text = document.createElement(
+                    "input"
+                ) as HTMLInputElement;
                 text.id = "tdtext";
                 text.disabled = true;
                 text.value = line[obj];
@@ -37,14 +39,18 @@ function VRExamEV() {
         }
 
         ord_table_text = [];
-        td_data = document.querySelectorAll("#tdtext") as NodeListOf<HTMLInputElement>;
+        td_data = document.querySelectorAll(
+            "#tdtext"
+        ) as NodeListOf<HTMLInputElement>;
         td_data.forEach((element) => {
             ord_table_text.push(element.value);
         });
     });
 
     // 테이블 수정 버튼 이벤트
-    const edit_table = document.getElementById("edit_table") as HTMLInputElement;
+    const edit_table = document.getElementById(
+        "edit_table"
+    ) as HTMLInputElement;
     edit_table.addEventListener("click", (e) => {
         e.preventDefault();
 
@@ -61,7 +67,9 @@ function VRExamEV() {
     });
 
     // 취소 버튼 클릭 이벤트
-    const edit_cancel = document.getElementById("edit_cancel") as HTMLInputElement;
+    const edit_cancel = document.getElementById(
+        "edit_cancel"
+    ) as HTMLInputElement;
     edit_cancel.addEventListener("click", (e) => {
         e.preventDefault();
 
@@ -120,7 +128,9 @@ function VRExamEV() {
         });
 
         // 테이블 스크롤 맨 아래로
-        const table_header = document.getElementById("table-header") as HTMLSelectElement;
+        const table_header = document.getElementById(
+            "table-header"
+        ) as HTMLSelectElement;
         table_header.scrollTop = table_header.scrollHeight;
 
         td_data = document.querySelectorAll("#tdtext"); // td_data 새로고침
@@ -129,15 +139,22 @@ function VRExamEV() {
     });
 
     // 수정 완료 버튼 클릭 이벤트
-    const edit_complete = document.getElementById("edit_complete") as HTMLInputElement;
-    edit_complete.addEventListener("click", (e) => {
+    const edit_complete = document.getElementById(
+        "edit_complete"
+    ) as HTMLInputElement;
+    edit_complete.addEventListener("click", async (e) => {
         e.preventDefault();
         let i = 0;
         const editarr: HTMLInputElement[] = []; // 수정된 항목 보관
+        const addarr: HTMLTableRowElement[] = []; // 추가된 항목 보관
+
+        document.querySelectorAll(".new_add").forEach((line) => {
+            addarr.push(line as HTMLTableRowElement);
+        });
 
         td_data.forEach((line) => {
             line.disabled = false;
-            
+
             if (line.value !== ord_table_text[i]) {
                 const parentclass = line.parentElement?.parentElement?.className;
                 // 수정된 항목만 추가하게
@@ -148,97 +165,146 @@ function VRExamEV() {
             i++;
         });
 
-        // 값 추가 항목들
-        document.querySelectorAll(".new_add").forEach(async (line) => {
-            const addvalue: { insert_item: string; insert_value: string } = {
-                insert_item: "",
-                insert_value: "",
-            };
+        // 추가한 항목 Promise.all = 모든 Promise객체 동기처리
+        const add_results = await Promise.all(
+            addarr.map(async (line) => {
+                const addvalue: { insert_item: string; insert_value: string } =
+                    {
+                        insert_item: "",
+                        insert_value: "",
+                    };
 
-            line.childNodes.forEach((child) => {
-                const td = child as HTMLTableCellElement;
-                const element = td.children.item(0) as HTMLInputElement;
+                line.childNodes.forEach((child) => {
+                    const td = child as HTMLTableCellElement;
+                    const element = td.children.item(0) as HTMLInputElement;
 
-                if (element.value !== "자동추가") {
-                    addvalue.insert_item += `${td.id},`;
-                    addvalue.insert_value += `"${element.value}",`;
+                    if (element.value !== "자동추가") {
+                        addvalue.insert_item += `${td.id},`;
+                        addvalue.insert_value += `"${element.value}",`;
+                    }
+                });
+
+                // 마지막에 , 지우기
+                addvalue.insert_item = addvalue.insert_item.slice(0, -1);
+                addvalue.insert_value = addvalue.insert_value.slice(0, -1);
+
+                const insertd = await fetch("/admin/api/insertdb", {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        table_name: "VR_exam",
+                        insert_item: addvalue.insert_item,
+                        insert_value: addvalue.insert_value,
+                    }),
+                });
+
+                if (insertd.ok) {
+                    const resdata = await insertd.json();
+                    const input = line.children.item(0)?.children.item(0) as HTMLInputElement;
+                    line.className = "";
+                    line.id = resdata.results; // 추가된 항목에 exam_id
+                    input.value = resdata.results; // 추가된 항목에 exam_id
+
+                    console.log({
+                        code: true,
+                        messge: "ok",
+                    });
+                    return {
+                        code: true,
+                        messge: "ok",
+                    };
+                } else {
+                    const resdata = await insertd.json();
+                    console.log({
+                        code: false,
+                        messge: resdata,
+                    });
+                    return {
+                        code: false,
+                        messge: resdata,
+                    };
                 }
-            });
+            })
+        );
 
-            // 마지막에 , 지우기
-            addvalue.insert_item = addvalue.insert_item.slice(0, -1);
-            addvalue.insert_value = addvalue.insert_value.slice(0, -1);
-
-            const insertd = await fetch("/admin/api/insertdb", {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    table_name: "VR_exam",
-                    insert_item: addvalue.insert_item,
-                    insert_value: addvalue.insert_value,
-                }),
-            });
-
-            if (insertd.ok) {
-                const resdata = await insertd.json();
-                const input = line.children.item(0)?.children.item(0) as HTMLInputElement;
-                line.className = "";
-                line.id = resdata.results; // 추가된 항목에 exam_id
-                input.value = resdata.results; // 추가된 항목에 exam_id
-
-                console.log({
-                    code: true,
-                    messge: "ok",
-                });
-            } else {
-                const resdata = await insertd.json();
-                console.log({
-                    code: false,
-                    messge: resdata,
-                });
-            }
+        const add_err_results = add_results.filter((item) => {
+            return item.code === false;
         });
 
-        // 값 수정 항목들
-        editarr.forEach(async (line) => {
-            const updata_value = line.value;
-            const target_column = line.parentElement?.id;
-            const exam_id = line.parentElement?.parentElement?.id;
+        if (add_err_results.length) {
+            alert(
+                `${add_err_results.length}개 항목을 추가 할수 없습니다.\n자세한 사항은 로그를 살펴보세요`
+            );
+        } else {
+            if (add_results.length) alert(`${add_results.length}항목 추가`);
+        }
 
-            const updatadb = await fetch("/admin/api/updatadb", {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    table_name: "VR_exam",
-                    target_column: target_column,
-                    updata_value: updata_value,
-                    where: `exam_id = "${exam_id}"`,
-                }),
-            });
+        // 수정한 항목 Promise.all = 모든 Promise객체 동기처리
+        const edit_results = await Promise.all(
+            editarr.map(async (line) => {
+                const updata_value = line.value;
+                const target_column = line.parentElement?.id;
+                const exam_id = line.parentElement?.parentElement?.id;
 
-            if (updatadb.ok) {
-                console.log({
-                    code: true,
-                    messge: "ok",
-                    updata_value: updata_value,
+                const updatadb = await fetch("/admin/api/updatadb", {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        table_name: "VR_exam",
+                        target_column: target_column,
+                        updata_value: updata_value,
+                        where: `exam_id = "${exam_id}"`,
+                    }),
                 });
-            } else {
-                const resdata = await updatadb.json();
-                console.log({
-                    code: false,
-                    messge: resdata,
-                    updata_value: updata_value,
-                });
-            }
+
+                if (updatadb.ok) {
+                    console.log({
+                        code: true,
+                        messge: "ok",
+                        updata_value: updata_value,
+                    });
+                    return {
+                        code: true,
+                        messge: "ok",
+                        updata_value: updata_value,
+                    };
+                } else {
+                    const resdata = await updatadb.json();
+                    console.log({
+                        code: false,
+                        messge: resdata,
+                        updata_value: updata_value,
+                    });
+                    return {
+                        code: false,
+                        messge: resdata,
+                        updata_value: updata_value,
+                    };
+                }
+            })
+        );
+
+        const edit_err_results = edit_results.filter((item) => {
+            return item.code === false;
         });
+
+        if (edit_err_results.length) {
+            alert(
+                `${edit_err_results.length}개 항목을 업데이트 할수 없습니다.\n자세한 사항은 로그를 살펴보세요`
+            );
+        } else {
+            if (edit_results.length) alert("테이블 수정 완료");
+        }
 
         // ord_table_text 초기화
         ord_table_text = [];
-        td_data = document.querySelectorAll("#tdtext") as NodeListOf<HTMLInputElement>;
+        td_data = document.querySelectorAll(
+            "#tdtext"
+        ) as NodeListOf<HTMLInputElement>;
         td_data.forEach((element) => {
             ord_table_text.push(element.value);
         });
