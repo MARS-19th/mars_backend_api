@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/admin/index.css" />
+    <link rel="stylesheet" type="text/css" href="/admin/VRExam/VRExam.css" />
+    <script src="/admin/LoginPage/VerifyJwt.js"></script>
+    <script src="/admin/VRExam/VRExamEV.js"></script>
+    <title>VR 문제 관리</title>
+</head>
+
+<body>
+    <header class="header">
+        <h2 class="header_txt">VR 문제 관리</h2>
+        <a href="/admin/" class="header_home">⌂ 홈으로 돌아기기</a>
+    </header>
+    <!-- 전역 해더 -->
+    <div class="maindiv">
+        <section class="content-header">
+            <p class="PageTitle">VR 문제 목록</p>
+            <div class="select_div">
+                <div class="select_text">
+                    <a href="" style="background-color: cornflowerblue;">문제 설정</a>
+                    <a href="/admin/VRExamOption">문제 답안 설정</a>
+                </div>
+            </div>
+            <div class="search">
+                <input type="button" value="테이블 수정" id="edit_table" class="clickbt"/>
+                <input type="button" value="완료" id="edit_complete" class="clickbt" style="display: none;"/>
+                <input type="button" value="취소" id="edit_cancel" class="clickbt" style="display: none;"/>
+            </div>
+        </section>
+        <section class="table-header" id="table-header">
+            <table class="ListTable" id="UserTable">
+                <thead>
+                    <tr>
+                        <th id="ut1"> 문제id </th>
+                        <th id="ut2"> 목표명 </th>
+                        <th id="ut3"> 스킬명 </th>
+                        <th id="ut4"> 문제 </th>
+                        <th id="ut5"> 정답 </th>
+                        <th id="ut6"> 문제타입 </th>
+                        <th id="ut7"> 정답률 </th>
+                    </tr>
+                </thead>
+                <tbody id="db_data" style="height: 500px;">
+                    
+                </tbody>
+            </table>
+        </section>
+        <div class="bottom_option">
+            <input type="button" value="항목추가" id="edit_add" class="clickbt" style="display: none;"/>
+        </div>
+    </div>
+    
+    <script>VRExamEV();</script>
+</body>
+
+</html>

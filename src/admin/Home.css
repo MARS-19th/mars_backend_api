@@ -1,0 +1,23 @@
+.btn1 {
+    background-color: white;
+    border: 2px solid black;
+    font-size: 1.5em;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    color: black;
+    margin: 0.5em;
+}
+
+.btn1:hover {
+    background-color: rgb(181, 181, 181);
+    font-weight: bold;
+}
+
+.title {
+    text-align: center;
+    font-size: 2em;
+    text-decoration: underline 0.3rem;
+    margin: 0.4em;
+}

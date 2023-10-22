@@ -1,0 +1,4 @@
+.mainform {
+    display: flex;
+    flex-direction: row;
+}

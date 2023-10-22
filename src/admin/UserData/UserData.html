@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/admin/index.css" />
+    <link rel="stylesheet" type="text/css" href="/admin/UserData/UserData.css" />
+    <script src="/admin/LoginPage/VerifyJwt.js"></script>
+    <script src="/admin/UserData/UserDataEV.js"></script>
+    <title>유저 데이터 관리</title>
+</head>
+
+<body>
+    <header class="header">
+        <h2 class="header_txt">유저 데이터 관리</h2>
+        <a href="/admin/" class="header_home">⌂ 홈으로 돌아기기</a>
+    </header>
+    <!-- 전역 해더 -->
+    <div class="maindiv">
+        <section class="content-header">
+            <p class="PageTitle">사용자 정보</p>
+            <div class="search">
+                <input type="button" value="테이블 수정" id="edit_table" class="clickbt"/>
+                <input type="button" value="완료" id="edit_complete" class="clickbt" style="display: none;"/>
+                <input type="button" value="취소" id="edit_cancel" class="clickbt" style="display: none;"/>
+            </div>
+        </section>
+        <section class="table-header">
+            <table class="ListTable" id="UserTable">
+                <thead>
+                    <tr>
+                        <th id="ut1"> 유저이름 </th>
+                        <th id="ut2"> 아이디 </th>
+                        <th id="ut3"> 선택한목표 </th>
+                        <th id="ut4"> 칭호 </th>
+                        <th id="ut5"> 유저프로필 </th>
+                        <th id="ut6"> 목숨 </th>
+                        <th id="ut7"> 돈 </th>
+                        <th id="ut8"> 레벨 </th>
+                    </tr>
+                </thead>
+                <tbody id="db_data" style="height: 500px;">
+                    
+                </tbody>
+            </table>
+        </section>
+    </div>
+    
+    <script>UserDataEV();</script>
+</body>
+
+</html>

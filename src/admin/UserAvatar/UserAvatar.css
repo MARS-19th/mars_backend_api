@@ -1,0 +1,46 @@
+.maindiv {
+    width: 70%;
+    height: 80%;
+}
+
+.clickbt {
+    width: 100px;
+}
+
+.PageTitle {
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.ListTable {
+    width: -webkit-fill-available;
+    white-space: nowrap;
+}
+
+.table-header {
+    margin-top: 20px;
+    max-height: 80%;
+    overflow: overlay;
+}
+
+#tdtext {
+    border: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#tdtext:disabled {
+    color: black;
+}
+
+#tdtext:focus {
+    outline: none;
+}
+
+td {
+    height: 35px;
+}

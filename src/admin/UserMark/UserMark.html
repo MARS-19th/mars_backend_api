@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/admin/index.css" />
+    <link rel="stylesheet" type="text/css" href="/admin/UserMark/UserMark.css" />
+    <script src="/admin/LoginPage/VerifyJwt.js"></script>
+    <script src="/admin/UserMark/UserMarkEV.js"></script>
+    <script src="/admin/UserMark/UserMarkTitleEV.js"></script>
+    <title>유저 목표 진행도 관리</title>
+</head>
+
+<body>
+    <header class="header">
+        <h2 class="header_txt">유저 목표 진행도 및 칭호 관리</h2>
+        <a href="/admin/" class="header_home">⌂ 홈으로 돌아기기</a>
+    </header>
+    <!-- 전역 해더 -->
+    <div class="maindiv">
+        <p class="PageTitle">유저 목표 진행도 및 칭호 설정</p>
+        <div class="table_view" id="table_view" style="display: none;">
+            <table class="ListTable" id="UserTable">
+                <tbody id="db_data">
+                    <tr id="title_tr">
+                        <th>얻은 칭호들</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="input_name">
+            <p style="margin-right: 5px;">사용자 닉네임:</p>
+            <input type="text" id="name" style="margin-left: 5px; margin-right: 5px;">
+            <input type="button" id="view_bt" value="얻은 칭호들 보여주기" style="margin-left: 5px;">
+        </div>
+        <div class="option_menu">
+            <div class="mark_option">
+                <h2>목표 클리어</h2>
+                <input type="button" value="js 까지 목표 밀기" id="js">
+                <input type="button" value="백엔드 중간시험 전까지 밀기" id="back">
+                <input type="button" value="프론트 엔드 중간시험 전까지 밀기" id="front">
+                <input type="button" value="백엔드 올클리어" id="back_all">
+                <input type="button" value="프론트 올클리어" id="front_all">
+                <input type="button" value="목표 초기화 및 칭호 초기화" id="clear">
+            </div>
+            <div class="front_title">
+                <h2>프론트 칭호 추가</h2>
+                <input type="button" value="초보 프냥이 얻기" id="f1">
+                <input type="button" value="초보 프백냥이 얻기" id="f2">
+                <input type="button" value="자바스크립트 프냥이 얻기" id="f3">
+                <input type="button" value="프론트엔드 마법사냥 얻기" id="f4">
+                <input type="button" value="프론트엔드 냥스터 얻기" id="f5">
+                <input type="button" value="프론트엔드 마에스트냥 얻기" id="f6">
+            </div>
+            <div class="backend_title">
+                <h2>백엔드 칭호 추가</h2>
+                <input type="button" value="초보 백냥이 얻기" id="b1">
+                <input type="button" value="초보 백프냥이 얻기" id="b2">
+                <input type="button" value="자바스크립트 백냥이 얻기" id="b3">
+                <input type="button" value="백엔드 냥지니어 얻기" id="b4">
+                <input type="button" value="백엔드 냥스터 얻기" id="b5">
+                <input type="button" value="백엔드 마에스트냥 얻기" id="b6">
+            </div>
+        </div>
+    </div>
+
+    <script>UserMarkEV(); UserMarkTitleEV();</script>
+</body>
+
+</html>

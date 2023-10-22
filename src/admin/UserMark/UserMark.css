@@ -1,0 +1,58 @@
+.maindiv {
+    width: 70%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.PageTitle {
+    text-align: center;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.input_name {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.option_menu {
+    display: flex;
+    text-align: center;
+}
+
+.mark_option {
+    display: grid;
+    width: 220px;
+    margin-right: 10px;
+}
+
+.front_title {
+    display: grid;
+    width: 220px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.backend_title {
+    display: grid;
+    width: 220px;
+    margin-left: 10px;
+}
+
+.mark_option input {
+    margin-bottom: 10px;
+    height: 30px;
+}
+
+.front_title input {
+    height: 30px;
+    margin-bottom: 10px;
+}
+
+.backend_title input {
+    height: 30px;
+    margin-bottom: 10px;
+}

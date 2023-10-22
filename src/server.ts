@@ -1,18 +1,20 @@
 import express = require("express");
 import fs = require("fs");
 import fcm = require("firebase-admin");
-import adminrouter from "./admin/adminrouter";
+import admin from "./admin/adminrouter";
 import person from "./api/person";
 import user from "./api/user";
 import mark from "./api/mark";
 import avatar from "./api/avatar";
 import fileupload from "./api/fileupload";
 import vr_info from "./api/vr_info";
+import JWTLogin from "./admin/JWTLogin";
 const server = express();
 
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
-server.use("/admin", adminrouter); //관리자 페이지 라우팅
+server.use("/admin", admin); //관리자 페이지 라우팅
+server.use("/admin", JWTLogin); //관리자 페이지 jwt 로그인
 server.use("/api", person); // 가입부분
 server.use("/api", user); // 유저 부분
 server.use("/api", mark); // 목표&스킬트리 부분
