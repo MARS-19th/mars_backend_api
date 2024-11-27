@@ -92,7 +92,7 @@ CREATE TABLE `User_space` (
 CREATE TABLE `User_identifier_code` (
     `type`	varchar(100)	NOT NULL	COMMENT 'bt_uuid, fcm_token',
     `user_name`	varchar(100)	NOT NULL,
-    `identifier_code`	varchar(100)	NOT NULL	COMMENT '블루투스 uuid,  fcm 토큰키'
+    `identifier_code`	text	NOT NULL	COMMENT '블루투스 uuid,  fcm 토큰키'
 );
 
 CREATE TABLE `More_data` (
@@ -105,7 +105,7 @@ CREATE TABLE `VR_exam` (
 	`exam_id`	int	NOT NULL	COMMENT '순차부여',
 	`target_mark`	varchar(100)	NOT NULL	COMMENT '프로그래밍, 등산',
 	`skill_field`	varchar(100)	NOT NULL	COMMENT 'html, css...',
-	`exam`	varchar(100)	NOT NULL,
+	`exam`	text	NOT NULL,
 	`correct`	varchar(100)	NOT NULL,
 	`exam_type`	varchar(100)	NOT NULL	COMMENT 'ox문제=ox, 4지선다=stand 로',
 	`rate`	int	NOT NULL	COMMENT 'VR_exam_stat 트리거 설정'
