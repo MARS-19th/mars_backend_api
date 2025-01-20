@@ -13,7 +13,7 @@
         "host": "",
         "port": 22,
         "username": "",
-        "privateKeyPath": "",
+        "privateKeyPath": "dbssh/dbssh.pem",
         "innerPort": 3306,
         "forwardPort": 3307
     },
