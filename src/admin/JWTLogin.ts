@@ -1,6 +1,6 @@
 import express = require("express");
 import jwttoken = require("jsonwebtoken");
-import { serverset } from "../server";
+import serverset from "../server.json";
 const JWTLogin = express.Router();
 
 // 로그인 토큰 발급 타입
@@ -59,10 +59,7 @@ JWTLogin.post("/api/verifyjwt", (req, res) => {
     const access_token: string = req.body.access_token;
 
     try {
-        const userdata = jwttoken.verify(
-            access_token,
-            serverset.jwt_secret_key
-        );
+        const userdata = jwttoken.verify(access_token, serverset.jwt_secret_key);
         res.send(userdata);
     } catch (err: any) {
         res.status(500).json({
@@ -77,7 +74,6 @@ JWTLogin.post("/api/refreshjwt", (req, res) => {
 
     //access_token 디코딩
     const userdata = jwttoken.decode(body.access_token) as resjwt;
-    
 
     //access_token 토큰이 맞는토큰인지 확인
     if (!userdata) {
@@ -90,7 +86,7 @@ JWTLogin.post("/api/refreshjwt", (req, res) => {
         jwttoken.verify(body.refresh_token, serverset.jwt_secret_key);
 
         const connect_ip = userdata.connect_ip;
-        
+
         const key = serverset.jwt_secret_key;
 
         // access_token 재발급

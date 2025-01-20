@@ -3,8 +3,9 @@ import express = require("express");
 import mysql = require("mysql");
 import multter = require("multer");
 import fs = require("fs");
-import { TypedRequestBody, sameobj, serverset } from "../server";
+import { sameobj } from "../server";
 import path = require("path");
+import { getDBConnection } from "../DBConnection";
 const fileupload = express.Router();
 const savepath = path.join(__dirname, "../res");
 
@@ -35,11 +36,10 @@ const uploadMiddleware = multter({
 
 // 유저 프로필 사진 리턴 (닉네임): err or file
 // 안드로이드에서 url 리소스 불러올수 있게
-fileupload.get("/getprofile/:name", (req, res) => {
+fileupload.get("/getprofile/:name", async (req, res) => {
     const query = `select profile_local from User_data where user_name = "${req.params.name}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -59,17 +59,14 @@ fileupload.get("/getprofile/:name", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 상점 아이템 미리보기 이미지 불러오기 (아이템id): err or file
 // 안드로이드에서 url 리소스 불러올수 있게
-fileupload.get("/getshopitemimg/:id", (req, res) => {
+fileupload.get("/getshopitemimg/:id", async (req, res) => {
     const query = `select image_local from Shop_item where object_id = ${req.params.id};`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -89,17 +86,14 @@ fileupload.get("/getshopitemimg/:id", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 상점 아이템 에셋 불러오기 (아이템id): err or file
 // 유니티 에셋을 불러올 수 있어야함
-fileupload.get("/getshopitemasset/:id", (req, res) => {
+fileupload.get("/getshopitemasset/:id", async (req, res) => {
     const query = `select asset_local from Shop_item where object_id = ${req.params.id};`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -119,8 +113,6 @@ fileupload.get("/getshopitemasset/:id", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 프로필 사진 업로드 (닉네임): err or results
@@ -128,9 +120,9 @@ type uploadprofile = {
     user_name: string;
 };
 const uploadprofile = {
-    user_name: "string"
+    user_name: "string",
 };
-fileupload.post("/uploadprofile", uploadMiddleware, (req, res) => {
+fileupload.post("/uploadprofile", uploadMiddleware, async (req, res) => {
     console.log(req.file);
     const filename = req.file?.filename;
     const data: uploadprofile = JSON.parse(req.body.data);
@@ -146,8 +138,7 @@ fileupload.post("/uploadprofile", uploadMiddleware, (req, res) => {
 
     const query = `update User_data set profile_local = "${filename}" where user_name = "${data.user_name}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -157,8 +148,6 @@ fileupload.post("/uploadprofile", uploadMiddleware, (req, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 export default fileupload;

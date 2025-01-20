@@ -1,17 +1,17 @@
 /* 목표/스킬트리 */
 import express = require("express");
 import mysql = require("mysql");
-import { TypedRequestBody, sameobj, serverset } from "../server";
+import { TypedRequestBody, sameobj } from "../server";
+import { getDBConnection } from "../DBConnection";
 const mark = express.Router();
 
 // 스킬 트리 리턴 (목표): [스킬트리] or err
-mark.get("/getskilltree/:tartget_mark", (req, res) => {
+mark.get("/getskilltree/:tartget_mark", async (req, res) => {
     const query = `select skill_field, skill_level from Skill_Mark 
     where target_mark = "${req.params.tartget_mark}"
     order by skill_level;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -26,18 +26,15 @@ mark.get("/getskilltree/:tartget_mark", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 스킬명 전체 세부목표 리턴 (스킬명): [{mark_id, mark_list, level}]
-mark.get("/getdetailmark/:skill", (req, res) => {
+mark.get("/getdetailmark/:skill", async (req, res) => {
     const query = `select mark_id, mark_list, level from Details_mark 
     where skill_field = "${req.params.skill}"
     order by target_mark, level;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -52,18 +49,15 @@ mark.get("/getdetailmark/:skill", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 세부 목록 리턴 스킬명(스킬명/주차): [{mark_id, mark_list}]
-mark.get("/getdetailmark/:skill/:level", (req, res) => {
+mark.get("/getdetailmark/:skill/:level", async (req, res) => {
     const query = `select mark_id, mark_list from Details_mark 
     where skill_field = "${req.params.skill}" && level = ${req.params.level}
     order by target_mark, level;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -78,17 +72,14 @@ mark.get("/getdetailmark/:skill/:level", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 유저 선택 스킬트리 (닉네임): skills: [...스킬들]
-mark.get("/getuserskill/:name", (req, res) => {
+mark.get("/getuserskill/:name", async (req, res) => {
     const query = `select skill_field from User_skill where user_name = "${req.params.name}"
     order by clear_time;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -107,20 +98,17 @@ mark.get("/getuserskill/:name", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 사용자 목표 현황 (이름/스킬명/주차): [{mark_id, progress, date}]
-mark.get("/getusermark/:user_name/:skill/:level", (req, res) => {
+mark.get("/getusermark/:user_name/:skill/:level", async (req, res) => {
     const query = `select Details_mark.mark_id, User_mark.progress, User_mark.date from User_mark 
     join Details_mark on User_mark.mark_id = Details_mark.mark_id
     where User_mark.user_name = "${req.params.user_name}" && 
     Details_mark.skill_field = "${req.params.skill}" && 
     Details_mark.level = ${req.params.level};`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -135,16 +123,13 @@ mark.get("/getusermark/:user_name/:skill/:level", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 세부목표 추가 정보사항 유튜브 링크 같은거(세부목표 id): [추가정보들] or err
-mark.get("/getmoredata/:mark_id", (req, res) => {
+mark.get("/getmoredata/:mark_id", async (req, res) => {
     const query = `select info_data, type from More_data where mark_id = ${req.params.mark_id};`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -159,16 +144,13 @@ mark.get("/getmoredata/:mark_id", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 해당 유저가 추가한 모든 일간목표 클리어 여부 리턴 (이름): [{목표id, 목표들, 클리어 여부, 추가시간}] or err
-mark.get("/getuserdatemark/:name", (req, res) => {
+mark.get("/getuserdatemark/:name", async (req, res) => {
     const query = `select mark_id, mark_list, is_clear, add_time from User_date_mark where user_name="${req.params.name}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -193,17 +175,14 @@ mark.get("/getuserdatemark/:name", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 해당 유저가 추가한 24시간 이내의 일간목표 클리어 여부 리턴 (이름): [{목표id, 목표들, 클리어 여부, 추가시간}] or err0
-mark.get("/getuserdatemark/:name/day", (req, res) => {
+mark.get("/getuserdatemark/:name/day", async (req, res) => {
     const query = `select mark_id, mark_list, is_clear, add_time, 86400-timestampdiff(second, add_time, now()) as remaining 
     from User_date_mark where user_name = "${req.params.name}" && timestampdiff(second, add_time, now()) < 86400;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -228,8 +207,6 @@ mark.get("/getuserdatemark/:name/day", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 사용자 스킬트리 추가 (닉네임, 스킬명) err or ok
@@ -239,9 +216,9 @@ type setuserskill = {
 };
 const setuserskill = {
     user_name: "string",
-    skill: "string"
+    skill: "string",
 };
-mark.post("/setuserskill", (req: TypedRequestBody<setuserskill>, res) => {
+mark.post("/setuserskill", async (req: TypedRequestBody<setuserskill>, res) => {
     if (!sameobj(setuserskill, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setuserskill });
@@ -249,8 +226,7 @@ mark.post("/setuserskill", (req: TypedRequestBody<setuserskill>, res) => {
     }
     const query = `insert into User_skill (user_name, skill_field) values ("${req.body.user_name}", "${req.body.skill}");`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -260,14 +236,12 @@ mark.post("/setuserskill", (req: TypedRequestBody<setuserskill>, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 // 사용자 진행 세부목표 설정 (닉네임, 세부목표id, 진행도): err: ER_DUP_ENTRY or ok
 type setuserdetailskill = {
     user_name: string; // 닉네임
-    mark_id: number; // 세부 목표 id  
+    mark_id: number; // 세부 목표 id
     progress: number; // 진행도
 };
 const setuserdetailskill = {
@@ -275,7 +249,7 @@ const setuserdetailskill = {
     mark_id: "int",
     progress: "int",
 };
-mark.post("/setuserdetailskill", (req: TypedRequestBody<setuserdetailskill>, res) => {
+mark.post("/setuserdetailskill", async (req: TypedRequestBody<setuserdetailskill>, res) => {
     if (!sameobj(setuserdetailskill, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setuserdetailskill });
@@ -288,8 +262,7 @@ mark.post("/setuserdetailskill", (req: TypedRequestBody<setuserdetailskill>, res
     progress = "${req.body.progress}",
     date = current_date();`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -299,8 +272,6 @@ mark.post("/setuserdetailskill", (req: TypedRequestBody<setuserdetailskill>, res
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 // 사용자 일간목표 추가 (닉네임, 목표목록, 클리어 여부): mark_id or err
@@ -312,7 +283,7 @@ const setuserdatemark = {
     user_name: "string",
     mark_list: "string",
 };
-mark.post("/setuserdatemark", (req: TypedRequestBody<setuserdatemark>, res) => {
+mark.post("/setuserdatemark", async (req: TypedRequestBody<setuserdatemark>, res) => {
     if (!sameobj(setuserdatemark, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setuserdatemark });
@@ -322,8 +293,7 @@ mark.post("/setuserdatemark", (req: TypedRequestBody<setuserdatemark>, res) => {
     values ("${req.body.user_name}", "${req.body.mark_list}");
     select mark_id from User_date_mark where user_name="${req.body.user_name}" && mark_list="${req.body.mark_list}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[][]) => {
         if (err) {
@@ -334,12 +304,10 @@ mark.post("/setuserdatemark", (req: TypedRequestBody<setuserdatemark>, res) => {
                 console.error("항목없음");
                 res.status(500).json({ err: "empty" });
             } else {
-                res.json({results: results[1][0].mark_id});
+                res.json({ results: results[1][0].mark_id });
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 사용자 일간목표 달성 여부 및 목표 수정 (닉네임, 일간목표id, 목표목록 클리어 여부): err or ok
@@ -353,9 +321,9 @@ const upuserdatemark = {
     user_name: "string",
     mark_id: "int",
     mark_list: "string",
-    is_clear: "boolean"
+    is_clear: "boolean",
 };
-mark.post("/upuserdatemark", (req: TypedRequestBody<upuserdatemark>, res) => {
+mark.post("/upuserdatemark", async (req: TypedRequestBody<upuserdatemark>, res) => {
     if (!sameobj(upuserdatemark, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: upuserdatemark });
@@ -365,8 +333,7 @@ mark.post("/upuserdatemark", (req: TypedRequestBody<upuserdatemark>, res) => {
     set mark_list = "${req.body.mark_list}", is_clear = ${req.body.is_clear}
     where user_name="${req.body.user_name}" && mark_id=${req.body.mark_id};`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -376,8 +343,6 @@ mark.post("/upuserdatemark", (req: TypedRequestBody<upuserdatemark>, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 // 사용자 일간목표 삭제 (닉네임, 일간목표id, 목표목록 클리어 여부): err or ok
@@ -389,7 +354,7 @@ const deluserdatemark = {
     user_name: "string",
     mark_id: "int",
 };
-mark.post("/deluserdatemark", (req: TypedRequestBody<deluserdatemark>, res) => {
+mark.post("/deluserdatemark", async (req: TypedRequestBody<deluserdatemark>, res) => {
     if (!sameobj(deluserdatemark, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: deluserdatemark });
@@ -398,8 +363,7 @@ mark.post("/deluserdatemark", (req: TypedRequestBody<deluserdatemark>, res) => {
     const query = `delete from User_date_mark where
     user_name = "${req.body.user_name}" && mark_id = ${req.body.mark_id};`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -409,8 +373,6 @@ mark.post("/deluserdatemark", (req: TypedRequestBody<deluserdatemark>, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 export default mark;

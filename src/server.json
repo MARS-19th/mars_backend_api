@@ -1,13 +1,21 @@
 {
-    "domain": "dmumars.kro.kr",
+    "domain": "",
     "port": 80,
     "setdb": {
         "host": "",
-        "port": 3306,
+        "port": 3307,
         "user": "",
         "password": "",
-        "database": "mars",
+        "database": "",
         "multipleStatements": true
+    },
+    "sshtunnel": {
+        "host": "",
+        "port": 22,
+        "username": "",
+        "privateKeyPath": "",
+        "innerPort": 3306,
+        "forwardPort": 3307
     },
     "fcmkey": {
         "type": "",

@@ -1,7 +1,8 @@
 /* 회원 정보 구성요소 */
 import express = require("express");
 import mysql = require("mysql");
-import { TypedRequestBody, sameobj, serverset } from "../server";
+import { TypedRequestBody, sameobj } from "../server";
+import { getDBConnection } from "../DBConnection";
 const person = express.Router();
 
 //처음 회원 가입 (아이디, 비번): err or ok
@@ -13,7 +14,7 @@ const sername = {
     id: "string",
     passwd: "string",
 };
-person.post("/setperson", (req: TypedRequestBody<sername>, res) => {
+person.post("/setperson", async (req: TypedRequestBody<sername>, res) => {
     if (!sameobj(sername, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: sername });
@@ -22,8 +23,7 @@ person.post("/setperson", (req: TypedRequestBody<sername>, res) => {
 
     const query = `insert into User values('${req.body.id}', '${req.body.passwd}');`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -33,8 +33,6 @@ person.post("/setperson", (req: TypedRequestBody<sername>, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 //탈퇴 (아이디, 비밀번호): err or ok
@@ -46,7 +44,7 @@ const delname = {
     id: "string",
     passwd: "string",
 };
-person.post("/deluser", (req: TypedRequestBody<delname>, res) => {
+person.post("/deluser", async (req: TypedRequestBody<delname>, res) => {
     if (!sameobj(delname, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: delname });
@@ -55,8 +53,7 @@ person.post("/deluser", (req: TypedRequestBody<delname>, res) => {
 
     const query = `delete from User where id = "${req.body.id}" && passwd = "${req.body.passwd}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -66,8 +63,6 @@ person.post("/deluser", (req: TypedRequestBody<delname>, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 //로그인 (아이디, 비번): err or 모든user_data
@@ -79,7 +74,7 @@ const login = {
     id: "string",
     passwd: "string",
 };
-person.post("/login", (req: TypedRequestBody<login>, res) => {
+person.post("/login", async (req: TypedRequestBody<login>, res) => {
     if (!sameobj(login, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: login });
@@ -90,8 +85,7 @@ person.post("/login", (req: TypedRequestBody<login>, res) => {
     left outer join User_data on User.id = User_data.user_id
     where User.id = "${req.body.id}" && User.passwd ="${req.body.passwd}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -109,8 +103,6 @@ person.post("/login", (req: TypedRequestBody<login>, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 유저 아이디 비밀번호 얻기 (닉네임): id, passwd or err
@@ -120,7 +112,7 @@ type getuseridpd = {
 const getuseridpd = {
     user_name: "string",
 };
-person.post("/getuseridpd", (req: TypedRequestBody<getuseridpd>, res) => {
+person.post("/getuseridpd", async (req: TypedRequestBody<getuseridpd>, res) => {
     if (!sameobj(getuseridpd, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: getuseridpd });
@@ -130,8 +122,7 @@ person.post("/getuseridpd", (req: TypedRequestBody<getuseridpd>, res) => {
     const query = `select User.id, User.passwd from User join User_data on User.id = User_data.user_id
     where User_data.user_name = "${req.body.user_name}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -146,8 +137,6 @@ person.post("/getuseridpd", (req: TypedRequestBody<getuseridpd>, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 export default person;

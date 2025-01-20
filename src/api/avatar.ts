@@ -1,15 +1,15 @@
 /* 아바타 커스텀/상점 */
 import express = require("express");
 import mysql = require("mysql");
-import { TypedRequestBody, sameobj, serverset } from "../server";
+import { TypedRequestBody, sameobj } from "../server";
+import { getDBConnection } from "../DBConnection";
 const avatar = express.Router();
 
 // 유저의 아바타 불러오기 (이름): err or {look, color}
-avatar.get("/getuseravatar/:name", (req, res) => {
+avatar.get("/getuseravatar/:name", async (req, res) => {
     const query = `select type, look, color, moun_shop from User_avatar where user_name = "${req.params.name}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -24,16 +24,13 @@ avatar.get("/getuseravatar/:name", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 상점 전체 아이템 아이디 불러오기: [{아이디, 이름, 가격}] or err
-avatar.get("/getshopitemid", (req, res) => {
+avatar.get("/getshopitemid", async (req, res) => {
     const query = `select object_id, item_name, type, price from Shop_item;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -48,17 +45,13 @@ avatar.get("/getshopitemid", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
-
 // 상점 아이템 아이디 불러오기 (타입): [{아이디, 이름, 가격}] or err
-avatar.get("/getshopitemid/:type", (req, res) => {
+avatar.get("/getshopitemid/:type", async (req, res) => {
     const query = `select object_id, item_name, price from Shop_item where type ="${req.params.type}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -73,16 +66,13 @@ avatar.get("/getshopitemid/:type", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 해당 유저가 장착 상점 아이템 불러오기 (닉네임): {장착한 상점 아이템 id} or err
-avatar.get("/getuserfititem/:name", (req, res) => {
+avatar.get("/getuserfititem/:name", async (req, res) => {
     const query = `select moun_shop from User_avatar where user_name="${req.params.name}"`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -97,18 +87,15 @@ avatar.get("/getuserfititem/:name", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 해당 유저의 인벤토리 불러오기 (닉네임): [{객체id, 아이템이름, 타입}]
-avatar.get("/getuserinventory/:name", (req, res) => {
+avatar.get("/getuserinventory/:name", async (req, res) => {
     const query = `select User_inventory.object_id, Shop_item.item_name, Shop_item.type from User_inventory 
     join Shop_item on Shop_item.object_id = User_inventory.object_id
     where user_name="${req.params.name}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -123,8 +110,6 @@ avatar.get("/getuserinventory/:name", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 유저 아바타 생성 (이름, 타입(고양이, 원숭이), 표정을 식별하는 데이터, 색상을 식별하는 데이터): err or ok
@@ -140,7 +125,7 @@ const setuseravatar = {
     look: "string",
     color: "string",
 };
-avatar.post("/setuseravatar", (req: TypedRequestBody<setuseravatar>, res) => {
+avatar.post("/setuseravatar", async (req: TypedRequestBody<setuseravatar>, res) => {
     if (!sameobj(setuseravatar, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setuseravatar });
@@ -152,8 +137,7 @@ avatar.post("/setuseravatar", (req: TypedRequestBody<setuseravatar>, res) => {
     look = "${req.body.look}",
     color = "${req.body.color}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -163,8 +147,6 @@ avatar.post("/setuseravatar", (req: TypedRequestBody<setuseravatar>, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 // 유저의 장착한 아이템 변경 (닉네임, 모자id, 상의id, 바지id, 안경id): ok or err
@@ -176,7 +158,7 @@ const setuserfititem = {
     user_name: "string",
     moun_shop: "int 또는 null",
 };
-avatar.post("/setuserfititem", (req: TypedRequestBody<setuserfititem>, res) => {
+avatar.post("/setuserfititem", async (req: TypedRequestBody<setuserfititem>, res) => {
     if (!sameobj(setuserfititem, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setuserfititem });
@@ -184,8 +166,7 @@ avatar.post("/setuserfititem", (req: TypedRequestBody<setuserfititem>, res) => {
     }
     const query = `update User_avatar set moun_shop = ${req.body.moun_shop} where user_name = "${req.body.user_name}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -195,8 +176,6 @@ avatar.post("/setuserfititem", (req: TypedRequestBody<setuserfititem>, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 // 유저 인벤토리 아이템 추가 (닉네임, 모자id, 상의id, 바지id, 안경id): ok or err
@@ -208,7 +187,7 @@ const setuserinventory = {
     user_name: "string",
     object_id: "int",
 };
-avatar.post("/setuserinventory", (req: TypedRequestBody<setuserinventory>, res) => {
+avatar.post("/setuserinventory", async (req: TypedRequestBody<setuserinventory>, res) => {
     if (!sameobj(setuserinventory, req.body)) {
         console.error("값이 잘못넘어옴");
         res.status(500).json({ err: "type_err", type: setuserinventory });
@@ -216,8 +195,7 @@ avatar.post("/setuserinventory", (req: TypedRequestBody<setuserinventory>, res) 
     }
     const query = `insert into User_inventory values ("${req.body.user_name}", ${req.body.object_id})`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -227,8 +205,6 @@ avatar.post("/setuserinventory", (req: TypedRequestBody<setuserinventory>, res) 
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 export default avatar;

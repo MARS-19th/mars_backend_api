@@ -1,7 +1,9 @@
 import express = require("express");
 import mysql = require("mysql");
 import path = require("path");
-import { TypedRequestBody, serverset } from "../server";
+import serverset from "../server.json";
+import { TypedRequestBody } from "../server";
+import { getDBConnection } from "../DBConnection";
 const admin = express.Router();
 const root = __dirname;
 
@@ -47,11 +49,10 @@ admin.get("/VRExamOption", (req, res) => {
 /* 페이지별 api 목록 */
 
 // 모든 회원정보 조회
-admin.get("/api/getUser", (req, res) => {
+admin.get("/api/getUser", async (req, res) => {
     const query = `select user_name, user_id, choice_mark, user_title, profile_local, life, money, level from User_data;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -67,16 +68,13 @@ admin.get("/api/getUser", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 모든 상점 아이템 조회
-admin.get("/api/getshop", (req, res) => {
+admin.get("/api/getshop", async (req, res) => {
     const query = `select object_id, type, item_name, image_local, price from Shop_item;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -92,16 +90,13 @@ admin.get("/api/getshop", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 모든 유저 고유식별자 조회
-admin.get("/api/getidentifier", (req, res) => {
+admin.get("/api/getidentifier", async (req, res) => {
     const query = `select type, user_name, identifier_code from User_identifier_code;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -117,16 +112,13 @@ admin.get("/api/getidentifier", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 모든 유저 아바타 조회
-admin.get("/api/getavatar", (req, res) => {
+admin.get("/api/getavatar", async (req, res) => {
     const query = `select user_name, type, look, color, moun_shop from User_avatar;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -142,16 +134,13 @@ admin.get("/api/getavatar", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 모든 VR 문제 조회
-admin.get("/api/getvrexam", (req, res) => {
+admin.get("/api/getvrexam", async (req, res) => {
     const query = `select exam_id, target_mark, skill_field, exam, correct, exam_type, rate from VR_exam;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -167,16 +156,13 @@ admin.get("/api/getvrexam", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 모든 VR 문제 답안 조회
-admin.get("/api/getvrexamoption", (req, res) => {
+admin.get("/api/getvrexamoption", async (req, res) => {
     const query = `select exam_id, exam_option from VR_exam_option order by exam_id;`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -192,16 +178,13 @@ admin.get("/api/getvrexamoption", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 유저 닉네임 유효성 체크
-admin.get("/api/getusername/:name", (req, res) => {
+admin.get("/api/getusername/:name", async (req, res) => {
     const query = `select user_name from User_data where user_name = "${req.params.name}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -217,16 +200,13 @@ admin.get("/api/getusername/:name", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 해당 스킬에 세부 목표 id 얻기
-admin.get("/api/getdetailsmarkid/:id", (req, res) => {
+admin.get("/api/getdetailsmarkid/:id", async (req, res) => {
     const query = `select mark_id from Details_mark where skill_field ="${req.params.id}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -246,16 +226,13 @@ admin.get("/api/getdetailsmarkid/:id", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // 해당 유저가 얻은 모든 칭호 리턴
-admin.get("/api/getusertitle/:name", (req, res) => {
+admin.get("/api/getusertitle/:name", async (req, res) => {
     const query = `select user_title from User_get_title where user_name ="${req.params.name}";`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -275,8 +252,6 @@ admin.get("/api/getusertitle/:name", (req, res) => {
             }
         }
     });
-
-    dbconect.end();
 });
 
 // db 테이블 업데이트
@@ -286,11 +261,10 @@ type updatadb = {
     updata_value: string;
     where: string;
 };
-admin.post("/api/updatadb", (req: TypedRequestBody<updatadb>, res) => {
+admin.post("/api/updatadb", async (req: TypedRequestBody<updatadb>, res) => {
     const query = `update ${req.body.table_name} set ${req.body.target_column} = "${req.body.updata_value}" where ${req.body.where};`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -301,8 +275,6 @@ admin.post("/api/updatadb", (req: TypedRequestBody<updatadb>, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 // db 테이블 값 삭제
@@ -310,11 +282,10 @@ type deldb = {
     table_name: string;
     where: string;
 };
-admin.post("/api/deldb", (req: TypedRequestBody<deldb>, res) => {
+admin.post("/api/deldb", async (req: TypedRequestBody<deldb>, res) => {
     const query = `delete from ${req.body.table_name} where ${req.body.where};`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any[]) => {
         if (err) {
@@ -325,8 +296,6 @@ admin.post("/api/deldb", (req: TypedRequestBody<deldb>, res) => {
             res.json({ results: true });
         }
     });
-
-    dbconect.end();
 });
 
 // db 테이블 값추가
@@ -335,11 +304,10 @@ type insertdb = {
     insert_item: string;
     insert_value: string;
 };
-admin.post("/api/insertdb", (req: TypedRequestBody<insertdb>, res) => {
+admin.post("/api/insertdb", async (req: TypedRequestBody<insertdb>, res) => {
     const query = `insert into ${req.body.table_name} (${req.body.insert_item}) values (${req.body.insert_value});`;
 
-    const dbconect = mysql.createConnection(serverset.setdb);
-    dbconect.connect();
+    const dbconect = await getDBConnection();
 
     dbconect.query(query, (err: mysql.MysqlError, results?: any) => {
         if (err) {
@@ -347,22 +315,19 @@ admin.post("/api/insertdb", (req: TypedRequestBody<insertdb>, res) => {
             res.status(500).json({ err: err.code });
         } else {
             console.log("테이블 값 추가 완료");
-            
-            res.json({ results: results.insertId});
+
+            res.json({ results: results.insertId });
         }
     });
-
-    dbconect.end();
 });
 
 // 관리자 페이지 로그인시 제대로된 비번인지
-admin.post("/api/verifypasswd", (req , res) => {
+admin.post("/api/verifypasswd", async (req, res) => {
     if (req.body.passwd === serverset.admin_passwd) {
-        res.send({results: true});
+        res.send({ results: true });
     } else {
-        res.status(500).send({results: false});
+        res.status(500).send({ results: false });
     }
 });
-
 
 export default admin;
