@@ -4,4 +4,4 @@ git pull
 npm install
 npx tsc
 rsync -av --exclude '*.ts' ./src/ ./bin/
-nohup node bin/server.js &
+node bin/server.js
